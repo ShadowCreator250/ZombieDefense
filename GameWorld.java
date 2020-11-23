@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import greenfoot.*;
+import greenfoot.Greenfoot;
+import greenfoot.World;
 
 public class GameWorld extends World {
 
@@ -21,7 +22,7 @@ public class GameWorld extends World {
 	private void fillGridArrayWithEmptyCells() {
 		for (int x = 0; x < grid.length; x++) {
 			for (int y = 0; y < grid[x].length; y++) {
-				grid[x][y] = new Cell(Cell.CellType.NONE, x, y);
+				grid[x][y] = new NormalCell(x, y);
 			}
 		}
 	}
@@ -35,16 +36,15 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * finds the first {@link Cell} with a given {@link CellType}
-	 * 
-	 * @param cellType
-	 * @return The first {@link Cell} with the given {@link CellType} <br>
+	 * Finds the first {@link Cell} with a given Cell type in the grid.
+	 * @param type
+	 * @return The first {@link Cell} with the given type.<br>
 	 *         Returns <code>null<code> if no {@link Cell} is found.
 	 */
-	private Cell findFirstCellWithCellType(Cell.CellType cellType) {
+	private Cell findFirstCellWithCellType(Class<? extends Cell> type) {
 		for (int x = 0; x < grid.length; x++) {
 			for (int y = 0; y < grid[0].length; y++) {
-				if (grid[x][y].getCellType() == cellType) {
+				if (type.isInstance(grid[x][y])) {
 					return grid[x][y];
 				}
 			}
@@ -52,11 +52,17 @@ public class GameWorld extends World {
 		return null;
 	}
 	
-	private List<Cell> findAllCellsWithCellType(Cell.CellType cellType) {
+	/**
+	 * Finds all {@link Cell}s with a given Cell type in the grid.
+	 * @param type
+	 * @return A List of {@link Cell}s with the given type.<br>
+	 *         Returns an empty List if no {@link Cell} is found.
+	 */
+	private List<Cell> findAllCellsWithCellType(Class<? extends Cell> type) {
 		List<Cell> result = new ArrayList<>();
 		for (int x = 0; x < grid.length; x++) {
 			for (int y = 0; y < grid[0].length; y++) {
-				if (grid[x][y].getCellType() == cellType) {
+				if (type.isInstance(grid[x][y])) {
 					result.add(grid[x][y]);
 				}
 			}
@@ -64,17 +70,17 @@ public class GameWorld extends World {
 		return result;
 	}
 
-	public List<Cell> getNeighbourCells(Cell cell) {
+	public List<Cell> getNeighbourCells(Cell cell, boolean withCorners) {
 		List<Cell> neighbours = new ArrayList<>();
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
-				if ((x == 0 && y == 0) || isCornerBlockCheck(x, y)) {
+				if ((x == 0 && y == 0) || (withCorners || isCornerBlockCheck(x, y))) {
 					continue;
 				}
 				int checkX = cell.getGridX() + x;
-				int checkZ = cell.getGridY() + y;
-				if (checkX >= 0 && checkX < GRID_SIZE_X && checkZ >= 0 && checkZ < GRID_SIZE_Y) {
-					neighbours.add(grid[checkX][checkZ]);
+				int checkY = cell.getGridY() + y;
+				if (checkX >= 0 && checkX < GRID_SIZE_X && checkY >= 0 && checkY < GRID_SIZE_Y) {
+					neighbours.add(grid[checkX][checkY]);
 				}
 			}
 		}
@@ -89,7 +95,7 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * gets the cell on a specific world position (independent from its grid position)
+	 * Gets the cell on a specific world position (if its grid position is not known).
 	 * @param x the positions x value
 	 * @param y the positions y value
 	 * @return the {@link Cell} found on this position <br>
@@ -100,6 +106,12 @@ public class GameWorld extends World {
 			return null;
 		}
 		return grid[x/CELL_SIZE][y/CELL_SIZE];
+	}
+	
+	public void replaceCellInGrid(int gridX, int gridY, Cell cell) {
+		if(gridX >= 0 && gridX < GRID_SIZE_X && gridY >= 0 && gridY < GRID_SIZE_Y) {
+			grid[gridX][gridY] = cell;
+		}
 	}
 
 	public Cell[][] getGrid() {

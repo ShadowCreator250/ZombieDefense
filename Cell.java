@@ -1,56 +1,29 @@
 import greenfoot.Actor;
 import greenfoot.Color;
 import greenfoot.GreenfootImage;
+
 /**
- * Divides the World in chunk-like sectors
- * 
- * These sectors define where the path is and where towers can be placed.
+ * Divides the World in chunk-like sectors.<br>
+ * These sectors define where for example the path is and where towers can be placed.
  */
-public class Cell extends Actor{
+public abstract class Cell extends Actor{
 	
-	public enum CellType {
-		PATH, TOWER, NONE, START, END;
-		//PATH and TOWER are self-explanatory 
-		//NONE -> nothing should be placed here (for the unused surrounding area)
-		//START and END -> where the zombies should come from/go to
-	}
-	
-	private CellType cellType;
 	private int gridX;
 	private int gridY;
 
-	public Cell(CellType nodeType, int gridX, int gridY) {
-		this.setCellType(nodeType);
+	public Cell(int gridX, int gridY) {
 		this.gridX = gridX;
 		this.gridY = gridY;
-		chooseImage();
-	}
-
-	private void chooseImage() {
-		//TODO: monochrome images are temporarily 
-		switch (cellType) {
-		case END:
-			setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(255, 0, 0)));
-			break;
-		case NONE:
-			setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(0, 255, 100)));
-			break;
-		case PATH:
-			setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(255, 200, 0)));
-			break;
-		case START:
-			setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(0, 255, 0)));
-			break;
-		case TOWER:
-			setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(64, 64, 64)));
-			break;
-		default:
-			setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(255, 255, 255)));
-			break;
-		}
 	}
 	
-	private GreenfootImage paintMonochromeImage(int sizeX, int sizeY, Color color) {
+	/**
+	 * Produces an img that only has one color
+	 * @param sizeX - img size x
+	 * @param sizeY - img size y
+	 * @param color - A Greenfoot.Color
+	 * @return A GreenfootImage
+	 */
+	GreenfootImage paintMonochromeImage(int sizeX, int sizeY, Color color) {
 		GreenfootImage img = new GreenfootImage(sizeX, sizeY);
 		for (int x = 0; x < img.getWidth(); x++) {
 			for (int y = 0; y < img.getHeight(); y++) {
@@ -59,14 +32,23 @@ public class Cell extends Actor{
 		}
 		return img;
 	}
-
-	public CellType getCellType() {
-		return cellType;
-	}
 	
-	public void setCellType(CellType cellType) {
-		this.cellType = cellType;
-		chooseImage();
+	/**
+	 * Replaces the current Cell with another and changes the Grid respectively.
+	 * @param otherCell - The new Cell. What you enter as gridX + gridY value is irrelevant. They will get replaced.
+	 */
+	public void replaceWith(Cell otherCell) {
+		if(otherCell instanceof PathCell) {
+			otherCell = new PathCell(gridX, gridY, ((PathCell) otherCell).getPathType());
+		} else if(otherCell instanceof TowerCell) {
+			otherCell = new TowerCell(gridX, gridY);
+		} else if(otherCell instanceof NormalCell) {
+			otherCell = new NormalCell(gridX, gridY);
+		}
+		GameWorld world = (GameWorld) getWorld();
+		world.replaceCellInGrid(gridX, gridY, otherCell);
+		world.addObject(otherCell, this.getX(), this.getY());
+		world.removeObject(this);
 	}
 	
 	public int getGridX() {

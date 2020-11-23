@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=NormalCell
+comment1.params=gridX\ gridY
+comment1.target=NormalCell(int,\ int)
+numComments=2
