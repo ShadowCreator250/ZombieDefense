@@ -1,53 +1,65 @@
-import greenfoot.Color;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PathCell extends Cell {
+public abstract class PathCell extends Cell {
 	
-	private PathType pathType;
-
-	public enum PathType {
-		NORMAL, START, END;
-		//START and END -> where the zombies should come from/go to
-	}
+	private PathSectionType pathSectionType;
+	private List<PathCell> children = new ArrayList<>(5);
+	private List<PathCell> parents = new ArrayList<>(5);
 	
-	private enum PathSectionType {
-		//TODO: What to do with PathSectionType
-		DEAD_END, STRAIGHT, CURVE, T, FOUR_WAY;
-		/* Could potentially be used to determine path for Zombies,
-		 * if we don't use A* algorithm. 
-		 * -> Should Zombies be intelligent and know how to get to survivors base
-		 * or should they be dumb and wander aimlessly around until they reach gate?
-		*/
+	public enum PathSectionType {
+		DOT, DEAD_END, STRAIGHT, CURVE, T, CROSS;
 	}
 	
 	public PathCell(int gridX, int gridY) {
-		this(gridX, gridY, PathType.NORMAL);
-	}
-
-	public PathCell(int gridX, int gridY, PathType pathType) {
 		super(gridX, gridY);
-		this.pathType = pathType;
-		chooseImage();
 	}
-
-	private void chooseImage() {
-		//TODO: Monochrome img is temp
-		switch (pathType) {
-		case END:
-			setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(255, 0, 0)));
-			break;
-		case START:
-			setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(0, 255, 0)));
-			break;
-		case NORMAL:
-		default:
-			setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(255, 200, 0)));
-			break;
-		
+	
+	private List<PathCell> getNeighbouringPathCell() {
+		List<Cell> neighbourCells = ((GameWorld) getWorld()).getNeighbourCells(this, false);
+		List<PathCell> neighbourPathCells = new ArrayList<>(neighbourCells.size());
+		for (Cell cell : neighbourCells) {
+			if(cell instanceof PathCell) {
+				neighbourPathCells.add((PathCell)cell);
+			}
+		}
+		return neighbourPathCells;
+	}
+	
+	public void evaluatePathSectionType() {
+		List<PathCell> neighbourPathCells = getNeighbouringPathCell();
+		switch (neighbourPathCells.size()) {
+			case 1:
+				this.pathSectionType = PathSectionType.DEAD_END;
+				break;
+			case 2:
+				PathCell cell1 = neighbourPathCells.get(0);
+				PathCell cell2 = neighbourPathCells.get(1);
+				if(cell1.getGridX() == cell2.getGridX() || cell1.getGridY() == cell2.getGridY()) {
+					this.pathSectionType = PathSectionType.STRAIGHT;
+				} else {
+					this.pathSectionType = PathSectionType.CURVE;
+				}
+				break;
+			case 3:
+				this.pathSectionType = PathSectionType.T;
+				break;
+			case 4:
+				this.pathSectionType = PathSectionType.CROSS;
+				break;
+			case 0:
+			default:
+				this.pathSectionType = PathSectionType.DOT;
+				break;
 		}
 	}
+	
+	public PathSectionType getPathSectionType() {
+		return pathSectionType;
+	}
 
-	public PathType getPathType() {
-		return pathType;
+	public void setPathSectionType(PathSectionType pathSectionType) {
+		this.pathSectionType = pathSectionType;
 	}
 
 }

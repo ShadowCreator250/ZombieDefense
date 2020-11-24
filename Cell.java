@@ -38,15 +38,10 @@ public abstract class Cell extends Actor{
 	 * @param otherCell - The new Cell. What you enter as gridX + gridY value is irrelevant. They will get replaced.
 	 */
 	public void replaceWith(Cell otherCell) {
-		if(otherCell instanceof PathCell) {
-			otherCell = new PathCell(gridX, gridY, ((PathCell) otherCell).getPathType());
-		} else if(otherCell instanceof TowerCell) {
-			otherCell = new TowerCell(gridX, gridY);
-		} else if(otherCell instanceof NormalCell) {
-			otherCell = new NormalCell(gridX, gridY);
-		}
+		otherCell.setGridX(this.gridX);
+		otherCell.setGridY(this.gridY);
 		GameWorld world = (GameWorld) getWorld();
-		world.replaceCellInGrid(gridX, gridY, otherCell);
+		world.replaceCellInGrid(otherCell);
 		world.addObject(otherCell, this.getX(), this.getY());
 		world.removeObject(this);
 	}
@@ -57,6 +52,14 @@ public abstract class Cell extends Actor{
 
 	public int getGridY() {
 		return gridY;
+	}
+
+	public void setGridX(int gridX) {
+		this.gridX = gridX;
+	}
+
+	public void setGridY(int gridY) {
+		this.gridY = gridY;
 	}
 	
 }

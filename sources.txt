@@ -1,2 +1,4 @@
 https://stackoverflow.com/questions/5734720/test-if-object-is-instanceof-a-parameter-type
 A* Algorithm: https://www.youtube.com/watch?v=-L-WgKMFuhE
+https://stackoverflow.com/questions/2318020/merging-two-images
+https://www.greenfoot.org/topics/2032

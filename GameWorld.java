@@ -108,9 +108,18 @@ public class GameWorld extends World {
 		return grid[x/CELL_SIZE][y/CELL_SIZE];
 	}
 	
-	public void replaceCellInGrid(int gridX, int gridY, Cell cell) {
+	public void replaceCellInGrid(Cell cell) {
+		int gridX = cell.getGridX();
+		int gridY = cell.getGridY();
 		if(gridX >= 0 && gridX < GRID_SIZE_X && gridY >= 0 && gridY < GRID_SIZE_Y) {
 			grid[gridX][gridY] = cell;
+		}
+	}
+	
+	public void computePathSectionTypes() {
+		List<Cell> cells = findAllCellsWithCellType(PathCell.class);
+		for (Cell cell : cells) {
+			((PathCell) cell).evaluatePathSectionType();
 		}
 	}
 
