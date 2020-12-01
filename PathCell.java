@@ -4,8 +4,9 @@ import java.util.List;
 public abstract class PathCell extends Cell {
 	
 	private PathSectionType pathSectionType;
-	private List<PathCell> children = new ArrayList<>(5);
-	private List<PathCell> parents = new ArrayList<>(5);
+	private int hCost;
+	private int gCost;
+	private PathCell parent;
 	
 	public enum PathSectionType {
 		DOT, DEAD_END, STRAIGHT, CURVE, T, CROSS;
@@ -15,8 +16,8 @@ public abstract class PathCell extends Cell {
 		super(gridX, gridY);
 	}
 	
-	private List<PathCell> getNeighbouringPathCell() {
-		List<Cell> neighbourCells = ((GameWorld) getWorld()).getNeighbourCells(this, false);
+	public List<PathCell> getNeighbouringPathCells() {
+		List<Cell> neighbourCells = getNeighbourCells(false);
 		List<PathCell> neighbourPathCells = new ArrayList<>(neighbourCells.size());
 		for (Cell cell : neighbourCells) {
 			if(cell instanceof PathCell) {
@@ -27,7 +28,7 @@ public abstract class PathCell extends Cell {
 	}
 	
 	public void evaluatePathSectionType() {
-		List<PathCell> neighbourPathCells = getNeighbouringPathCell();
+		List<PathCell> neighbourPathCells = getNeighbouringPathCells();
 		switch (neighbourPathCells.size()) {
 			case 1:
 				this.pathSectionType = PathSectionType.DEAD_END;
@@ -60,6 +61,34 @@ public abstract class PathCell extends Cell {
 
 	public void setPathSectionType(PathSectionType pathSectionType) {
 		this.pathSectionType = pathSectionType;
+	}
+
+	public int fCost() {
+		return gCost+hCost;
+	}
+
+	public int gethCost() {
+		return hCost;
+	}
+
+	public int getgCost() {
+		return gCost;
+	}
+	
+	public void sethCost(int hCost) {
+		this.hCost = hCost;
+	}
+
+	public void setgCost(int gCost) {
+		this.gCost = gCost;
+	}
+	
+	public PathCell getParent() {
+		return parent;
+	}
+
+	public void setParent(PathCell currentNode) {
+		this.parent = currentNode;
 	}
 
 }

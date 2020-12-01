@@ -29,7 +29,7 @@ public class BombTower extends Tower {
 		if (checkIfZombiesInRange()) {
 			for(Zombie zombie: zombies) {
 				if(reload() == false) {
-					zombie.health = zombie.health - (damage * (1-zombie.resistance));
+					zombie.absorbDamage(damage);
 				}
 			}
 		}

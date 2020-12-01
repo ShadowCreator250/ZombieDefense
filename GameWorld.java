@@ -41,11 +41,11 @@ public class GameWorld extends World {
 	 * @return The first {@link Cell} with the given type.<br>
 	 *         Returns <code>null<code> if no {@link Cell} is found.
 	 */
-	private Cell findFirstCellWithCellType(Class<? extends Cell> type) {
+	private <T extends Cell> T findFirstCellWithCellType(Class<T> cls) {
 		for (int x = 0; x < grid.length; x++) {
 			for (int y = 0; y < grid[0].length; y++) {
-				if (type.isInstance(grid[x][y])) {
-					return grid[x][y];
+				if (cls.isInstance(grid[x][y])) {
+					return (T) grid[x][y];
 				}
 			}
 		}
@@ -58,40 +58,16 @@ public class GameWorld extends World {
 	 * @return A List of {@link Cell}s with the given type.<br>
 	 *         Returns an empty List if no {@link Cell} is found.
 	 */
-	private List<Cell> findAllCellsWithCellType(Class<? extends Cell> type) {
-		List<Cell> result = new ArrayList<>();
+	private <T extends Cell> List<T> findAllCellsWithCellType(Class<T> cls) {
+		List<T> result = new ArrayList<>();
 		for (int x = 0; x < grid.length; x++) {
 			for (int y = 0; y < grid[0].length; y++) {
-				if (type.isInstance(grid[x][y])) {
-					result.add(grid[x][y]);
+				if (cls.isInstance(grid[x][y])) {
+					result.add((T) grid[x][y]);
 				}
 			}
 		}
 		return result;
-	}
-
-	public List<Cell> getNeighbourCells(Cell cell, boolean withCorners) {
-		List<Cell> neighbours = new ArrayList<>();
-		for (int x = -1; x <= 1; x++) {
-			for (int y = -1; y <= 1; y++) {
-				if ((x == 0 && y == 0) || (withCorners || isCornerBlockCheck(x, y))) {
-					continue;
-				}
-				int checkX = cell.getGridX() + x;
-				int checkY = cell.getGridY() + y;
-				if (checkX >= 0 && checkX < GRID_SIZE_X && checkY >= 0 && checkY < GRID_SIZE_Y) {
-					neighbours.add(grid[checkX][checkY]);
-				}
-			}
-		}
-		return neighbours;
-	}
-
-	private boolean isCornerBlockCheck(int x, int z) {
-		if (Math.abs(x) == 1 && Math.abs(z) == 1) {
-			return true;
-		}
-		return false;
 	}
 
 	/**
@@ -117,7 +93,7 @@ public class GameWorld extends World {
 	}
 	
 	public void computePathSectionTypes() {
-		List<Cell> cells = findAllCellsWithCellType(PathCell.class);
+		List<PathCell> cells = findAllCellsWithCellType(PathCell.class);
 		for (Cell cell : cells) {
 			((PathCell) cell).evaluatePathSectionType();
 		}

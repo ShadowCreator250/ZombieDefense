@@ -1,16 +1,22 @@
 
 public class Zombie extends SmoothMover {
 	
-	public int strength;
-	public double resistance; // should be from 0-1, example: 0.7 stands for 70% less damage to get
-	public int speed;
-	public double health;
+	private double strength;
+	private double resistance; // should be from 0.0-1.0, example: 0.7 stands for 70% less damage to get
+	private double speed;
+	private double health;
 	
 	public Zombie() {
-		this(10, 0.1, 10, 100);		
+		this(1.0, 0.0, 1.0, 100);	
 	}
 	
-	public Zombie(int strength, double resistance, int speed, double health) {
+	/**
+	 * @param strength - how much damage he deals in per cent (1.0 is default)
+	 * @param resistance - how much damage he can resist in per cent (0 is default)
+	 * @param speed - how fast he is in percent (1.0 is default)
+	 * @param health - how many health points he has (100 is default)
+	 */
+	public Zombie(double strength, double resistance, double speed, double health) {
 		//TODO: image is temporarily
 		setImage("./ppl2.png");
 		this.strength = strength;
@@ -23,10 +29,10 @@ public class Zombie extends SmoothMover {
 		
 	}
 	
-	public void dropCurrency(Zombie zombie) {
-		if (zombie.health <= 0) {
+	public void dropCurrency() {
+		if (health <= 0) {
 			//TODO: Player gets money/gold + creating class money/gold
-			getWorld().removeObject(zombie);
+			getWorld().removeObject(this);
 		}
 	}
 	
@@ -34,5 +40,9 @@ public class Zombie extends SmoothMover {
 		//if (getOneIntersectingObject(Gate.class)) {
 			//TODO: create class Gate, decrease the Gate´s health
 		//}
+	}
+	
+	public void absorbDamage(int damage) {
+		this.health = health - (damage*(1-resistance));
 	}
 }

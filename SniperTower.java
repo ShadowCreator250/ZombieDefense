@@ -29,7 +29,7 @@ public class SniperTower extends Tower {
 			for (int i = 0; i < zombies.size(); i++) {
 				Zombie z = zombies.get(i);
 				if (reload() == false) {
-					z.health = z.health - (damage * (1 - z.resistance));
+					z.absorbDamage(damage);
 				}
 			}
 		}

@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import greenfoot.Actor;
 import greenfoot.Color;
 import greenfoot.GreenfootImage;
@@ -44,6 +47,31 @@ public abstract class Cell extends Actor{
 		world.replaceCellInGrid(otherCell);
 		world.addObject(otherCell, this.getX(), this.getY());
 		world.removeObject(this);
+	}
+	
+	public List<Cell> getNeighbourCells(boolean withCorners) {
+		List<Cell> neighbours = new ArrayList<>();
+		Cell[][] grid = ((GameWorld) getWorld()).getGrid();
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				if ((x == 0 && y == 0) || (withCorners || isCornerBlockCheck(x, y))) {
+					continue;
+				}
+				int checkX = this.getGridX() + x;
+				int checkY = this.getGridY() + y;
+				if (checkX >= 0 && checkX < GameWorld.GRID_SIZE_X && checkY >= 0 && checkY < GameWorld.GRID_SIZE_Y) {
+					neighbours.add(grid[checkX][checkY]);
+				}
+			}
+		}
+		return neighbours;
+	}
+
+	private boolean isCornerBlockCheck(int x, int z) {
+		if (Math.abs(x) == 1 && Math.abs(z) == 1) {
+			return true;
+		}
+		return false;
 	}
 	
 	public int getGridX() {
