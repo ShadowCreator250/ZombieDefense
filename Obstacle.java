@@ -9,6 +9,7 @@ import greenfoot.MouseInfo;
 public class Obstacle extends Actor {
 	
 	private MouseInfo mouse = Greenfoot.getMouseInfo();
+	private int displayTime = 0;
 	
 	public Obstacle() {
 		
@@ -39,5 +40,10 @@ public class Obstacle extends Actor {
 		setImage(image);
 		image.setColor(Color.BLACK);
 		image.drawString("You cannot place the tower here", 10, 10);
+		int i = 300;
+		while (displayTime < i) {
+			displayTime++;
+		}
+		image.clear();
 	}
 }
