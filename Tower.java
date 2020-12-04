@@ -1,24 +1,28 @@
 import java.util.List;
 
 import greenfoot.Actor;
+import greenfoot.Color;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 
 public class Tower extends Actor {
 
+	private MouseInfo mouse = Greenfoot.getMouseInfo();
+	private int displayTime = 0;
+
 	public Tower() {
-
+		
 	}
-
+	
 	private void placeTower(Tower tower) {
-		MouseInfo mouse = Greenfoot.getMouseInfo();
 		List<TowerCell> towerCells = getWorld().getObjects(TowerCell.class);
 		for (TowerCell towerCell : towerCells) {
-			if (mouse.getX() == towerCell.getGridX() && mouse.getY() == towerCell.getGridY() && mouse.getButton() == 1) {
+			if (mouse.getButton() == 1 && mouse.getX() == towerCell.getGridX() && mouse.getY() == towerCell.getGridY()) {
 				getWorld().addObject(tower, mouse.getX(), mouse.getY());
 			}
-			else {
-				//TODO: show text "You cannot place the tower here"
+			else if (mouse.getButton() == 1 && (mouse.getX() != towerCell.getGridX() || mouse.getY() != towerCell.getGridY())){
+				showErrorText();			
 			}
 		}
 	}
@@ -29,5 +33,17 @@ public class Tower extends Actor {
 		//	currency -= cost;
 		//}
 		//TODO: implement currency and the cost of each tower
+	}
+	
+	private void showErrorText() {
+		GreenfootImage image = new GreenfootImage(mouse.getX(), mouse.getY());
+		setImage(image);
+		image.setColor(Color.BLACK);
+		image.drawString("You cannot place the tower here", 10, 10);
+		int i = 300;
+		while (displayTime < i) {
+			displayTime++;
+		}
+		image.clear();
 	}
 }

@@ -1,10 +1,10 @@
 import java.util.List;
 
 public class ArcherTower extends Tower {
-	private static final int damage = 1;
-	private static final int range = 50;
-	private static final int reloadTime = 100;
-	private int shootTime = reloadTime;
+	private static final int DAMAGE = 1;
+	private static final int RANGE = 50;
+	private static final int RELOADTIME = 100;
+	private int shootTime = RELOADTIME;
 	private List<Zombie> zombies;
 	
 	public ArcherTower() {		
@@ -16,7 +16,7 @@ public class ArcherTower extends Tower {
 	}
 	
 	private boolean checkIfZombiesInRange() {
-		zombies = getObjectsInRange(range, Zombie.class);
+		zombies = getObjectsInRange(RANGE, Zombie.class);
 		if (zombies != null) {
 			return true;
 		}
@@ -29,14 +29,14 @@ public class ArcherTower extends Tower {
 		if (checkIfZombiesInRange()) {
 			for(Zombie zombie: zombies) {
 				if(reload() == false) {
-					zombie.absorbDamage(damage);
+					zombie.absorbDamage(DAMAGE);
 				}
 			}
 		}
 	}
 	
 	private boolean reload() {
-		if(shootTime < reloadTime) {
+		if(shootTime < RELOADTIME) {
 			shootTime++;
 			return true;			
 		}
