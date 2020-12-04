@@ -3,3 +3,4 @@ A* Algorithm: https://www.youtube.com/watch?v=-L-WgKMFuhE
 https://stackoverflow.com/questions/2318020/merging-two-images
 https://www.greenfoot.org/topics/2032
 https://stackoverflow.com/questions/12569833/generic-methods-returning-dynamic-object-types
+https://www.codejava.net/java-se/file-io/how-to-read-and-write-text-file-in-java

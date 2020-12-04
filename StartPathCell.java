@@ -8,17 +8,17 @@ public class StartPathCell extends PathCell {
 		super(gridX, gridY);
 		setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(0, 255, 0)));
 	}
-	
+
 	@Override
 	public void evaluatePathSectionType() {
-		//TODO: evaluate where zombies should come from -> where border is
+		// TODO: evaluate where zombies should come from -> where border is
 		List<PathCell> neighbourPathCells = getNeighbouringPathCells();
 		switch (neighbourPathCells.size()) {
 			case 0:
 				setPathSectionType(PathSectionType.DEAD_END);
 				break;
 			case 1:
-				//TODO: Straight or curve
+				// TODO: Straight or curve
 				setPathSectionType(PathSectionType.STRAIGHT);
 				// setPathSectionType(PathSectionType.CURVE);
 				break;
@@ -33,6 +33,11 @@ public class StartPathCell extends PathCell {
 				setPathSectionType(PathSectionType.DOT);
 				break;
 		}
+	}
+
+	@Override
+	protected String getBgImageName() {
+		return "bg-start-path-temp.png";
 	}
 
 }

@@ -13,7 +13,16 @@ public class ImageCombiner {
 	private File basePath;
 	private String bgImgName;
 	private String fgImgName;
+	
+	public ImageCombiner(String bgImgName, String fgImgName) {
+		this(new File("./images/"), bgImgName, fgImgName);
+	}
 
+	/**
+	 * @param basePath path where both images are found
+	 * @param bgImgName background image name
+	 * @param fgImgName foreground image name
+	 */
 	public ImageCombiner(File basePath, String bgImgName, String fgImgName) {
 		this.basePath = basePath;
 		this.bgImgName = bgImgName;
