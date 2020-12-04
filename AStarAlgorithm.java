@@ -24,8 +24,8 @@ public class AStarAlgorithm {
 		while (!openList.isEmpty()) {
 			PathCell currentNode = openList.get(0);
 			for (int i = 1; i < openList.size(); i++) {
-				if ((openList.get(i).fCost() < currentNode.fCost()) || openList.get(i).fCost() == currentNode.fCost()) {
-					if (openList.get(i).gethCost() < currentNode.gethCost()) {
+				if((openList.get(i).fCost() < currentNode.fCost()) || openList.get(i).fCost() == currentNode.fCost()) {
+					if(openList.get(i).gethCost() < currentNode.gethCost()) {
 						currentNode = openList.get(i);
 					}
 				}
@@ -33,23 +33,22 @@ public class AStarAlgorithm {
 			openList.remove(currentNode);
 			closedSet.add(currentNode);
 
-			if (currentNode.equals(targetNode)) {
+			if(currentNode.equals(targetNode)) {
 				return retracePath(startNode, targetNode);
 			}
 
 			for (Cell neighbour : currentNode.getNeighbourCells(false)) {
-				if (!(neighbour instanceof PathCell) || closedSet.contains(neighbour)) {
+				if(!(neighbour instanceof PathCell) || closedSet.contains(neighbour)) {
 					continue;
 				}
-				PathCell neighbour2 = (PathCell) neighbour; 
-				int newMovementCostToNeighbour = currentNode.getgCost()
-						+ getDistanceBetweenTwoNodes(currentNode, neighbour2);
-				if (newMovementCostToNeighbour < neighbour2.getgCost() || !openList.contains(neighbour2)) {
+				PathCell neighbour2 = (PathCell) neighbour;
+				int newMovementCostToNeighbour = currentNode.getgCost() + getDistanceBetweenTwoNodes(currentNode, neighbour2);
+				if(newMovementCostToNeighbour < neighbour2.getgCost() || !openList.contains(neighbour2)) {
 					neighbour2.setgCost(newMovementCostToNeighbour);
 					neighbour2.sethCost(getDistanceBetweenTwoNodes(neighbour2, targetNode));
 					neighbour2.setParent(currentNode);
 
-					if (!openList.contains(neighbour2)) {
+					if(!openList.contains(neighbour2)) {
 						openList.add(neighbour2);
 					}
 				}
@@ -75,14 +74,14 @@ public class AStarAlgorithm {
 		int straightCost = 10;
 		int distanceX = Math.abs(nodeA.getGridX() - nodeB.getGridX());
 		int distanceZ = Math.abs(nodeA.getGridY() - nodeB.getGridY());
-		if (distanceX > distanceZ) {
+		if(distanceX > distanceZ) {
 			result = diagonalCost * distanceZ + straightCost * (distanceX - distanceZ);
 		} else {
 			result = diagonalCost * distanceX + straightCost * (distanceZ - distanceX);
 		}
 		return result;
 	}
-	
+
 	public List<PathCell> getPath() {
 		return path;
 	}

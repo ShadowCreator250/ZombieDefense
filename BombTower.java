@@ -1,49 +1,15 @@
-import java.util.List;
-
 public class BombTower extends Tower {
-	private static final int DAMAGE = 50;
-	private static final int RANGE = 20;
-	private static final int RELOADTIME = 700;
-	private int shootTime = RELOADTIME;
-	private List<Zombie> zombies;
-	
-	public BombTower() {		
-		
+	private static final int DEFAULT_RANGE = 20;
+	private static final int DEFAULT_RELOAD_TIME = 700;
+
+	public BombTower() {
+		super(DEFAULT_RANGE, DEFAULT_RELOAD_TIME);
 	}
-	
-	public void act() {
-		
+
+	@Override
+	protected void shootProjectile(int x, int y) {
+		// TODO Auto-generated method stub
+
 	}
-	
-	private boolean checkIfZombiesInRange() {
-		zombies = getObjectsInRange(RANGE, Zombie.class);
-		if (zombies != null) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	public void attackZombiesInRange() {
-		if (checkIfZombiesInRange()) {
-			for(Zombie zombie: zombies) {
-				if(reload() == false) {
-					zombie.absorbDamage(DAMAGE);
-				}
-			}
-		}
-	}
-	
-	private boolean reload() {
-		if(shootTime < RELOADTIME) {
-			shootTime++;
-			return true;			
-		}
-		else {
-			shootTime = 0;
-			return false;
-		}
-	}
-	
+
 }

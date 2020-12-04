@@ -17,16 +17,23 @@ public class GameWorld extends World {
 	public static final int GRID_SIZE_X = 15;
 	public static final int GRID_SIZE_Y = 9;
 	public static final int CELL_SIZE = 64;
+	public static final int DEFAULT_SPEED = 50;
 	private static final char NORMAL_CELL_PARSE_CHAR = '0';
 	private static final char PATH_CELL_PARSE_CHAR = 'P';
 	private static final char START_CELL_PARSE_CHAR = 'S';
 	private static final char END_CELL_PARSE_CHAR = 'E';
 	private static final char TOWER_CELL_PARSE_CHAR = 'T';
+
 	private Cell[][] grid;
+	private boolean isPaused = true;
+	private int executionSpeed = DEFAULT_SPEED;
+
+	// TODO proper images
+	private PauseResumeButton pauseResumeButton = new PauseResumeButton("resume-button-temp.png", "pause-button-temp.png");
 
 	public GameWorld() {
 		super(GRID_SIZE_X * CELL_SIZE, GRID_SIZE_Y * CELL_SIZE, 1);
-		Greenfoot.setSpeed(50);
+		Greenfoot.setSpeed(DEFAULT_SPEED);
 		this.grid = new Cell[GRID_SIZE_X][GRID_SIZE_Y];
 		fillGridArrayWithEmptyCells();
 		definePaintOrder();
@@ -37,10 +44,37 @@ public class GameWorld extends World {
 		removeAllObjects();
 		placeCells();
 		computePathSectionTypes();
+		placeGUI();
+	}
+
+	private void placeGUI() {
+		addObject(pauseResumeButton, getWidth() / 2, pauseResumeButton.getImage().getHeight() + 4);
+		GameSpeedControlButton speed80Button = new GameSpeedControlButton(80, "fastforward-2-button-temp.png",
+				"fastforward-2-button-active-temp.png");
+		GameSpeedControlButton speed20Button = new GameSpeedControlButton(20, "fastforward-1-button-temp.png",
+				"fastforward-1-button-active-temp.png");
+		MenuExpendButton menuExpander = new MenuExpendButton("menu-expand-button-temp.png", "menu-expand-button-active-temp.png");
+		addObject(speed80Button, (getWidth() / 2 + pauseResumeButton.getImage().getWidth() + 8), speed80Button.getImage().getHeight());
+		addObject(speed20Button, (getWidth() / 2 - pauseResumeButton.getImage().getWidth() - 8), speed20Button.getImage().getHeight());
+		addObject(menuExpander, getWidth() / 2, getHeight() - menuExpander.getImage().getHeight());
+	}
+
+	@Override
+	public void started() {
+		super.started();
+		resume();
+		getPauseResumeButton().updatePauseResumeButten();
+	}
+
+	@Override
+	public void stopped() {
+		super.stopped();
+		pause();
+		getPauseResumeButton().updatePauseResumeButten();
 	}
 
 	private void definePaintOrder() {
-		setPaintOrder(Zombie.class, Tower.class, PathCell.class, TowerCell.class, NormalCell.class);
+		setPaintOrder(Button.class, Zombie.class, Tower.class, PathCell.class, TowerCell.class, NormalCell.class);
 	}
 
 	private void fillGridArrayWithEmptyCells() {
@@ -238,6 +272,45 @@ public class GameWorld extends World {
 
 	public Cell[][] getGrid() {
 		return grid;
+	}
+
+	public boolean isDefaultSpeed() {
+		return getExecutionSpeed() == DEFAULT_SPEED;
+	}
+
+	public int getExecutionSpeed() {
+		return executionSpeed;
+	}
+
+	public void setExecutionSpeed(int speed) {
+		if(speed <= 0) {
+			this.executionSpeed = 1;
+		} else if(speed > 100) {
+			this.executionSpeed = 100;
+		} else {
+			this.executionSpeed = speed;
+			Greenfoot.setSpeed(executionSpeed);
+		}
+	}
+
+	public boolean isPaused() {
+		return isPaused;
+	}
+
+	private void setPaused(boolean isPaused) {
+		this.isPaused = isPaused;
+	}
+
+	public void pause() {
+		setPaused(true);
+	}
+
+	public void resume() {
+		setPaused(false);
+	}
+
+	public PauseResumeButton getPauseResumeButton() {
+		return pauseResumeButton;
 	}
 
 }

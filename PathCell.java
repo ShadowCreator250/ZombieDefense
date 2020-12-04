@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import greenfoot.GreenfootImage;
+
 public abstract class PathCell extends Cell {
 
 	private PathSectionType pathSectionType;
@@ -26,6 +28,15 @@ public abstract class PathCell extends Cell {
 		super(gridX, gridY);
 	}
 
+	protected abstract String getBgImageName();
+
+	public void setImageRotation(int rotation) {
+		GreenfootImage img = getImage();
+		img.rotate(rotation * 90);
+		setImage(img);
+
+	}
+
 	public List<PathCell> getNeighbouringPathCells() {
 		List<Cell> neighbourCells = getNeighbourCells(false);
 		List<PathCell> neighbourPathCells = new ArrayList<>(neighbourCells.size());
@@ -38,12 +49,15 @@ public abstract class PathCell extends Cell {
 	}
 
 	/**
-	 * [0] - to the right [1] - above [2] - to the left [3] - below mathematical
-	 * sense of rotation
+	 * [0] - to the right<br>
+	 * [1] - below<br>
+	 * [2] - to the left<br>
+	 * [3] - above<br>
+	 * clockwise rotation
 	 * 
 	 * @return the array
 	 */
-	public boolean[] evaluateLocationsOfNeighbouringPathCells() {
+	public boolean[] evaluateExistenceOfNeighbouringPathCells() {
 		boolean[] result = { false, false, false, false };
 		List<PathCell> neighbourPathCells = getNeighbouringPathCells();
 		for (PathCell pathCell : neighbourPathCells) {
@@ -55,12 +69,104 @@ public abstract class PathCell extends Cell {
 		return result;
 	}
 
+	/**
+	 * [0] - to the right<br>
+	 * [1] - below<br>
+	 * [2] - to the left<br>
+	 * [3] - above<br>
+	 * clockwise rotation
+	 * 
+	 * @return the array
+	 */
+	public boolean[] evaluateExistenceOfWorldEdgesAsNeighbours() {
+		boolean[] result = { false, false, false, false };
+		if((getGridX() - 1 == -1 && getGridY() - 1 == -1) || (getGridX() - 1 == -1 && getGridY() + 1 == GameWorld.GRID_SIZE_Y)) {
+			// left side top/bottom
+			result[2] = true;
+		} else if((getGridX() + 1 == GameWorld.GRID_SIZE_X && getGridY() - 1 == -1)
+				|| (getGridX() + 1 == GameWorld.GRID_SIZE_X && getGridY() + 1 == GameWorld.GRID_SIZE_Y)) {
+			// right side top/bottom
+			result[0] = true;
+		} else {
+			if(getGridX() - 1 == -1) { // left border
+				result[2] = true;
+			}
+			if(getGridY() - 1 == -1) { // top border
+				result[3] = true;
+			}
+			if(getGridX() + 1 == GameWorld.GRID_SIZE_X) { // right border
+				result[0] = true;
+			}
+			if(getGridY() + 1 == GameWorld.GRID_SIZE_Y) { // bottom border
+				result[1] = true;
+			}
+		}
+
+		return result;
+	}
+
+	public boolean[] logicalOrNeighbouringPathCellsWithWorldEdges() {
+		boolean[] result = evaluateExistenceOfNeighbouringPathCells();
+		boolean[] we = evaluateExistenceOfWorldEdgesAsNeighbours();
+		for (int i = 0; i < result.length; i++) {
+			result[i] = result[i] || we[i];
+		}
+		return result;
+	}
+
 	public abstract void evaluatePathSectionType();
 
-	protected abstract String getBgImageName();
-
-	public void setDirection(int rotation) {
-		super.setRotation(rotation * 90);
+	public void evaluatePathSectionType(int neighboursCount, boolean[] neighboursExisting) {
+		switch (neighboursCount) {
+			case 1:
+				setPathSectionType(PathSectionType.DEAD_END);
+				setImage(new ImageCombiner(getBgImageName(), "dead_end-path-temp.png").combineToGFImg());
+				for (int i = 0; i < neighboursExisting.length; i++) {
+					if(neighboursExisting[i]) {
+						setImageRotation(i);
+					}
+				}
+				break;
+			case 2:
+				if((neighboursExisting[0] && neighboursExisting[2]) || (neighboursExisting[1] && neighboursExisting[3])) {
+					setPathSectionType(PathSectionType.STRAIGHT);
+					setImage(new ImageCombiner(getBgImageName(), "straight-path-temp.png").combineToGFImg());
+					if(neighboursExisting[1]) {
+						setImageRotation(1);
+					} else {
+						setImageRotation(0);
+					}
+				} else {
+					setPathSectionType(PathSectionType.CURVE);
+					setImage(new ImageCombiner(getBgImageName(), "curve-path-temp.png").combineToGFImg());
+					for (int i = 0; i < neighboursExisting.length; i++) {
+						if(neighboursExisting[i] && neighboursExisting[(i + 1) % neighboursExisting.length]) {
+							setImageRotation(i);
+						}
+					}
+				}
+				break;
+			case 3:
+				setPathSectionType(PathSectionType.T);
+				setImage(new ImageCombiner(getBgImageName(), "t-path-temp.png").combineToGFImg());
+				for (int i = 1; i < neighboursExisting.length + 1; i++) {
+					if(neighboursExisting[(neighboursExisting.length + i - 1) % neighboursExisting.length]
+							&& neighboursExisting[i % neighboursExisting.length] && neighboursExisting[(i + 1) % neighboursExisting.length]) {
+						setImageRotation(i - 1);
+					}
+				}
+				break;
+			case 4:
+			case 5:
+				setPathSectionType(PathSectionType.CROSS);
+				setImage(new ImageCombiner(getBgImageName(), "cross-path-temp.png").combineToGFImg());
+				break;
+			case 0:
+			default:
+				setPathSectionType(PathSectionType.DOT);
+				setImage(new ImageCombiner(getBgImageName(), "dot-path-temp.png").combineToGFImg());
+				break;
+		}
 	}
 
 	public PathSectionType getPathSectionType() {

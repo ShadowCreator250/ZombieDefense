@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path=""/>
-	<classpathentry kind="lib" path="D:/DEV_HOME/projects/_WHZ/Prog1/ZombieDefense/eclipse-resources/Greenfoot-API.jar">
+	<classpathentry kind="lib" path="eclipse-resources/Greenfoot-API.jar" sourcepath="eclipse-resources/Greenfoot-API.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/D:/DEV_HOME/projects/_WHZ/Prog1/ZombieDefense/eclipse-resources/Greenfoot-Doc.zip!/"/>
 		</attributes>
