@@ -1,10 +1,10 @@
 import java.util.List;
 
 public class BombTower extends Tower {
-	private static final int damage = 50;
-	private static final int range = 20;
-	private static final int reloadTime = 700;
-	private int shootTime = reloadTime;
+	private static final int DAMAGE = 50;
+	private static final int RANGE = 20;
+	private static final int RELOADTIME = 700;
+	private int shootTime = RELOADTIME;
 	private List<Zombie> zombies;
 	
 	public BombTower() {		
@@ -16,7 +16,7 @@ public class BombTower extends Tower {
 	}
 	
 	private boolean checkIfZombiesInRange() {
-		zombies = getObjectsInRange(range, Zombie.class);
+		zombies = getObjectsInRange(RANGE, Zombie.class);
 		if (zombies != null) {
 			return true;
 		}
@@ -29,14 +29,14 @@ public class BombTower extends Tower {
 		if (checkIfZombiesInRange()) {
 			for(Zombie zombie: zombies) {
 				if(reload() == false) {
-					zombie.absorbDamage(damage);
+					zombie.absorbDamage(DAMAGE);
 				}
 			}
 		}
 	}
 	
 	private boolean reload() {
-		if(shootTime < reloadTime) {
+		if(shootTime < RELOADTIME) {
 			shootTime++;
 			return true;			
 		}
