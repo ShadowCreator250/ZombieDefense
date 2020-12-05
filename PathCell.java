@@ -5,6 +5,13 @@ import greenfoot.GreenfootImage;
 
 public abstract class PathCell extends Cell {
 
+	public static final String DEAD_END_PATH_IMAGE_NAME = "dead_end-path-temp.png";
+	public static final String STRAIGHT_PATH_IMAGE_NAME = "straight-path-temp.png";
+	public static final String CURVE_PATH_IMAGE_NAME = "curve-path-temp.png";
+	public static final String T_PATH_IMAGE_NAME = "t-path-temp.png";
+	public static final String CROSS_PATH_IMAGE_NAME = "cross-path-temp.png";
+	public static final String DOT_PATH_IMAGE_NAME = "dot-path-temp.png";
+
 	private PathSectionType pathSectionType;
 	private int hCost;
 	private int gCost;
@@ -120,7 +127,7 @@ public abstract class PathCell extends Cell {
 		switch (neighboursCount) {
 			case 1:
 				setPathSectionType(PathSectionType.DEAD_END);
-				setImage(new ImageCombiner(getBgImageName(), "dead_end-path-temp.png").combineToGFImg());
+				setImage(new ImageCombiner(getBgImageName(), DEAD_END_PATH_IMAGE_NAME).combineToGFImg());
 				for (int i = 0; i < neighboursExisting.length; i++) {
 					if(neighboursExisting[i]) {
 						setImageRotation(i);
@@ -130,7 +137,7 @@ public abstract class PathCell extends Cell {
 			case 2:
 				if((neighboursExisting[0] && neighboursExisting[2]) || (neighboursExisting[1] && neighboursExisting[3])) {
 					setPathSectionType(PathSectionType.STRAIGHT);
-					setImage(new ImageCombiner(getBgImageName(), "straight-path-temp.png").combineToGFImg());
+					setImage(new ImageCombiner(getBgImageName(), STRAIGHT_PATH_IMAGE_NAME).combineToGFImg());
 					if(neighboursExisting[1]) {
 						setImageRotation(1);
 					} else {
@@ -138,7 +145,7 @@ public abstract class PathCell extends Cell {
 					}
 				} else {
 					setPathSectionType(PathSectionType.CURVE);
-					setImage(new ImageCombiner(getBgImageName(), "curve-path-temp.png").combineToGFImg());
+					setImage(new ImageCombiner(getBgImageName(), CURVE_PATH_IMAGE_NAME).combineToGFImg());
 					for (int i = 0; i < neighboursExisting.length; i++) {
 						if(neighboursExisting[i] && neighboursExisting[(i + 1) % neighboursExisting.length]) {
 							setImageRotation(i);
@@ -148,7 +155,7 @@ public abstract class PathCell extends Cell {
 				break;
 			case 3:
 				setPathSectionType(PathSectionType.T);
-				setImage(new ImageCombiner(getBgImageName(), "t-path-temp.png").combineToGFImg());
+				setImage(new ImageCombiner(getBgImageName(), T_PATH_IMAGE_NAME).combineToGFImg());
 				for (int i = 1; i < neighboursExisting.length + 1; i++) {
 					if(neighboursExisting[(neighboursExisting.length + i - 1) % neighboursExisting.length]
 							&& neighboursExisting[i % neighboursExisting.length] && neighboursExisting[(i + 1) % neighboursExisting.length]) {
@@ -159,12 +166,12 @@ public abstract class PathCell extends Cell {
 			case 4:
 			case 5:
 				setPathSectionType(PathSectionType.CROSS);
-				setImage(new ImageCombiner(getBgImageName(), "cross-path-temp.png").combineToGFImg());
+				setImage(new ImageCombiner(getBgImageName(), CROSS_PATH_IMAGE_NAME).combineToGFImg());
 				break;
 			case 0:
 			default:
 				setPathSectionType(PathSectionType.DOT);
-				setImage(new ImageCombiner(getBgImageName(), "dot-path-temp.png").combineToGFImg());
+				setImage(new ImageCombiner(getBgImageName(), DOT_PATH_IMAGE_NAME).combineToGFImg());
 				break;
 		}
 	}

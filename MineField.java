@@ -7,24 +7,24 @@ public class MineField extends Obstacle {
 	private List<Zombie> zombies;
 	private boolean attacked = false;
 
+	@Override
 	public void act() {
 
 	}
 
 	private boolean checkIfZombiesInRange() {
 		zombies = getObjectsInRange(RANGE, Zombie.class);
-		if (zombies != null) {
+		if(zombies != null) {
 			return true;
-		} 
-		else {
+		} else {
 			return false;
 		}
 	}
 
 	public void attackZombiesInRangeOnce() {
-		if (checkIfZombiesInRange()) {
+		if(checkIfZombiesInRange()) {
 			for (Zombie zombie : zombies) {
-				if (attacked == false) {
+				if(attacked == false) {
 					attacked = true;
 					zombie.absorbDamage(DAMAGE);
 				}

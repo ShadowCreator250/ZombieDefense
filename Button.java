@@ -31,25 +31,21 @@ public abstract class Button extends Actor {
 
 	@Override
 	public void act() {
-		clickCheck();
-	}
-
-	private void clickCheck() {
 		MouseInfo mouse = Greenfoot.getMouseInfo();
 		if(Greenfoot.mouseClicked(this) && mouse.getButton() == 1) {
 			clickAction();
 		}
 	}
 
-	public void toggleImage() {
-		if(!isActive()) {
+	protected abstract void clickAction();
+
+	public void updateImage() {
+		if(active) {
 			setImage(getActiveImage());
 		} else {
 			setImage(getIdleImage());
 		}
 	}
-
-	protected abstract void clickAction();
 
 	public static GreenfootImage generateTempIdleImage(int size) {
 		GreenfootImage img = new GreenfootImage(size, size);
@@ -75,6 +71,7 @@ public abstract class Button extends Actor {
 
 	public void setActive(boolean active) {
 		this.active = active;
+		updateImage();
 	}
 
 	public GreenfootImage getIdleImage() {

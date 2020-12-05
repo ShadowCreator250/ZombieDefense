@@ -1,6 +1,8 @@
 
 public class Zombie extends SmoothMover {
 
+	public static final String INIT_IMAGE_NAME = "Zombie1.png";
+
 	private double strength;
 	private double resistance; // should be from 0.0-1.0, example: 0.7 stands for 70% less damage to get
 	private double speed;
@@ -17,14 +19,14 @@ public class Zombie extends SmoothMover {
 	 * @param health     - how many health points he has (100 is default)
 	 */
 	public Zombie(double strength, double resistance, double speed, double health) {
-		// TODO: image is temporarily
-		setImage("Zombie1.png");
+		setImage(INIT_IMAGE_NAME);
 		this.strength = strength;
 		this.resistance = resistance;
 		this.speed = speed;
 		this.health = health;
 	}
 
+	@Override
 	public void act() {
 
 	}

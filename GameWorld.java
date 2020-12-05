@@ -28,8 +28,8 @@ public class GameWorld extends World {
 	private boolean isPaused = true;
 	private int executionSpeed = DEFAULT_SPEED;
 
-	// TODO proper images
-	private PauseResumeButton pauseResumeButton = new PauseResumeButton("resume-button-temp.png", "pause-button-temp.png");
+	private PauseResumeButton pauseResumeButton = new PauseResumeButton();
+	private GameState gameStats = new GameState();
 
 	public GameWorld() {
 		super(GRID_SIZE_X * CELL_SIZE, GRID_SIZE_Y * CELL_SIZE, 1);
@@ -49,14 +49,14 @@ public class GameWorld extends World {
 
 	private void placeGUI() {
 		addObject(pauseResumeButton, getWidth() / 2, pauseResumeButton.getImage().getHeight() + 4);
-		GameSpeedControlButton speed80Button = new GameSpeedControlButton(80, "fastforward-2-button-temp.png",
-				"fastforward-2-button-active-temp.png");
-		GameSpeedControlButton speed20Button = new GameSpeedControlButton(20, "fastforward-1-button-temp.png",
-				"fastforward-1-button-active-temp.png");
-		MenuExpendButton menuExpander = new MenuExpendButton("menu-expand-button-temp.png", "menu-expand-button-active-temp.png");
-		addObject(speed80Button, (getWidth() / 2 + pauseResumeButton.getImage().getWidth() + 8), speed80Button.getImage().getHeight());
-		addObject(speed20Button, (getWidth() / 2 - pauseResumeButton.getImage().getWidth() - 8), speed20Button.getImage().getHeight());
-		addObject(menuExpander, getWidth() / 2, getHeight() - menuExpander.getImage().getHeight());
+		GameSpeedControlButton speed20Button = new GameSpeedControlButton(20, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[0],
+				GameSpeedControlButton.ACTIVE_BUTTON_IMAGE_NAMES[0]);
+		GameSpeedControlButton speed80Button = new GameSpeedControlButton(80, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[1],
+				GameSpeedControlButton.ACTIVE_BUTTON_IMAGE_NAMES[1]);
+		MenuExpendButton menuExpander = new MenuExpendButton();
+		addObject(speed80Button, (getWidth() / 2 + pauseResumeButton.getImage().getWidth() + 8), speed80Button.getImage().getHeight() / 2 + 4);
+		addObject(speed20Button, (getWidth() / 2 - pauseResumeButton.getImage().getWidth() - 8), speed20Button.getImage().getHeight() / 2 + 4);
+		addObject(menuExpander, getWidth() / 2, getHeight() - (menuExpander.getImage().getHeight() / 2 + 4));
 	}
 
 	@Override
@@ -74,7 +74,8 @@ public class GameWorld extends World {
 	}
 
 	private void definePaintOrder() {
-		setPaintOrder(Button.class, Zombie.class, Tower.class, PathCell.class, TowerCell.class, NormalCell.class);
+		setPaintOrder(GameState.class, Button.class, Menu.class, Projectile.class, Zombie.class, Tower.class, Obstacle.class, PathCell.class,
+				TowerCell.class, NormalCell.class);
 	}
 
 	private void fillGridArrayWithEmptyCells() {
@@ -311,6 +312,10 @@ public class GameWorld extends World {
 
 	public PauseResumeButton getPauseResumeButton() {
 		return pauseResumeButton;
+	}
+
+	public GameState getGameState() {
+		return gameStats;
 	}
 
 }

@@ -1,17 +1,10 @@
-import greenfoot.GreenfootImage;
-
 public class PauseResumeButton extends Button {
 
+	public static final String RESUME_BUTTON_IMAGE_NAME = "resume-button.png";
+	public static final String PAUSE_BUTTON_IMAGE_NAME = "pause-button.png";
+
 	public PauseResumeButton() {
-		super();
-	}
-
-	public PauseResumeButton(String idleImageName, String activeImageName) {
-		this(new GreenfootImage(idleImageName), new GreenfootImage(activeImageName));
-	}
-
-	public PauseResumeButton(GreenfootImage idleImage, GreenfootImage activeImage) {
-		super(idleImage, activeImage);
+		super(RESUME_BUTTON_IMAGE_NAME, PAUSE_BUTTON_IMAGE_NAME);
 	}
 
 	@Override

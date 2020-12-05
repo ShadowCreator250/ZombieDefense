@@ -5,19 +5,14 @@ import greenfoot.GreenfootImage;
 
 public class GameSpeedControlButton extends Button {
 
+	public static final String[] IDLE_BUTTON_IMAGE_NAMES = { "fastforward-1-button.png", "fastforward-2-button.png" };
+	public static final String[] ACTIVE_BUTTON_IMAGE_NAMES = { "fastforward-1-button-active.png", "fastforward-2-button-active.png" };
+
 	private static List<GameSpeedControlButton> speedController = new ArrayList<>();
 	private int speed;
 
-	public GameSpeedControlButton(int speed) {
-		this(speed, TEMP_IDLE_IMG, TEMP_ACTIVE_IMG);
-	}
-
 	public GameSpeedControlButton(int speed, String idleImageName, String activeImageName) {
-		this(speed, new GreenfootImage(idleImageName), new GreenfootImage(activeImageName));
-	}
-
-	public GameSpeedControlButton(int speed, GreenfootImage idleImage, GreenfootImage activeImage) {
-		super(idleImage, activeImage);
+		super(new GreenfootImage(idleImageName), new GreenfootImage(activeImageName));
 		setSpeed(speed);
 		speedController.add(this);
 	}
@@ -48,13 +43,11 @@ public class GameSpeedControlButton extends Button {
 
 	private void turnOffSpeedButton() {
 		setActive(false);
-		setImage(getIdleImage());
 	}
 
 	private void turnOnSpeedButton() {
 		setActive(true);
 		getWorld().setExecutionSpeed(speed);
-		setImage(getActiveImage());
 	}
 
 	private void setSpeed(int speed) {

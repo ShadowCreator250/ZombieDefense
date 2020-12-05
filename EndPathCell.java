@@ -4,6 +4,8 @@ import greenfoot.Color;
 
 public class EndPathCell extends PathCell {
 
+	public static final String BACKGROUND_IMAGE_NAME = "bg-end-path-temp.png";
+
 	public EndPathCell(int gridX, int gridY) {
 		super(gridX, gridY);
 		setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(255, 0, 0)));
@@ -19,7 +21,7 @@ public class EndPathCell extends PathCell {
 
 	@Override
 	protected String getBgImageName() {
-		return "bg-end-path-temp.png";
+		return BACKGROUND_IMAGE_NAME;
 	}
 
 }
