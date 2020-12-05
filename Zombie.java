@@ -18,7 +18,7 @@ public class Zombie extends SmoothMover {
 	 */
 	public Zombie(double strength, double resistance, double speed, double health) {
 		// TODO: image is temporarily
-		setImage("zombie-temp.png");
+		setImage("Zombie1.png");
 		this.strength = strength;
 		this.resistance = resistance;
 		this.speed = speed;
