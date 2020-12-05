@@ -9,6 +9,7 @@ import greenfoot.MouseInfo;
 public abstract class Tower extends Actor {
 
 	private MouseInfo mouse = Greenfoot.getMouseInfo();
+	private List<Zombie> zombies;
 	private int displayTime = 0;
 
 	private int range;
@@ -29,10 +30,25 @@ public abstract class Tower extends Actor {
 	}
 
 	private void shoot() {
-		// TODO: search for target
-		Zombie target = new Zombie();
-		shootProjectile(target.getX(), target.getY());
-		shootCountDown = reloadTime;
+		if(areZombiesInRange()) {
+			for(Zombie target: zombies) {		
+				Projectile p = new Arrow();
+				getWorld().addObject(p, this.getX(), this.getY());
+				shootCountDown = reloadTime;
+				p.turnTowards(target.getX(), target.getY());
+				p.move(calculateDistance(target));
+				if(p.getExactX() == target.getExactX() && p.getExactY() == target.getExactY()) {
+					//target.absorbDamage(damage); //damage needs to be added
+					getWorld().removeObject(p);
+				}
+			}
+		}
+	}
+	
+	private double calculateDistance(Zombie target) {
+		double d = Math.pow((target.getExactX() - this.getX()), 2) + Math.pow((target.getExactY() - this.getY()), 2);
+		double distance = Math.sqrt(d);
+		return distance;
 	}
 
 	protected abstract void shootProjectile(int x, int y);
@@ -47,7 +63,7 @@ public abstract class Tower extends Actor {
 	}
 
 	private boolean areZombiesInRange() {
-		List<Zombie> zombies = getObjectsInRange(range, Zombie.class);
+		zombies = getObjectsInRange(range, Zombie.class);
 		if(zombies.size() == 0) {
 			return false;
 		} else {
