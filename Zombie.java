@@ -5,8 +5,9 @@ public class Zombie extends SmoothMover {
 
 	private double strength;
 	private double resistance; // should be from 0.0-1.0, example: 0.7 stands for 70% less damage to get
-	private double speed;
+	public double speed;
 	private double health;
+	public boolean slowedDown = false;
 
 	public Zombie() {
 		this(1.0, 0.0, 1.0, 100);
@@ -49,8 +50,6 @@ public class Zombie extends SmoothMover {
 	}
 
 	public void slowDown(double slowdown) {
-		if(getOneIntersectingObject(SlimeField.class) != null) {
-			this.speed = speed * (1 - slowdown);
-		}	
+		this.speed = speed * (1 - slowdown);
 	}
 }
