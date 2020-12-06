@@ -2,7 +2,8 @@ import java.util.List;
 
 public class SlimeField extends Obstacle {
 
-	private static final double SLOWDOWN = 0.1; // should be from 0.0-1.0, example: 0.7 stands for 70% less speed
+	public static final int PRICE = 20;
+	private static final double SLOWDOWN = 0.5; // should be from 0.0-1.0, example: 0.7 stands for 70% less speed
 	private static final int RANGE = 50;
 	private List<Zombie> zombies;
 	private boolean attacked = false;

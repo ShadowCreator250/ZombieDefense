@@ -10,14 +10,39 @@ public class MenuElement extends Button {
 	private int xOffset;
 	private int yOffset;
 	private GameState.MouseState mouseState;
+	private PriceTag priceTag;
+	private int price;
 
 	public MenuElement(Menu parentMenu, int xOffset, int yOffset, GameState.MouseState mouseState) {
+		this(parentMenu, xOffset, yOffset, mouseState, 0);
+	}
+
+	public MenuElement(Menu parentMenu, int xOffset, int yOffset, GameState.MouseState mouseState, int price) {
 		super(generateIdleButtonImage(mouseState), generateActiveButtonImage(mouseState));
 		this.parentMenu = parentMenu;
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		this.mouseState = mouseState;
+		this.price = price;
 		parentMenu.addToList(this);
+	}
+
+	public void tryAddPriceTagToWorld() {
+		if(price > 0) {
+			this.priceTag = buildPriceTag();
+		}
+	}
+
+	private PriceTag buildPriceTag() {
+		PriceTag tag = new PriceTag(price);
+		getWorld().addObject(tag, getX(), getY() + getImage().getHeight() / 2 + 11);
+		return tag;
+	}
+
+	public void removePriceTagIfExistent() {
+		if(priceTag != null) {
+			getWorld().removeObject(priceTag);
+		}
 	}
 
 	private static GreenfootImage generateIdleButtonImage(GameState.MouseState mouseState) {

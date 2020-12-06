@@ -29,7 +29,7 @@ public class GameWorld extends World {
 	private int executionSpeed = DEFAULT_SPEED;
 
 	private PauseResumeButton pauseResumeButton = new PauseResumeButton();
-	private GameState gameStats = new GameState();
+	private GameState gameState = new GameState(20);
 
 	public GameWorld() {
 		super(GRID_SIZE_X * CELL_SIZE, GRID_SIZE_Y * CELL_SIZE, 1);
@@ -49,7 +49,8 @@ public class GameWorld extends World {
 
 	private void placeGUI() {
 		addObject(pauseResumeButton, getWidth() / 2, pauseResumeButton.getImage().getHeight() + 4);
-		addObject(gameStats, 0, 0);
+		addObject(gameState, 0, 0);
+		addObject(gameState.getCoinsCounter(), getWidth() / 4, gameState.getCoinsCounter().getImage().getHeight() / 2 + 4);
 		GameSpeedControlButton speed20Button = new GameSpeedControlButton(20, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[0],
 				GameSpeedControlButton.ACTIVE_BUTTON_IMAGE_NAMES[0]);
 		GameSpeedControlButton speed80Button = new GameSpeedControlButton(80, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[1],
@@ -75,8 +76,8 @@ public class GameWorld extends World {
 	}
 
 	private void definePaintOrder() {
-		setPaintOrder(GameState.class, Button.class, Menu.class, Projectile.class, Zombie.class, Tower.class, Obstacle.class, PathCell.class,
-				TowerCell.class, NormalCell.class);
+		setPaintOrder(GameState.class, Counter.class, Button.class, PriceTag.class, Menu.class, Projectile.class, Zombie.class, Tower.class,
+				Obstacle.class, PathCell.class, TowerCell.class, NormalCell.class);
 	}
 
 	private void fillGridArrayWithEmptyCells() {
@@ -316,7 +317,7 @@ public class GameWorld extends World {
 	}
 
 	public GameState getGameState() {
-		return gameStats;
+		return gameState;
 	}
 
 }

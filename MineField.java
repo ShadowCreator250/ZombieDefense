@@ -2,7 +2,8 @@ import java.util.List;
 
 public class MineField extends Obstacle {
 
-	private static final int DAMAGE = 50;
+	public static final int PRICE = 20;
+	private static final int DAMAGE = 100;
 	private static final int RANGE = 50;
 	private List<Zombie> zombies;
 	private boolean attacked = false;
