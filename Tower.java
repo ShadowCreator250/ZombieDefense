@@ -8,6 +8,7 @@ import greenfoot.MouseInfo;
 
 public abstract class Tower extends Actor {
 
+	public static final String INIT_IMAGE_NAME = "Tower1.png";
 	private MouseInfo mouse = Greenfoot.getMouseInfo();
 	private List<Zombie> zombies;
 	private int displayTime = 0;
@@ -17,6 +18,7 @@ public abstract class Tower extends Actor {
 	private int shootCountDown;
 
 	public Tower(int range, int reloadTime) {
+		setImage(INIT_IMAGE_NAME);
 		this.range = range;
 		this.reloadTime = reloadTime;
 		this.shootCountDown = reloadTime;
@@ -32,7 +34,7 @@ public abstract class Tower extends Actor {
 	private void shoot() {
 		if(areZombiesInRange()) {
 			for(Zombie target: zombies) {		
-				Projectile p = new Arrow();
+				Projectile p = selectCorrectProjectile();
 				getWorld().addObject(p, this.getX(), this.getY());
 				shootCountDown = reloadTime;
 				p.turnTowards(target.getX(), target.getY());
@@ -49,6 +51,20 @@ public abstract class Tower extends Actor {
 		double d = Math.pow((target.getExactX() - this.getX()), 2) + Math.pow((target.getExactY() - this.getY()), 2);
 		double distance = Math.sqrt(d);
 		return distance;
+	}
+	
+	private Projectile selectCorrectProjectile() {
+		Projectile p;
+		if(this instanceof ArcherTower) {
+			p = new Arrow();
+		}
+		else if(this instanceof BombTower) {
+			p = new Bomb();
+		}
+		else {
+			p = new Bullet();
+		}
+		return p;
 	}
 
 	protected abstract void shootProjectile(int x, int y);
