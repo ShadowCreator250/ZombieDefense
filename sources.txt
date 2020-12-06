@@ -16,3 +16,4 @@ Mouse-Logo: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxLvqIEisP-8gV
 Zombie: Zombie Entity Model (from Minecraft) by Mojang 
 Land mine logo: https://img.favpng.com/24/1/2/animation-youtube-pixel-art-land-mine-png-favpng-nTKFNnqSH2dnh0Vd42GB7naP1.jpg
 Slime Field Logo: https://static.wikia.nocookie.net/minecraft_gamepedia/images/d/d0/Slimeball_JE2_BE2.png/revision/latest/scale-to-width-down/150?cb=20190501035326
+Coin: https://www.pngkit.com/png/full/347-3474131_coin-smiley-emoji-pixel-art.png
