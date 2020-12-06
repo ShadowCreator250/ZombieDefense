@@ -13,12 +13,14 @@ public class MineField extends Obstacle {
 	private static final int POINTS = 500;
 
 	public MineField() {
-		super();
 		createImage(COLOR, POINTS);
 	}
 	
 	public void act() {
-		//attackZombiesInRangeOnce();
+		super.act();
+		if(!getWorld().isPaused()) {
+			//attackZombiesInRangeOnce();
+		}
 	}
 
 	private boolean checkIfZombiesInRange() {
