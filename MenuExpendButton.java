@@ -13,7 +13,6 @@ public class MenuExpendButton extends Button {
 	}
 
 	private void toggleMenu() {
-		// TODO: Build menu and place it
 		setActive(!isActive());
 		Menu menu = new Menu();
 		if(isActive()) { // expand menu

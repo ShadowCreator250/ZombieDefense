@@ -34,14 +34,12 @@ public class ImageCombiner {
 		try {
 			image = ImageIO.read(new File(basePath, bgImgName));
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		BufferedImage overlay = null;
 		try {
 			overlay = ImageIO.read(new File(basePath, fgImgName));
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 
@@ -63,7 +61,6 @@ public class ImageCombiner {
 //		try {
 //			ImageIO.write(combined, "PNG", new File(basePath, "combined.png"));
 //		} catch (IOException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 

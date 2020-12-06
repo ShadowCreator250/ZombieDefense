@@ -6,8 +6,6 @@ import greenfoot.MouseInfo;
 
 public abstract class Button extends Actor {
 
-	// TODO: real images
-	// TODO: Possition and auto add to world
 	public static final GreenfootImage TEMP_IDLE_IMG = generateTempIdleImage(32);
 	public static final GreenfootImage TEMP_ACTIVE_IMG = generateTempActiveImage(32);
 

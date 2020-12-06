@@ -5,19 +5,21 @@ import greenfoot.MouseInfo;
 
 public class GameState extends Actor {
 
-	// TODO: place mines/slime, remove tool
+	// TODO: remove tool
 	public static final String MOUSE_CURSER_IMAGE_NAME = "mouse-button.png";
 	public static final String ARCHER_TOWER_LOGO_IMAGE_NAME = "archer-tower-logo.png";
 	public static final String BOMBER_TOWER_LOGO_IMAGE_NAME = "bomb-tower-logo.png";
 	public static final String SNIPER_TOWER_LOGO_IMAGE_NAME = "sniper-tower-logo.png";
 	public static final String MINE_FIELD_LOGO_IMAGE_NAME = "land-mine-logo.png";
 	public static final String SLIME_FIELD_LOGO_IMAGE_NAME = "slime-ball-logo.png";
+	public static final String DELETE_TOOL_IMAGE_NAME = "delete-tool-logo.png";
 	private static final GreenfootImage NONE_MOUSE_IMAGE = new GreenfootImage(2, 2);
 
 	public enum MouseState {
 		NONE(GameState.MOUSE_CURSER_IMAGE_NAME), PLACE_ARCHER_TOWER(GameState.ARCHER_TOWER_LOGO_IMAGE_NAME),
 		PLACE_BOMB_TOWER(GameState.BOMBER_TOWER_LOGO_IMAGE_NAME), PLACE_SNIPER_TOWER(GameState.SNIPER_TOWER_LOGO_IMAGE_NAME),
-		PLACE_MINE_FIELD(GameState.MINE_FIELD_LOGO_IMAGE_NAME), PLACE_SLIME_FIELD(GameState.SLIME_FIELD_LOGO_IMAGE_NAME);
+		PLACE_MINE_FIELD(GameState.MINE_FIELD_LOGO_IMAGE_NAME), PLACE_SLIME_FIELD(GameState.SLIME_FIELD_LOGO_IMAGE_NAME),
+		DELETE_TOOL(GameState.DELETE_TOOL_IMAGE_NAME);
 
 		private String imageName;
 
