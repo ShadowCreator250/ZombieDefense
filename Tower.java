@@ -1,17 +1,12 @@
 import java.util.List;
 
 import greenfoot.Actor;
-import greenfoot.Color;
 import greenfoot.Greenfoot;
-import greenfoot.GreenfootImage;
-import greenfoot.MouseInfo;
 
 public abstract class Tower extends Actor {
 
 	public static final String INIT_IMAGE_NAME = "Tower1.png";
-	private MouseInfo mouse = Greenfoot.getMouseInfo();
 	private List<Zombie> zombies;
-	private int displayTime = 0;
 
 	private int range;
 	private int reloadTime;
@@ -28,8 +23,21 @@ public abstract class Tower extends Actor {
 
 	@Override
 	public void act() {
-		if(reload()) {
-			shoot();
+		if(!getWorld().isPaused()) {
+			if(reload()) {
+				shoot();
+			}
+		}
+		checkRemoveTowerClick();
+	}
+
+	private void checkRemoveTowerClick() {
+		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1) {
+			GameState.MouseState mouseState = getWorld().getGameState().getMouseState();
+			if(mouseState == GameState.MouseState.DELETE_TOOL) {
+				getWorld().getGameState().getCoinsCounter().add(this.getPrice());
+				getWorld().removeObject(this);
+			}
 		}
 	}
 
@@ -87,37 +95,10 @@ public abstract class Tower extends Actor {
 		}
 	}
 
-	@Deprecated
-	private void placeTower(Tower tower) {
-		List<TowerCell> towerCells = getWorld().getObjects(TowerCell.class);
-		for (TowerCell towerCell : towerCells) {
-			if(mouse.getButton() == 1 && mouse.getX() == towerCell.getGridX() && mouse.getY() == towerCell.getGridY()) {
-				getWorld().addObject(tower, mouse.getX(), mouse.getY());
-			} else if(mouse.getButton() == 1 && (mouse.getX() != towerCell.getGridX() || mouse.getY() != towerCell.getGridY())) {
-				showErrorText();
-			}
-		}
-	}
+	public abstract int getPrice();
 
-	@Deprecated
-	public void buyTower(Tower tower) {
-		// if(currency > cost) {
-		// placeTower(tower);
-		// currency -= cost;
-		// }
-		// TODO: implement currency and the cost of each tower
-	}
-
-	@Deprecated
-	private void showErrorText() {
-		GreenfootImage image = new GreenfootImage(mouse.getX(), mouse.getY());
-		setImage(image);
-		image.setColor(Color.BLACK);
-		image.drawString("You cannot place the tower here", 10, 10);
-		int i = 300;
-		while (displayTime < i) {
-			displayTime++;
-		}
-		image.clear();
+	@Override
+	public GameWorld getWorld() {
+		return (GameWorld) super.getWorld();
 	}
 }

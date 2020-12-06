@@ -56,8 +56,8 @@ public class GameState extends Actor {
 	public void act() {
 		mouse = Greenfoot.getMouseInfo();
 		if(mouse != null && mouseState != MouseState.NONE) {
-			if(getImage().getWidth() == NONE_MOUSE_IMAGE.getWidth() && getImage().getHeight() == NONE_MOUSE_IMAGE.getHeight()) {
-				setMouseState(mouseState);
+			if(getImage().equals(NONE_MOUSE_IMAGE)) {
+				setMouseState(mouseState); // replaces image with right image
 			}
 			if(isMouseStateImageInsideWorld()) {
 				setLocation(mouseStateImageLocationX(false), mouseStateImageLocationY(false));
@@ -110,6 +110,14 @@ public class GameState extends Actor {
 
 	public Counter getCoinsCounter() {
 		return coinsCounter;
+	}
+
+	public boolean haveEnoughCoins(int price) {
+		if(coinsCounter.getValue() >= price) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 }
