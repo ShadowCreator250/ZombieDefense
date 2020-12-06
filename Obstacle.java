@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 
 import greenfoot.Actor;
 import greenfoot.Color;
@@ -10,6 +11,9 @@ public class Obstacle extends Actor {
 
 	private MouseInfo mouse = Greenfoot.getMouseInfo();
 	private int displayTime = 0;
+	private static final int SIZE = 50;
+	private static final int HALFSIZE = SIZE/2;
+	private static final Random randomizer = new Random();
 
 	public Obstacle() {
 
@@ -48,4 +52,28 @@ public class Obstacle extends Actor {
 		}
 		image.clear();
 	}
+	
+	public void createImage(Color color, int points) {
+		GreenfootImage image = new GreenfootImage(SIZE, SIZE);
+
+        for (int i = 0; i < points; i++) {
+            int x = randomCoord();
+            int y = randomCoord();
+
+            image.setColorAt(x, y, color);
+        }
+        setImage(image);
+	}
+	
+	private int randomCoord() {
+        int val = HALFSIZE + (int) (randomizer.nextGaussian() * (HALFSIZE / 2));
+        
+        if (val < 0)
+            return 0;
+
+        if (val > SIZE - 2)
+            return SIZE - 2;
+        else
+            return val;
+    }
 }

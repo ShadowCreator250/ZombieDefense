@@ -1,5 +1,7 @@
 import java.util.List;
 
+import greenfoot.Color;
+
 public class SlimeField extends Obstacle {
 
 	public static final int PRICE = 20;
@@ -7,6 +9,12 @@ public class SlimeField extends Obstacle {
 	private static final int RANGE = 50;
 	private List<Zombie> zombies;
 	private boolean attacked = false;
+	private static final Color COLOR = new Color(0, 255, 0);
+	private static final int POINTS = 1500;
+	
+	public SlimeField() {
+		createImage(COLOR, POINTS);
+	}
 
 	@Override
 	public void act() {
