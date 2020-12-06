@@ -5,7 +5,6 @@ import greenfoot.MouseInfo;
 
 public class GameState extends Actor {
 
-	// TODO: remove tool
 	public static final String MOUSE_CURSER_IMAGE_NAME = "mouse-button.png";
 	public static final String ARCHER_TOWER_LOGO_IMAGE_NAME = "archer-tower-logo.png";
 	public static final String BOMBER_TOWER_LOGO_IMAGE_NAME = "bomb-tower-logo.png";
@@ -16,27 +15,41 @@ public class GameState extends Actor {
 	private static final GreenfootImage NONE_MOUSE_IMAGE = new GreenfootImage(2, 2);
 
 	public enum MouseState {
-		NONE(GameState.MOUSE_CURSER_IMAGE_NAME), PLACE_ARCHER_TOWER(GameState.ARCHER_TOWER_LOGO_IMAGE_NAME),
-		PLACE_BOMB_TOWER(GameState.BOMBER_TOWER_LOGO_IMAGE_NAME), PLACE_SNIPER_TOWER(GameState.SNIPER_TOWER_LOGO_IMAGE_NAME),
-		PLACE_MINE_FIELD(GameState.MINE_FIELD_LOGO_IMAGE_NAME), PLACE_SLIME_FIELD(GameState.SLIME_FIELD_LOGO_IMAGE_NAME),
-		DELETE_TOOL(GameState.DELETE_TOOL_IMAGE_NAME);
+		NONE(GameState.MOUSE_CURSER_IMAGE_NAME, 0), PLACE_ARCHER_TOWER(GameState.ARCHER_TOWER_LOGO_IMAGE_NAME, ArcherTower.PRICE),
+		PLACE_BOMB_TOWER(GameState.BOMBER_TOWER_LOGO_IMAGE_NAME, BombTower.PRICE),
+		PLACE_SNIPER_TOWER(GameState.SNIPER_TOWER_LOGO_IMAGE_NAME, SniperTower.PRICE),
+		PLACE_MINE_FIELD(GameState.MINE_FIELD_LOGO_IMAGE_NAME, MineField.PRICE),
+		PLACE_SLIME_FIELD(GameState.SLIME_FIELD_LOGO_IMAGE_NAME, SlimeField.PRICE), DELETE_TOOL(GameState.DELETE_TOOL_IMAGE_NAME, 0);
 
 		private String imageName;
+		private int toolUseCost;
 
-		MouseState(String imageName) {
+		MouseState(String imageName, int toolUseCost) {
 			this.imageName = imageName;
+			this.toolUseCost = toolUseCost;
 		}
 
 		public String getImageName() {
 			return imageName;
 		}
+
+		public int getToolUseCost() {
+			return toolUseCost;
+		}
 	}
 
 	private MouseState mouseState;
+	private Counter coinsCounter;
 	private MouseInfo mouse = Greenfoot.getMouseInfo();
 
-	public GameState() {
+	public GameState(int initCoinAmount) {
 		this.setMouseState(MouseState.NONE);
+		initCoinsCounter(initCoinAmount);
+	}
+
+	private void initCoinsCounter(int initCoinAmount) {
+		coinsCounter = new Counter("Coins: ");
+		coinsCounter.setValue(initCoinAmount);
 	}
 
 	@Override
@@ -93,6 +106,10 @@ public class GameState extends Actor {
 
 	public String getMouseStateImageName() {
 		return getMouseState().getImageName();
+	}
+
+	public Counter getCoinsCounter() {
+		return coinsCounter;
 	}
 
 }
