@@ -7,14 +7,10 @@ import greenfoot.GreenfootImage;
 
 public abstract class Obstacle extends Actor {
 
-	private int range;
-	static final int SIZE = 50;
+	private static final int SIZE = 50;
 	private static final int HALFSIZE = SIZE / 2;
 	private static final Random randomizer = new Random();
 
-	public Obstacle(int range) {
-		this.range = range;
-	}
 
 	@Override
 	public void act() {

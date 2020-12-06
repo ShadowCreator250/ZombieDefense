@@ -31,9 +31,9 @@ public class Zombie extends SmoothMover {
 
 	}
 
-	public void dropCurrency() {
+	private void dropCurrency() {
 		if(health <= 0) {
-			// TODO: Player gets money/gold + creating class money/gold
+			//GameState.coinsCounter++;
 			getWorld().removeObject(this);
 		}
 	}
@@ -49,6 +49,8 @@ public class Zombie extends SmoothMover {
 	}
 
 	public void slowDown(double slowdown) {
-		this.speed = speed * (1 - slowdown);
+		if(getOneIntersectingObject(SlimeField.class) != null) {
+			this.speed = speed * (1 - slowdown);
+		}	
 	}
 }

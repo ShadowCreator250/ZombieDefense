@@ -11,12 +11,14 @@ public class MineField extends Obstacle {
 	private boolean attacked = false;
 	private static final Color COLOR = new Color(0, 0, 0);
 	private static final int POINTS = 500;
-	private int damage;
 
 	public MineField() {
-		super(DEFAULT_RANGE);
-		this.damage = DEFAULT_DAMAGE;
+		super();
 		createImage(COLOR, POINTS);
+	}
+	
+	public void act() {
+		//attackZombiesInRangeOnce();
 	}
 
 	private boolean checkIfZombiesInRange() {
@@ -28,15 +30,15 @@ public class MineField extends Obstacle {
 		}
 	}
 
-	public void attackZombiesInRangeOnce() {
+	private void attackZombiesInRangeOnce() {
 		if(checkIfZombiesInRange()) {
 			for (Zombie zombie : zombies) {
 				if(attacked == false) {
 					attacked = true;
 					zombie.absorbDamage(DEFAULT_DAMAGE);
 				}
-
 			}
+			getWorld().removeObject(this);
 		}
 	}
 
