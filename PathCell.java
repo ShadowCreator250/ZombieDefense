@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
 public abstract class PathCell extends Cell {
@@ -33,6 +34,26 @@ public abstract class PathCell extends Cell {
 
 	public PathCell(int gridX, int gridY) {
 		super(gridX, gridY);
+	}
+
+	@Override
+	public void act() {
+		checkAddObstacleClick();
+	}
+
+	private void checkAddObstacleClick() {
+		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1) {
+			if(!(getWorld().getObjectsAt(getX(), getY(), Obstacle.class).size() > 0)) {
+				GameState.MouseState mouseState = getWorld().getGameState().getMouseState();
+				if(mouseState == GameState.MouseState.PLACE_MINE_FIELD && getWorld().getGameState().haveEnoughCoins(MineField.PRICE)) {
+					getWorld().addObject(new MineField(), getX(), getY());
+					getWorld().getGameState().getCoinsCounter().add(-MineField.PRICE);
+				} else if(mouseState == GameState.MouseState.PLACE_SLIME_FIELD && getWorld().getGameState().haveEnoughCoins(SlimeField.PRICE)) {
+					getWorld().addObject(new SlimeField(), getX(), getY());
+					getWorld().getGameState().getCoinsCounter().add(-SlimeField.PRICE);
+				}
+			}
+		}
 	}
 
 	protected abstract String getBgImageName();

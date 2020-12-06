@@ -15,4 +15,9 @@ public class SniperTower extends Tower {
 
 	}
 
+	@Override
+	public int getPrice() {
+		return PRICE;
+	}
+
 }

@@ -14,4 +14,9 @@ public class ArcherTower extends Tower {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public int getPrice() {
+		return PRICE;
+	}
 }
