@@ -42,9 +42,11 @@ public class MenuElement extends Button {
 	private void toggleMouseState() {
 		if(!isActive()) { // turn on this
 			parentMenu.turnAllMenuElementsIdle();
+			getWorld().getGameState().setMouseState(mouseState);
 			setActive(true);
 		} else { // turn this off and the mouse one on
 			setActive(false);
+			getWorld().getGameState().setMouseState(GameState.MouseState.NONE);
 			parentMenu.getMouseSelector().setActive(true);
 		}
 	}

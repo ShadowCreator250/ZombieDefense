@@ -12,9 +12,8 @@ public class Menu extends Actor {
 	private final MenuElement archerTowerSelector = new MenuElement(this, calculateXOffset(2), 50, GameState.MouseState.PLACE_ARCHER_TOWER);
 	private final MenuElement bomberTowerSelector = new MenuElement(this, calculateXOffset(3), 50, GameState.MouseState.PLACE_BOMB_TOWER);
 	private final MenuElement sniperTowerSelector = new MenuElement(this, calculateXOffset(4), 50, GameState.MouseState.PLACE_SNIPER_TOWER);
-	// TODO: make MineField and SlimeField button images
-//	private final MenuElement mineFieldSelector = new MenuElement(this, calculateXOffset(2), 120, GameState.MouseState.PLACE_MINE_FIELD);
-//	private final MenuElement slimeFieldSelector = new MenuElement(this, calculateXOffset(3), 120, GameState.MouseState.PLACE_SLIME_FIELD);
+	private final MenuElement mineFieldSelector = new MenuElement(this, calculateXOffset(2), 120, GameState.MouseState.PLACE_MINE_FIELD);
+	private final MenuElement slimeFieldSelector = new MenuElement(this, calculateXOffset(3), 120, GameState.MouseState.PLACE_SLIME_FIELD);
 
 	public Menu() {
 		setImage(BACKGROUND_IMAGE_NAME);

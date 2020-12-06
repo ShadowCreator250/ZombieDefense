@@ -49,6 +49,7 @@ public class GameWorld extends World {
 
 	private void placeGUI() {
 		addObject(pauseResumeButton, getWidth() / 2, pauseResumeButton.getImage().getHeight() + 4);
+		addObject(gameStats, 0, 0);
 		GameSpeedControlButton speed20Button = new GameSpeedControlButton(20, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[0],
 				GameSpeedControlButton.ACTIVE_BUTTON_IMAGE_NAMES[0]);
 		GameSpeedControlButton speed80Button = new GameSpeedControlButton(80, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[1],
