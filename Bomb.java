@@ -5,7 +5,7 @@ import greenfoot.GreenfootImage;
 public class Bomb extends Projectile {
 
 	public static final String BOMB_IMAGE_NAME = "bomb-projectile.png";
-	private static final int DEFAULT_RANGE = 25;
+	private static final int DEFAULT_RANGE = PathCell.PATH_WIDTH - 5;
 	private static final double DEFAULT_SPEED = 1.5;
 
 	public Bomb(int destinationX, int destinationY, int damage) {
@@ -24,6 +24,11 @@ public class Bomb extends Projectile {
 			}
 		}
 		getWorld().removeObject(this);
+	}
+
+	@Override
+	protected void behaviorWhileMoving() {
+		this.setRotation(getRotation() + 5);
 	}
 
 }

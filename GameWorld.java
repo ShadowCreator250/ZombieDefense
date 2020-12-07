@@ -8,6 +8,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import greenfoot.Greenfoot;
 import greenfoot.World;
@@ -27,6 +28,7 @@ public class GameWorld extends World {
 	private Cell[][] grid;
 	private boolean isPaused = true;
 	private int executionSpeed = DEFAULT_SPEED;
+	private List<List<PathCell>> pathsList;
 
 	private PauseResumeButton pauseResumeButton = new PauseResumeButton();
 	private GameState gameState = new GameState(100);
@@ -37,13 +39,13 @@ public class GameWorld extends World {
 		this.grid = new Cell[GRID_SIZE_X][GRID_SIZE_Y];
 		fillGridArrayWithEmptyCells();
 		definePaintOrder();
-		fillWorld();
+		loadWorldFromTextFile("testworld2");
+		this.pathsList = computeAllPossiblePaths();
 	}
 
 	private void fillWorld() {
 		removeAllObjects();
 		placeCells();
-		loadWorldFromTextFile("testworld1");
 		placeGUI();
 	}
 
@@ -61,6 +63,11 @@ public class GameWorld extends World {
 		addObject(menuExpander, getWidth() / 2, getHeight() - (menuExpander.getImage().getHeight() / 2 + 4));
 	}
 
+	private void definePaintOrder() {
+		setPaintOrder(GameState.class, Counter.class, Button.class, PriceTag.class, Menu.class, Projectile.class, Zombie.class, Tower.class,
+				Obstacle.class, PathCell.class, TowerCell.class, NormalCell.class);
+	}
+
 	@Override
 	public void started() {
 		super.started();
@@ -73,11 +80,6 @@ public class GameWorld extends World {
 		super.stopped();
 		pause();
 		getPauseResumeButton().updatePauseResumeButten();
-	}
-
-	private void definePaintOrder() {
-		setPaintOrder(GameState.class, Counter.class, Button.class, PriceTag.class, Menu.class, Projectile.class, Zombie.class, Tower.class,
-				Obstacle.class, PathCell.class, TowerCell.class, NormalCell.class);
 	}
 
 	private void fillGridArrayWithEmptyCells() {
@@ -99,6 +101,30 @@ public class GameWorld extends World {
 
 	private void removeAllObjects() {
 		removeObjects(getObjects(null));
+	}
+
+	private List<List<PathCell>> computeAllPossiblePaths() {
+		List<List<PathCell>> result = new ArrayList<>();
+		for (StartPathCell startCell : findAllCellsWithCellType(StartPathCell.class)) {
+			for (EndPathCell endCell : findAllCellsWithCellType(EndPathCell.class)) {
+				List<PathCell> path = new AStarAlgorithm(startCell, endCell).getPath();
+				path.add(0, startCell);
+				result.add(path);
+			}
+		}
+		return result;
+	}
+
+	public List<PathCell> getOneRandomPath() {
+		if(isThereAnyPath()) {
+			return pathsList.get(new Random().nextInt(pathsList.size()));
+		} else {
+			return new ArrayList<>();
+		}
+	}
+
+	public boolean isThereAnyPath() {
+		return pathsList.size() > 0;
 	}
 
 	/**
@@ -267,7 +293,7 @@ public class GameWorld extends World {
 				}
 			}
 			this.grid = cells;
-			placeCells();
+			fillWorld();
 		} catch (IOException e) {
 			System.err.println("Unable to read file " + filePath);
 			e.printStackTrace();

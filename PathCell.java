@@ -12,6 +12,7 @@ public abstract class PathCell extends Cell {
 	public static final String T_PATH_IMAGE_NAME = "t-path-temp.png";
 	public static final String CROSS_PATH_IMAGE_NAME = "cross-path-temp.png";
 	public static final String DOT_PATH_IMAGE_NAME = "dot-path-temp.png";
+	public static final int PATH_WIDTH = 48;
 
 	private PathSectionType pathSectionType;
 	private int hCost;

@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Random;
 
 import greenfoot.GreenfootImage;
@@ -7,12 +8,19 @@ public class Zombie extends SmoothMover {
 	public static final String OUTSIDE_IMAGE_NAME = "Zombie_Outside.png";
 	public static final String INIT_IMAGE_NAME = "Zombie1.png";
 
+	private static final double TOLERANCE_RANGE = 2.0;
+
 	private double strength;
 	private double resistance; // should be from 0.0-1.0, example: 0.7 stands for 70% less damage to get
-	public double speed;
 	private double health;
-	public boolean slowedDown = false;
-	public boolean attacked = false;
+	private double initalSpeed;
+	private boolean slowedDown = false;
+	private boolean attacked = false;
+	private List<PathCell> path = null;
+	private boolean pathExists = false;
+	private int pathOffsetX;
+	private int pathOffsetY;
+	private int targetedPathCellIndex = 0;
 
 	public Zombie() {
 		this(1.0, 0.0, 1.0, 100);
@@ -25,40 +33,118 @@ public class Zombie extends SmoothMover {
 	 * @param health     - how many health points he has (100 is default)
 	 */
 	public Zombie(double strength, double resistance, double speed, double health) {
-		GreenfootImage img = new GreenfootImage(OUTSIDE_IMAGE_NAME);
+		super();
+		GreenfootImage img = new GreenfootImage(INIT_IMAGE_NAME);
 		img.scale((int) (img.getWidth() / 3), (int) (img.getHeight() / 3));
 		setImage(img);
 		this.strength = strength;
 		this.resistance = resistance;
-		this.speed = speed;
+		this.initalSpeed = speed * 0.5;
+		this.setSpeed(initalSpeed);
 		this.health = health;
+		this.pathOffsetX = calcPathOffet();
+		this.pathOffsetY = calcPathOffet();
 	}
 
 	@Override
 	public void act() {
+		if(path == null) {
+			initializePath();
+		}
 		if(!getWorld().isPaused()) {
-			dropCurrency();
+			if(pathExists) {
+				if(targetNodeIsNotPathEnd()) {
+					move();
+					if(hasReachedDestination(calcDestinationX(), calcDestinationY(), TOLERANCE_RANGE)) {
+						behaviourifTargetReached();
+					}
+				}
+			} else { // TODO: targetedPathCellIndex == path.size() - 1 -> EndPathCell
+
+			}
+			dropCurrencyIfDead();
 		}
 	}
 
-	private void dropCurrency() {
+	private void initializePath() {
+		path = getWorld().getOneRandomPath();
+		if(path.size() > 0) {
+			updateMovementAndRotation();
+			pathExists = true;
+		} else {
+			System.err.println("No path was found.");
+		}
+	}
+
+	private void updateMovementAndRotation() {
+		double speed = this.getSpeed();
+		this.getMovement().setNeutral();
+		this.getMovement().add(new Vector(calcDestinationX() - getX(), calcDestinationY() - getY(), speed));
+		this.turnTowards(calcDestinationX(), calcDestinationY());
+	}
+
+	private void behaviourifTargetReached() {
+		this.targetedPathCellIndex += 1;
+		updateMovementAndRotation();
+	}
+
+	private boolean targetNodeIsNotPathEnd() {
+		return targetedPathCellIndex < path.size() - 1;
+	}
+
+	private int calcDestinationX() {
+		return path.get(targetedPathCellIndex).getX() + pathOffsetX;
+	}
+
+	private int calcDestinationY() {
+		return path.get(targetedPathCellIndex).getY() + pathOffsetY;
+	}
+
+	private void dropCurrencyIfDead() {
 		if(health <= 0) {
-			getWorld().getGameState().getCoinsCounter().add(new Random().nextInt(3) + 3);
+			getWorld().getGameState().getCoinsCounter().add(new Random().nextInt(3) + 4);
 			getWorld().removeObject(this);
 		}
 	}
 
-	public void attackGate() {
+	private void attackGate() {
 		// if (getOneIntersectingObject(Gate.class)) {
 		// TODO: create class Gate, decrease the Gate´s health
 		// }
+	}
+
+	private int calcPathOffet() {
+		int random = new Random().nextInt(PathCell.PATH_WIDTH / 2);
+		int factor = new Random().nextInt(2) == 0 ? -1 : 1;
+		return factor * random;
 	}
 
 	public void absorbDamage(int damage) {
 		this.health = health - (damage * (1 - resistance));
 	}
 
-	public void slowDown(double slowdown) {
-		this.speed = speed * (1 - slowdown);
+	public void slowDown(double slowdownFactor) {
+		this.setSpeed(getSpeed() * (1 - slowdownFactor));
+		if(this.getSpeed() == getInitalSpeed()) {
+			slowedDown = false;
+		} else {
+			slowedDown = true;
+		}
+	}
+
+	public boolean isSlowedDown() {
+		return slowedDown;
+	}
+
+	public double getInitalSpeed() {
+		return initalSpeed;
+	}
+
+	public boolean isAttacked() {
+		return attacked;
+	}
+
+	public void setAttacked(boolean attacked) {
+		this.attacked = attacked;
 	}
 }
