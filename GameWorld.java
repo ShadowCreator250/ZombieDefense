@@ -15,33 +15,54 @@ import greenfoot.World;
 
 public class GameWorld extends World {
 
-	public static final int GRID_SIZE_X = 15;
-	public static final int GRID_SIZE_Y = 9;
-	public static final int CELL_SIZE = 64;
-	public static final int DEFAULT_SPEED = 50;
-	private static final char NORMAL_CELL_PARSE_CHAR = '0';
-	private static final char PATH_CELL_PARSE_CHAR = 'P';
-	private static final char START_CELL_PARSE_CHAR = 'S';
-	private static final char END_CELL_PARSE_CHAR = 'E';
-	private static final char TOWER_CELL_PARSE_CHAR = 'T';
+    public static final int GRID_SIZE_X = 15;
+    public static final int GRID_SIZE_Y = 9;
+    public static final int CELL_SIZE = 64;
+    public static final int DEFAULT_SPEED = 50;
+    private static final char NORMAL_CELL_PARSE_CHAR = '0';
+    private static final char PATH_CELL_PARSE_CHAR = 'P';
+    private static final char START_CELL_PARSE_CHAR = 'S';
+    private static final char END_CELL_PARSE_CHAR = 'E';
+    private static final char TOWER_CELL_PARSE_CHAR = 'T';
 
-	private Cell[][] grid;
-	private boolean isPaused = true;
-	private int executionSpeed = DEFAULT_SPEED;
-	private List<List<PathCell>> pathsList;
+    private Cell[][] grid;
+    private boolean isPaused = true;
+    private int executionSpeed = DEFAULT_SPEED;
+    private List<List<PathCell>> pathsList;
 
-	private PauseResumeButton pauseResumeButton = new PauseResumeButton();
-	private GameState gameState = new GameState(100);
-
-	public GameWorld() {
-		super(GRID_SIZE_X * CELL_SIZE, GRID_SIZE_Y * CELL_SIZE, 1);
-		Greenfoot.setSpeed(DEFAULT_SPEED);
-		this.grid = new Cell[GRID_SIZE_X][GRID_SIZE_Y];
-		fillGridArrayWithEmptyCells();
-		definePaintOrder();
-		loadWorldFromTextFile("testworld2");
-		this.pathsList = computeAllPossiblePaths();
-	}
+    private PauseResumeButton pauseResumeButton = new PauseResumeButton();
+    private GameState gameState = new GameState(100);
+    
+    private int amountOfZombies = 2;
+    private int wave = 1;
+    private int maxWave = 10;
+    private int waveSpawnTime = 300;
+    
+    public GameWorld() {
+        super(GRID_SIZE_X * CELL_SIZE, GRID_SIZE_Y * CELL_SIZE, 1);
+        Greenfoot.setSpeed(DEFAULT_SPEED);
+        this.grid = new Cell[GRID_SIZE_X][GRID_SIZE_Y];
+        fillGridArrayWithEmptyCells();
+        definePaintOrder();
+        loadWorldFromTextFile("testworld2");
+        this.pathsList = computeAllPossiblePaths();
+        prepare();
+    }
+    
+    @Override
+    public void act() {
+    	if(!isPaused()) {
+			  if(getObjects(Zombie.class).size() == 0) {
+				  if(waveSpawnTime > 0) {
+					  waveSpawnTime--;
+          } else if(waveSpawnTime == 0 && wave < maxWave) {
+						startNextWave();
+						wave++;
+						waveSpawnTime = 300;
+				  }
+        }
+			}
+    }
 
 	private void fillWorld() {
 		removeAllObjects();
@@ -321,30 +342,50 @@ public class GameWorld extends World {
 			this.executionSpeed = speed;
 			Greenfoot.setSpeed(executionSpeed);
 		}
-	}
+  }
 
-	public boolean isPaused() {
-		return isPaused;
-	}
-
-	private void setPaused(boolean isPaused) {
-		this.isPaused = isPaused;
-	}
-
-	public void pause() {
-		setPaused(true);
-	}
-
-	public void resume() {
-		setPaused(false);
-	}
-
-	public PauseResumeButton getPauseResumeButton() {
-		return pauseResumeButton;
-	}
-
-	public GameState getGameState() {
-		return gameState;
-	}
-
+    /**
+     * Bereite die Welt f�r den Programmstart vor.
+     * Das hei�t: Erzeuge die Anfangs-Objekte und f�ge sie der Welt hinzu.
+     */
+    private void prepare() {
+    	for(Zombie zombie: createWaveOne()) {
+    		addObject(zombie, 0, 0);
+    	}
+    	createWaveOne().clear();  	
+    }
+    
+    private List<Zombie> createWaveOne() {
+    	List<Zombie> waveOne = new ArrayList<Zombie>();
+    	for(int i = 0; i < amountOfZombies; i++) {
+    		double strength = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
+    		double resistance = 0 + ((Math.rint(new Random().nextDouble() * 10)) / 10);
+    		double speed = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
+    		double health = 100 + ((Math.rint(new Random().nextDouble() * 500)) / 10);
+    		Zombie z = new Zombie(strength, resistance, speed, health);
+    		waveOne.add(z);
+    	}
+    	return waveOne;
+    }
+    
+    private List<Zombie> createNextWave() {
+    	List<Zombie> nextWave = new ArrayList<Zombie>();
+    	for(int i = 0; i < amountOfZombies; i++) {
+    		double strength = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
+    		double resistance = 0 + ((Math.rint(new Random().nextDouble() * 10)) / 10);
+    		double speed = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
+    		double health = 50 + ((Math.rint(new Random().nextDouble() * 500)) / 10);
+    		Zombie z = new Zombie(strength, resistance, speed, health);
+    		nextWave.add(z);
+    	}
+    	return nextWave;
+    }
+    
+    private void startNextWave() {
+    	amountOfZombies += 2;
+    	for(Zombie zombie: createNextWave()) {
+    		addObject(zombie, 0, 0);
+    	}
+    	createNextWave().clear();
+    }
 }

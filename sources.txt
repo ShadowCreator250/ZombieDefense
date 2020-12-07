@@ -5,6 +5,7 @@ BufferedImage To GreenfootImage: https://www.greenfoot.org/topics/2032
 https://stackoverflow.com/questions/12569833/generic-methods-returning-dynamic-object-types
 https://www.codejava.net/java-se/file-io/how-to-read-and-write-text-file-in-java
 https://www.informatikzentrale.de/greenfoot-texte-anzeigen.html
+https://wiki.byte-welt.net/wiki/Flie%C3%9Fkommazahlen_mit_Java_runden
 
 Images:
 Tower Logo: https://st3.depositphotos.com/9461386/35793/v/600/depositphotos_357938824-stock-illustration-pixel-castle-games-web-sites.jpg
