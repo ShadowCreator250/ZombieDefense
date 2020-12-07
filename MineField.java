@@ -5,7 +5,7 @@ import greenfoot.Color;
 public class MineField extends Obstacle {
 
 	public static final int PRICE = 20;
-	private static final int DEFAULT_DAMAGE = 150;
+	private static final int DEFAULT_DAMAGE = 100;
 	private static final int DEFAULT_RANGE = 50;
 	private List<Zombie> zombies;
 	private static final Color COLOR = new Color(0, 0, 0);
