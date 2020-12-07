@@ -10,9 +10,9 @@ public class ArcherTower extends Tower {
 	}
 
 	@Override
-	protected void shootProjectile(int x, int y) {
-		// TODO Auto-generated method stub
-
+	protected void shootProjectile(int destinationX, int destinationY, int damage) {
+		Arrow arrow = new Arrow(destinationX, destinationY, damage);
+		getWorld().addObject(arrow, getX(), getY());
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class GameWorld extends World {
 	private int executionSpeed = DEFAULT_SPEED;
 
 	private PauseResumeButton pauseResumeButton = new PauseResumeButton();
-	private GameState gameState = new GameState(20);
+	private GameState gameState = new GameState(100);
 
 	public GameWorld() {
 		super(GRID_SIZE_X * CELL_SIZE, GRID_SIZE_Y * CELL_SIZE, 1);
@@ -43,7 +43,7 @@ public class GameWorld extends World {
 	private void fillWorld() {
 		removeAllObjects();
 		placeCells();
-		computePathSectionTypes();
+		loadWorldFromTextFile("testworld1");
 		placeGUI();
 	}
 
@@ -94,6 +94,7 @@ public class GameWorld extends World {
 				addObject(grid[x][y], x * CELL_SIZE + CELL_SIZE / 2, y * CELL_SIZE + CELL_SIZE / 2);
 			}
 		}
+		computePathSectionTypes();
 	}
 
 	private void removeAllObjects() {
@@ -266,7 +267,7 @@ public class GameWorld extends World {
 				}
 			}
 			this.grid = cells;
-			fillWorld();
+			placeCells();
 		} catch (IOException e) {
 			System.err.println("Unable to read file " + filePath);
 			e.printStackTrace();

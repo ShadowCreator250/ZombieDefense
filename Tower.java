@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Random;
 
 import greenfoot.Actor;
 import greenfoot.Greenfoot;
@@ -6,7 +7,6 @@ import greenfoot.Greenfoot;
 public abstract class Tower extends Actor {
 
 	public static final String INIT_IMAGE_NAME = "Tower1.png";
-	private List<Zombie> zombies;
 
 	private int range;
 	private int reloadTime;
@@ -18,7 +18,7 @@ public abstract class Tower extends Actor {
 		this.range = range;
 		this.reloadTime = reloadTime;
 		this.damage = damage;
-		this.shootCountDown = reloadTime;
+		this.shootCountDown = 0;
 	}
 
 	@Override
@@ -43,39 +43,14 @@ public abstract class Tower extends Actor {
 
 	private void shoot() {
 		if(areZombiesInRange()) {
-			for (Zombie target : zombies) {
-				Projectile p = selectCorrectProjectile();
-				getWorld().addObject(p, this.getX(), this.getY());
-				shootCountDown = reloadTime;
-				p.turnTowards(target.getX(), target.getY());
-				p.move(calculateDistance(target));
-				if(p.getExactX() == target.getExactX() && p.getExactY() == target.getExactY()) {
-					// target.absorbDamage(damage); //damage needs to be added
-					getWorld().removeObject(p);
-				}
-			}
+			int index = new Random().nextInt(getZombiesInRange().size());
+			Zombie target = getZombiesInRange().get(index);
+			shootProjectile(target.getX(), target.getY(), damage);
+			shootCountDown = reloadTime;
 		}
 	}
 
-	private double calculateDistance(Zombie target) {
-		double d = Math.pow((target.getExactX() - this.getX()), 2) + Math.pow((target.getExactY() - this.getY()), 2);
-		double distance = Math.sqrt(d);
-		return distance;
-	}
-
-	private Projectile selectCorrectProjectile() {
-		Projectile p;
-		if(this instanceof ArcherTower) {
-			p = new Arrow();
-		} else if(this instanceof BombTower) {
-			p = new Bomb();
-		} else {
-			p = new Bullet();
-		}
-		return p;
-	}
-
-	protected abstract void shootProjectile(int x, int y);
+	protected abstract void shootProjectile(int destinationX, int destinationY, int damage);
 
 	private boolean reload() {
 		if(shootCountDown > 0) {
@@ -87,12 +62,11 @@ public abstract class Tower extends Actor {
 	}
 
 	private boolean areZombiesInRange() {
-		zombies = getObjectsInRange(range, Zombie.class);
-		if(zombies.size() == 0) {
-			return false;
-		} else {
-			return true;
-		}
+		return getZombiesInRange().size() > 0;
+	}
+
+	private List<Zombie> getZombiesInRange() {
+		return getObjectsInRange(range, Zombie.class);
 	}
 
 	public abstract int getPrice();

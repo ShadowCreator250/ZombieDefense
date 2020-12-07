@@ -1,3 +1,6 @@
+import java.util.Random;
+
+import greenfoot.GreenfootImage;
 
 public class Zombie extends SmoothMover {
 
@@ -20,7 +23,9 @@ public class Zombie extends SmoothMover {
 	 * @param health     - how many health points he has (100 is default)
 	 */
 	public Zombie(double strength, double resistance, double speed, double health) {
-		setImage(INIT_IMAGE_NAME);
+		GreenfootImage img = new GreenfootImage(INIT_IMAGE_NAME);
+		img.scale((int) (img.getWidth() / 3), (int) (img.getHeight() / 3));
+		setImage(img);
 		this.strength = strength;
 		this.resistance = resistance;
 		this.speed = speed;
@@ -29,12 +34,14 @@ public class Zombie extends SmoothMover {
 
 	@Override
 	public void act() {
-
+		if(!getWorld().isPaused()) {
+			dropCurrency();
+		}
 	}
 
 	private void dropCurrency() {
 		if(health <= 0) {
-			//GameState.coinsCounter++;
+			getWorld().getGameState().getCoinsCounter().add(new Random().nextInt(3) + 3);
 			getWorld().removeObject(this);
 		}
 	}
