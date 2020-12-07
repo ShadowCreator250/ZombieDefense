@@ -4,6 +4,7 @@ import greenfoot.GreenfootImage;
 
 public class Zombie extends SmoothMover {
 
+	public static final String OUTSIDE_IMAGE_NAME = "Zombie_Outside.png";
 	public static final String INIT_IMAGE_NAME = "Zombie1.png";
 
 	private double strength;
@@ -11,6 +12,7 @@ public class Zombie extends SmoothMover {
 	public double speed;
 	private double health;
 	public boolean slowedDown = false;
+	public boolean attacked = false;
 
 	public Zombie() {
 		this(1.0, 0.0, 1.0, 100);
@@ -23,7 +25,7 @@ public class Zombie extends SmoothMover {
 	 * @param health     - how many health points he has (100 is default)
 	 */
 	public Zombie(double strength, double resistance, double speed, double health) {
-		GreenfootImage img = new GreenfootImage(INIT_IMAGE_NAME);
+		GreenfootImage img = new GreenfootImage(OUTSIDE_IMAGE_NAME);
 		img.scale((int) (img.getWidth() / 3), (int) (img.getHeight() / 3));
 		setImage(img);
 		this.strength = strength;

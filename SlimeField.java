@@ -23,7 +23,7 @@ public class SlimeField extends Obstacle {
 	}
 	
 	private void slowDownZombiesInRangeOnce() {
-		if(getIntersectingObjects(Zombie.class) != null) {
+		if(getIntersectingObjects(Zombie.class).size() > 0) {
 			zombies = getIntersectingObjects(Zombie.class);
 			for(Zombie zombie: zombies) {
 				if(zombie.slowedDown == false) {
