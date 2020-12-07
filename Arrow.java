@@ -23,4 +23,13 @@ public class Arrow extends Projectile {
 		getWorld().removeObject(this);
 	}
 
+	@Override
+	protected void behaviorWhileMoving() {
+		Zombie zombie = (Zombie) getOneIntersectingObject(Zombie.class);
+		if(zombie != null) {
+			zombie.absorbDamage(getDamage());
+			getWorld().removeObject(this);
+		}
+	}
+
 }

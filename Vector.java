@@ -7,10 +7,10 @@
  * @version 2.0
  */
 public final class Vector {
-	double dx;
-	double dy;
-	int direction;
-	double length;
+	private double dx;
+	private double dy;
+	private int direction;
+	private double length;
 
 	/**
 	 * Erzeugt einen neuen neutralen Vektor.
@@ -33,10 +33,11 @@ public final class Vector {
 	 * Erzeugt einen Vektor durch Angabe der X- und Y-Abstände zwischen Anfangs- und
 	 * Endpunkt.
 	 */
-	public Vector(double dx, double dy) {
+	public Vector(double dx, double dy, double customLength) {
 		this.dx = dx;
 		this.dy = dy;
 		updatePolar();
+		this.setLength(customLength);
 	}
 
 	/**

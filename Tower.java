@@ -45,12 +45,16 @@ public abstract class Tower extends Actor {
 		if(areZombiesInRange()) {
 			int index = new Random().nextInt(getZombiesInRange().size());
 			Zombie target = getZombiesInRange().get(index);
-			shootProjectile(target.getX(), target.getY(), damage);
+			shootProjectileAt(target, damage);
 			shootCountDown = reloadTime;
 		}
 	}
 
-	protected abstract void shootProjectile(int destinationX, int destinationY, int damage);
+	public void shootProjectileAt(Zombie target, int damage) {
+		int destinationX = (int) Math.round(target.getX() + target.getMovement().getX() * getZombieMovementForwardPrediction());
+		int destinationY = (int) Math.round(target.getY() + target.getMovement().getY() * getZombieMovementForwardPrediction());
+		getWorld().addObject(getProjetile(destinationX, destinationY, damage), getX(), getY());
+	}
 
 	private boolean reload() {
 		if(shootCountDown > 0) {
@@ -70,6 +74,10 @@ public abstract class Tower extends Actor {
 	}
 
 	public abstract int getPrice();
+
+	public abstract int getZombieMovementForwardPrediction();
+
+	public abstract Projectile getProjetile(int destinationX, int destinationY, int damage);
 
 	@Override
 	public GameWorld getWorld() {

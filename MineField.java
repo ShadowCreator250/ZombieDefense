@@ -14,7 +14,8 @@ public class MineField extends Obstacle {
 	public MineField() {
 		createImage(COLOR, POINTS);
 	}
-	
+
+	@Override
 	public void act() {
 		super.act();
 		if(!getWorld().isPaused()) {
@@ -34,10 +35,9 @@ public class MineField extends Obstacle {
 	private void attackZombiesInRangeOnce() {
 		if(checkIfZombiesInRange()) {
 			for (Zombie zombie : zombies) {
-				if(zombie.attacked == false) {
-					zombie.attacked = true;
+				if(!zombie.isAttacked()) {
+					zombie.setAttacked(true);
 					zombie.absorbDamage(DEFAULT_DAMAGE);
-					getWorld().removeObject(zombie);
 				}
 			}
 			getWorld().removeObject(this);

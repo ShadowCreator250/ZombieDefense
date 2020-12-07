@@ -20,33 +20,28 @@ public abstract class Projectile extends SmoothMover {
 
 	@Override
 	public void act() {
+		if(!initialized) {
+			initialize();
+		}
 		if(!getWorld().isPaused()) {
-			if(!initialized) {
-				initialize();
-			}
 			move();
-			checkIfReachedDestination();
-
+			if(hasReachedDestination(destinationX, destinationY, TOLERANCE_RANGE)) {
+				behaviourIfReachedDestination();
+			}
+			if(getWorld() != null) { // prevents IllegalStateException: Actor not in world
+				behaviorWhileMoving();
+			}
 		}
 	}
 
-	private void checkIfReachedDestination() {
-		double dx = calcDistance(getExactX(), destinationX);
-		double dy = calcDistance(getExactY(), destinationY);
-		double remainingDistance = Math.sqrt(dx * dx + dy * dy);
-		if(remainingDistance <= TOLERANCE_RANGE) {
-			behaviourIfReachedDestination();
-		}
-
-	}
+	protected abstract void behaviorWhileMoving();
 
 	protected abstract void behaviourIfReachedDestination();
 
 	private void initialize() {
 		this.initialized = true;
 		turnTowards(destinationX, destinationY);
-		this.addForce(new Vector((double) destinationX - getX(), (double) destinationY - getExactY()));
-		this.setSpeed(speed);
+		this.addForce(new Vector(destinationX - getX(), destinationY - getExactY(), speed));
 	}
 
 	public int getDamage() {

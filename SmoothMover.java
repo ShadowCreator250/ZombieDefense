@@ -177,7 +177,7 @@ public abstract class SmoothMover extends Actor {
 	 * 
 	 * @author (Simon Häber)
 	 */
-	public double calcDistance(double a, double b) {
+	public static double calcDistance(double a, double b) {
 		return (b - a);
 	}
 
@@ -186,7 +186,7 @@ public abstract class SmoothMover extends Actor {
 	 * 
 	 * @author (Simon Häber)
 	 */
-	public int calcDistance(int a, int b) {
+	public static int calcDistance(int a, int b) {
 		return (b - a);
 	}
 
@@ -225,5 +225,15 @@ public abstract class SmoothMover extends Actor {
 	@Override
 	public GameWorld getWorld() {
 		return (GameWorld) super.getWorld();
+	}
+
+	public boolean hasReachedDestination(int destinationX, int destinationY, double toleranceRange) {
+		double dx = calcDistance(getExactX(), destinationX);
+		double dy = calcDistance(getExactY(), destinationY);
+		double remainingDistance = Math.hypot(dx, dy);
+		if(remainingDistance <= toleranceRange) {
+			return true;
+		}
+		return false;
 	}
 }

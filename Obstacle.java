@@ -9,14 +9,9 @@ public abstract class Obstacle extends Actor {
 
 	private static final int SIZE = 50;
 	private static final int HALFSIZE = SIZE / 2;
-	private static final Random randomizer = new Random();
-
 
 	@Override
 	public void act() {
-		if(!getWorld().isPaused()) {
-
-		}
 		checkRemoveObstacleClick();
 	}
 
@@ -50,7 +45,7 @@ public abstract class Obstacle extends Actor {
 	}
 
 	private int randomCoord() {
-		int val = HALFSIZE + (int) (randomizer.nextGaussian() * (HALFSIZE / 2));
+		int val = HALFSIZE + (int) (new Random().nextGaussian() * (HALFSIZE / 2));
 
 		if(val < 0) {
 			return 0;
