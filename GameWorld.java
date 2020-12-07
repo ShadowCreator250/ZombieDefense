@@ -374,7 +374,7 @@ public class GameWorld extends World {
     		double strength = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
     		double resistance = 0 + ((Math.rint(new Random().nextDouble() * 10)) / 10);
     		double speed = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
-    		double health = 100 + ((Math.rint(new Random().nextDouble() * 500)) / 10);
+    		double health = 50 + ((Math.rint(new Random().nextDouble() * 500)) / 10);
     		Zombie z = new Zombie(strength, resistance, speed, health);
     		nextWave.add(z);
     	}
