@@ -384,7 +384,7 @@ public class GameWorld extends World {
     private void startNextWave() {
     	amountOfZombies += 2;
     	for(Zombie zombie: createNextWave()) {
-    		addObject(zombie, 50 * amountOfZombies, 50 * amountOfZombies);
+    		addObject(zombie, 0, 0);
     	}
     	createNextWave().clear();
     }
