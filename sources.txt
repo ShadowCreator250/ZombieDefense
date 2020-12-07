@@ -6,6 +6,7 @@ https://stackoverflow.com/questions/12569833/generic-methods-returning-dynamic-o
 https://www.codejava.net/java-se/file-io/how-to-read-and-write-text-file-in-java
 https://www.informatikzentrale.de/greenfoot-texte-anzeigen.html
 
+Images:
 Tower Logo: https://st3.depositphotos.com/9461386/35793/v/600/depositphotos_357938824-stock-illustration-pixel-castle-games-web-sites.jpg
 Bow: https://minecraft.gamepedia.com/File:Bow_JE2_BE1.png
 Bomb: https://www.shutterstock.com/de/image-vector/black-bomb-pixel-art-colorful-vector-1038994675
@@ -17,5 +18,9 @@ Zombie: Zombie Entity Model (from Minecraft) by Mojang
 Land mine logo: https://img.favpng.com/24/1/2/animation-youtube-pixel-art-land-mine-png-favpng-nTKFNnqSH2dnh0Vd42GB7naP1.jpg
 Slime Field Logo: https://static.wikia.nocookie.net/minecraft_gamepedia/images/d/d0/Slimeball_JE2_BE2.png/revision/latest/scale-to-width-down/150?cb=20190501035326
 Coin: https://www.pngkit.com/png/full/347-3474131_coin-smiley-emoji-pixel-art.png
+Path: https://sutor-coaching.de/wp-content/uploads/sites/8/2018/04/tree-3092026_640_pixabay_neue-Pfade.jpg
+Dirt: https://diybook.de/sites/default/files/styles/amp_3_2/public/gartenboden_und_blumenerde_-_blumenerde.jpg?itok=-Amql0oL
+
+Sounds:
 SniperTower_Shoot.wav: http://soundbible.com/1788-Sniper-Rifle.html
 Soundfiles ArcherTower_Shoot, Bomb_Explosion, Bomb_Ignite, Zombie_Death und Zombie_Hurt: from Game Minecraft by Mojang
