@@ -118,8 +118,11 @@ public class Zombie extends SmoothMover {
 
 	public void attackGate() {
 		if(getOneIntersectingObject(BaseGate.class) != null) {
+			BaseGate gate = (BaseGate) getOneIntersectingObject(BaseGate.class);
 			this.slowDown(1);
-			BaseGate.durability -= DEFAULT_DAMAGE * strength;
+			double d = gate.getDurability();
+			d -= DEFAULT_DAMAGE * strength;
+			gate.setDurability(d);
 		}
 	}
 
