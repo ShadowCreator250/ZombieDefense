@@ -75,4 +75,8 @@ public class SlimeField extends Obstacle {
 	public int getPrice() {
 		return PRICE;
 	}
+	
+	public static double getDefaultSlowdown() {
+		return DEFAULT_SLOWDOWN;
+	}
 }
