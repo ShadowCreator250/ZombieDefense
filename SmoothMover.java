@@ -6,6 +6,8 @@ import greenfoot.Actor;
  * the co-ordinates instead of ints). This allows small precise movements (e.g.
  * movements of 1 pixel or less) that do not lose precision.
  * 
+ * source: Mover/SmoothMover classes of Greenfoot scenarios
+ * 
  * @author Poul Henriksen
  * @author Michael Kolling
  * @author Neil Brown

@@ -60,18 +60,13 @@ public class Zombie extends SmoothMover {
 					if(hasReachedDestination(calcDestinationX(), calcDestinationY(), TOLERANCE_RANGE)) {
 						behaviourifTargetReached();
 					}
-				}
-			} else { // TODO: targetedPathCellIndex == path.size() - 1 -> EndPathCell
+				} else { // TODO: targetedPathCellIndex == path.size() - 1 -> EndPathCell
 
+				}
 			}
 			dropCurrencyIfDead();
+			slowDownIfOnSlimeField();
 		}
-	}
-
-	private GreenfootImage makeScaledImage(String imageName) {
-		GreenfootImage img = new GreenfootImage(imageName);
-		img.scale((int) (img.getWidth() / 3), (int) (img.getHeight() / 3));
-		return img;
 	}
 
 	private void initializePath() {
@@ -94,6 +89,18 @@ public class Zombie extends SmoothMover {
 	private void behaviourifTargetReached() {
 		this.targetedPathCellIndex += 1;
 		updateMovementAndRotation();
+	}
+
+	private void slowDownIfOnSlimeField() {
+		if(getIntersectingObjects(SlimeField.class).size() > 0) {
+			if(!isSlowedDown()) {
+				slowDown(SlimeField.getDefaultSlowdown());
+			}
+		} else {
+			if(isSlowedDown()) {
+				slowDown(0);
+			}
+		}
 	}
 
 	private boolean targetNodeIsNotPathEnd() {
@@ -144,6 +151,12 @@ public class Zombie extends SmoothMover {
 		} else {
 			slowedDown = true;
 		}
+	}
+
+	private GreenfootImage makeScaledImage(String imageName) {
+		GreenfootImage img = new GreenfootImage(imageName);
+		img.scale((int) (img.getWidth() / 3), (int) (img.getHeight() / 3));
+		return img;
 	}
 
 	public boolean isSlowedDown() {

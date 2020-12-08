@@ -6,12 +6,13 @@ import greenfoot.GreenfootImage;
 
 public abstract class PathCell extends Cell {
 
-	public static final String DEAD_END_PATH_IMAGE_NAME = "dead_end-path-temp.png";
-	public static final String STRAIGHT_PATH_IMAGE_NAME = "straight-path-temp.png";
-	public static final String CURVE_PATH_IMAGE_NAME = "curve-path-temp.png";
-	public static final String T_PATH_IMAGE_NAME = "t-path-temp.png";
-	public static final String CROSS_PATH_IMAGE_NAME = "cross-path-temp.png";
-	public static final String DOT_PATH_IMAGE_NAME = "dot-path-temp.png";
+	private static final String DEAD_END_PATH_IMAGE_NAME = "dead_end-path.png";
+	private static final String STRAIGHT_PATH_IMAGE_NAME = "straight-path.png";
+	private static final String CURVE_PATH_IMAGE_NAME = "curve-path.png";
+	private static final String T_PATH_IMAGE_NAME = "t-path.png";
+	private static final String CROSS_PATH_IMAGE_NAME = "cross-path.png";
+	private static final String DOT_PATH_IMAGE_NAME = "dot-path.png";
+
 	public static final int PATH_WIDTH = 48;
 
 	private PathSectionType pathSectionType;
@@ -43,7 +44,7 @@ public abstract class PathCell extends Cell {
 	}
 
 	private void checkAddObstacleClick() {
-		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1) {
+		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1 && Greenfoot.getMouseInfo() != null) {
 			if(!(getWorld().getObjectsAt(getX(), getY(), Obstacle.class).size() > 0)) {
 				GameState.MouseState mouseState = getWorld().getGameState().getMouseState();
 				if(mouseState == GameState.MouseState.PLACE_MINE_FIELD && getWorld().getGameState().haveEnoughCoins(MineField.PRICE)) {
@@ -56,8 +57,6 @@ public abstract class PathCell extends Cell {
 			}
 		}
 	}
-
-	protected abstract String getBgImageName();
 
 	public void setImageRotation(int rotation) {
 		GreenfootImage img = getImage();

@@ -1,12 +1,19 @@
-import greenfoot.Color;
 import greenfoot.Greenfoot;
+import greenfoot.GreenfootImage;
 
 public class TowerCell extends Cell {
 
+	private static final String CELL_BACKGROUND_OVERLAY_IMAGE_NAME = "tower-cell-overlay.png";
+
 	public TowerCell(int gridX, int gridY) {
 		super(gridX, gridY);
-		// TODO: Monochrome img is temp
-		setImage(paintMonochromeImage(GameWorld.CELL_SIZE, GameWorld.CELL_SIZE, new Color(64, 64, 64)));
+		constructImage();
+	}
+
+	private void constructImage() {
+		GreenfootImage img = getImage();
+		img.drawImage(new GreenfootImage(CELL_BACKGROUND_OVERLAY_IMAGE_NAME), 0, 0);
+		setImage(img);
 	}
 
 	@Override

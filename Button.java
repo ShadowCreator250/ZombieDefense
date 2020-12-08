@@ -30,7 +30,7 @@ public abstract class Button extends Actor {
 	@Override
 	public void act() {
 		MouseInfo mouse = Greenfoot.getMouseInfo();
-		if(Greenfoot.mouseClicked(this) && mouse.getButton() == 1) {
+		if(Greenfoot.mouseClicked(this) && mouse.getButton() == 1 && mouse != null) {
 			clickAction();
 		}
 	}
