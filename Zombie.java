@@ -1,12 +1,15 @@
 import java.util.List;
 import java.util.Random;
 
+import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
 public class Zombie extends SmoothMover {
 
 	public static final String OUTSIDE_IMAGE_NAME = "Zombie_Outside.png";
 	public static final String INIT_IMAGE_NAME = "Zombie1.png";
+	private static final String HURT_SOUND = "Zombie_Hurt.wav";
+	private static final String DEATH_SOUND = "Zombie_Death.wav";
 
 	private static final double TOLERANCE_RANGE = 2.0;
 
@@ -103,6 +106,7 @@ public class Zombie extends SmoothMover {
 	private void dropCurrencyIfDead() {
 		if(health <= 0) {
 			getWorld().getGameState().getCoinsCounter().add(new Random().nextInt(3) + 4);
+			Greenfoot.playSound(DEATH_SOUND);
 			getWorld().removeObject(this);
 		}
 	}
@@ -120,6 +124,7 @@ public class Zombie extends SmoothMover {
 	}
 
 	public void absorbDamage(int damage) {
+		Greenfoot.playSound(HURT_SOUND);
 		this.health = health - (damage * (1 - resistance));
 	}
 
