@@ -12,6 +12,7 @@ public class Zombie extends SmoothMover {
 	private static final String DEATH_SOUND = "Zombie_Death.wav";
 
 	private static final double TOLERANCE_RANGE = 2.0;
+	private static final double DEFAULT_DAMAGE = 10.0;
 
 	private double strength;
 	private double resistance; // should be from 0.0-1.0, example: 0.7 stands for 70% less damage to get
@@ -111,10 +112,11 @@ public class Zombie extends SmoothMover {
 		}
 	}
 
-	private void attackGate() {
-		// if (getOneIntersectingObject(Gate.class)) {
-		// TODO: create class Gate, decrease the Gate´s health
-		// }
+	public void attackGate() {
+		if(getOneIntersectingObject(BaseGate.class) != null) {
+			this.slowDown(1);
+			BaseGate.durability -= DEFAULT_DAMAGE * strength;
+		}
 	}
 
 	private int calcPathOffet() {

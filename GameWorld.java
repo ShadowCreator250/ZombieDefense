@@ -86,7 +86,7 @@ public class GameWorld extends World {
 
 	private void definePaintOrder() {
 		setPaintOrder(GameState.class, Counter.class, Button.class, PriceTag.class, Menu.class, Projectile.class, Zombie.class, Tower.class,
-				Obstacle.class, PathCell.class, TowerCell.class, NormalCell.class);
+				Obstacle.class, BaseGate.class, PathCell.class, TowerCell.class, NormalCell.class);
 	}
 
 	@Override
@@ -376,6 +376,7 @@ public class GameWorld extends World {
 		for (Zombie zombie : createWaveOne()) {
 			addObject(zombie, 0, 0);
 		}
+		addObject(new BaseGate(), 480, 520);
 		createWaveOne().clear();
 	}
 
