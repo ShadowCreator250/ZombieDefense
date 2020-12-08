@@ -18,7 +18,7 @@ public class MineField extends Obstacle {
 	private List<Zombie> zombies;
 
 	/**
-	 * Creates an object and its image.
+	 * Creates an mine field object and its image.
 	 */
 	public MineField() {
 		createImage(COLOR, POINTS);

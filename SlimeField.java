@@ -16,7 +16,7 @@ public class SlimeField extends Obstacle {
 	private List<Zombie> zombies;
 
 	/**
-	 * Creates an object and its image.
+	 * Creates an slime field object and its image.
 	 */
 	public SlimeField() {
 		createImage(COLOR, POINTS);
