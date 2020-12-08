@@ -2,6 +2,12 @@ import java.util.List;
 import java.util.Random;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
+
+/**
+ * A SmoothMover that has got the aim to destroy the base gate of the player.
+ * For this it searches its path individually, after finding it stays there and
+ * attacks the gate.
+ */
 public class Zombie extends SmoothMover {
 	public static final String OUTSIDE_IMAGE_NAME = "Zombie_Outside.png";
 	public static final String INIT_IMAGE_NAME = "Zombie1.png";
@@ -20,9 +26,14 @@ public class Zombie extends SmoothMover {
 	private int pathOffsetX;
 	private int pathOffsetY;
 	private int targetedPathCellIndex = 0;
+
+	/**
+	 * Creates an zombie object with default values for strength, resistance, speed and health.
+	 */
 	public Zombie() {
 		this(1.0, 0.0, 0.5, 100);
 	}
+
 	/**
 	 * @param strength   - how much damage he deals in per cent (1.0 is default)
 	 * @param resistance - how much damage he can resist in per cent (0 is default)
@@ -40,16 +51,20 @@ public class Zombie extends SmoothMover {
 		this.pathOffsetX = calcPathOffet();
 		this.pathOffsetY = calcPathOffet();
 	}
+
+	/**
+	 * It searches its own path to find the base gate and stays there when reached. When getting too much damage, it drops currency for the player.
+	 */
 	@Override
 	public void act() {
-		if(path == null) {
+		if (path == null) {
 			initializePath();
 		}
-		if(!getWorld().isPaused()) {
-			if(pathExists) {
-				if(targetNodeIsNotPathEnd()) {
+		if (!getWorld().isPaused()) {
+			if (pathExists) {
+				if (targetNodeIsNotPathEnd()) {
 					move();
-					if(hasReachedDestination(calcDestinationX(), calcDestinationY(), TOLERANCE_RANGE)) {
+					if (hasReachedDestination(calcDestinationX(), calcDestinationY(), TOLERANCE_RANGE)) {
 						behaviourifTargetReached();
 					}
 				} else { // TODO: targetedPathCellIndex == path.size() - 1 -> EndPathCell
@@ -61,33 +76,47 @@ public class Zombie extends SmoothMover {
 		}
 	}
 
+	/**
+	 * Initializes the path for the zombie where it walks to.
+	 */
 	private void initializePath() {
 		path = getWorld().getOneRandomPath();
-		if(path.size() > 0) {
+		if (path.size() > 0) {
 			updateMovementAndRotation();
 			pathExists = true;
 		} else {
 			System.err.println("No path was found.");
 		}
 	}
+
+	/**
+	 * Sets the direction and speed of the zombie, so it walks to the next point on its path.
+	 */
 	private void updateMovementAndRotation() {
 		double speed = this.getSpeed();
 		this.getMovement().setNeutral();
 		this.getMovement().add(new Vector(calcDestinationX() - getX(), calcDestinationY() - getY(), speed));
 		this.turnTowards(calcDestinationX(), calcDestinationY());
 	}
+
+	/**
+	 * Sets a new target on the path for the zombie after reaching its last target.
+	 */
 	private void behaviourifTargetReached() {
 		this.targetedPathCellIndex += 1;
 		updateMovementAndRotation();
 	}
 
+	/**
+	 * Slows down the zombie when walking over a slime field.
+	 */
 	private void slowDownIfOnSlimeField() {
-		if(getIntersectingObjects(SlimeField.class).size() > 0) {
-			if(!isSlowedDown()) {
+		if (getIntersectingObjects(SlimeField.class).size() > 0) {
+			if (!isSlowedDown()) {
 				slowDown(SlimeField.getDefaultSlowdown());
 			}
 		} else {
-			if(isSlowedDown()) {
+			if (isSlowedDown()) {
 				slowDown(0);
 			}
 		}
@@ -100,18 +129,27 @@ public class Zombie extends SmoothMover {
 	private int calcDestinationX() {
 		return path.get(targetedPathCellIndex).getX() + pathOffsetX;
 	}
+
 	private int calcDestinationY() {
 		return path.get(targetedPathCellIndex).getY() + pathOffsetY;
 	}
+
+	/**
+	 * Drops coins for the player when the zombie has got no more health.
+	 */
 	private void dropCurrencyIfDead() {
-		if(health <= 0) {
+		if (health <= 0) {
 			getWorld().getGameState().getCoinsCounter().add(new Random().nextInt(3) + 4);
 			Greenfoot.playSound(DEATH_SOUND);
 			getWorld().removeObject(this);
 		}
 	}
+
+	/**
+	 * Stops the movement and deals damage to the base gate when reaching it.
+	 */
 	public void attackGate() {
-		if(getOneIntersectingObject(BaseGate.class) != null) {
+		if (getOneIntersectingObject(BaseGate.class) != null) {
 			BaseGate gate = (BaseGate) getOneIntersectingObject(BaseGate.class);
 			this.slowDown(1);
 			double d = gate.getDurability();
@@ -119,24 +157,45 @@ public class Zombie extends SmoothMover {
 			gate.setDurability(d);
 		}
 	}
+
 	private int calcPathOffet() {
 		int random = new Random().nextInt(PathCell.PATH_WIDTH / 2);
 		int factor = new Random().nextInt(2) == 0 ? -1 : 1;
 		return factor * random;
 	}
+
+	/**
+	 * Absorbs damage when hitted by a tower.
+	 * 
+	 * @param damage - the damage dealt by the tower
+	 */
 	public void absorbDamage(int damage) {
 		Greenfoot.playSound(HURT_SOUND);
 		this.health = health - (damage * (1 - resistance));
 	}
+
+	/**
+	 * Slows down the zombie.
+	 * 
+	 * @param slowdownFactor - how strong the slowdown is
+	 */
+
 	public void slowDown(double slowdownFactor) {
 		this.setSpeed(getSpeed() * (1 - slowdownFactor));
-		if(this.getSpeed() == getInitalSpeed()) {
+		if (this.getSpeed() == getInitalSpeed()) {
 			slowedDown = false;
 		} else {
 			slowedDown = true;
 		}
 	}
 
+	/**
+	 * Gets an image that has to be scaled down.
+	 * 
+	 * @param imageName - the name of the image to scale
+	 * 
+	 * @return the scaled image
+	 */
 	private GreenfootImage makeScaledImage(String imageName) {
 		GreenfootImage img = new GreenfootImage(imageName);
 		img.scale((int) (img.getWidth() / 3), (int) (img.getHeight() / 3));
@@ -150,15 +209,19 @@ public class Zombie extends SmoothMover {
 	public double getInitalSpeed() {
 		return initalSpeed;
 	}
+
 	public boolean isAttacked() {
 		return attacked;
 	}
+
 	public void setAttacked(boolean attacked) {
 		this.attacked = attacked;
 	}
+
 	public int getPathOffsetX() {
 		return pathOffsetX;
 	}
+
 	public int getPathOffsetY() {
 		return pathOffsetY;
 	}

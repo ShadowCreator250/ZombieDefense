@@ -1,11 +1,18 @@
 import greenfoot.Actor;
 
+/**
+ * An object which blocks the way for the zombies to get into the survivors base. The player has to avoid that zombies attack it.
+ */
+
 public class BaseGate extends Actor {
 
 	private static final String GATE_IMAGE_NAME = "Gate.png";
 
 	private double durability = 300;
 
+	/**
+	 * Creates an base gate object and sets its image.
+	 */
 
 	public BaseGate() {
 		setImage(GATE_IMAGE_NAME);
