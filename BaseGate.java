@@ -1,7 +1,8 @@
 import greenfoot.Actor;
 
 /**
- * An object which blocks the way for the zombies to get into the survivors base. The player has to avoid that zombies attack it.
+ * An object which blocks the way for the zombies to get into the survivors
+ * base. The player has to avoid that zombies attacking it.
  */
 
 public class BaseGate extends Actor {
@@ -13,7 +14,6 @@ public class BaseGate extends Actor {
 	/**
 	 * Creates an base gate object and sets its image.
 	 */
-
 	public BaseGate() {
 		setImage(GATE_IMAGE_NAME);
 	}
@@ -22,8 +22,16 @@ public class BaseGate extends Actor {
 		return durability;
 	}
 
-
 	public void setDurability(double durability) {
 		this.durability = durability;
+	}
+
+	/**
+	 * reduces its health by the amount of damage it gets
+	 * 
+	 * @param damage the damage it absorbs
+	 */
+	public void absorbDamage(double damage) {
+		this.durability -= damage;
 	}
 }

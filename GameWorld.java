@@ -224,7 +224,7 @@ public class GameWorld extends World {
 	 *         returns <code>null</code> if no {@link Cell} is found on this
 	 *         position
 	 */
-	public Cell CellFromWorldPos(int x, int y) {
+	public Cell cellFromWorldPos(int x, int y) {
 		if(x < 0 || x > getWidth() || y < 0 || y > getHeight()) {
 			return null;
 		}

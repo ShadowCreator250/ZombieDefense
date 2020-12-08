@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Random;
+
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
@@ -28,7 +29,8 @@ public class Zombie extends SmoothMover {
 	private int targetedPathCellIndex = 0;
 
 	/**
-	 * Creates an zombie object with default values for strength, resistance, speed and health.
+	 * Creates an zombie object with default values for strength, resistance, speed
+	 * and health.
 	 */
 	public Zombie() {
 		this(1.0, 0.0, 0.5, 100);
@@ -53,22 +55,20 @@ public class Zombie extends SmoothMover {
 	}
 
 	/**
-	 * It searches its own path to find the base gate and stays there when reached. When getting too much damage, it drops currency for the player.
+	 * It searches its own path to find the base gate and stays there when reached.
+	 * When getting too much damage, it drops currency for the player.
 	 */
 	@Override
 	public void act() {
-		if (path == null) {
+		if(path == null) {
 			initializePath();
 		}
-		if (!getWorld().isPaused()) {
-			if (pathExists) {
-				if (targetNodeIsNotPathEnd()) {
-					move();
-					if (hasReachedDestination(calcDestinationX(), calcDestinationY(), TOLERANCE_RANGE)) {
-						behaviourifTargetReached();
-					}
-				} else { // TODO: targetedPathCellIndex == path.size() - 1 -> EndPathCell
-
+		if(!getWorld().isPaused()) {
+			if(pathExists) {
+				move();
+				if(hasReachedDestination(calcDestinationX(), calcDestinationY(), TOLERANCE_RANGE)) {
+					behaviourIfTargetReached();
+					behaviourIfReachedEndCell();
 				}
 			}
 			dropCurrencyIfDead();
@@ -77,11 +77,29 @@ public class Zombie extends SmoothMover {
 	}
 
 	/**
+	 * defines what the zombie should do if it reaches the EndCell and therefore the
+	 * Gate
+	 */
+	private void behaviourIfReachedEndCell() {
+		if(getWorld().cellFromWorldPos(getX(), getY()) instanceof EndPathCell) {
+			if(getOneIntersectingObject(BaseGate.class) != null) {
+				this.getMovement().setNeutral();
+				attackGate();
+			} else if(getObjectsInRange(GameWorld.CELL_SIZE, BaseGate.class).size() > 0) {
+				BaseGate gate = (BaseGate) getObjectsInRange(GameWorld.CELL_SIZE * 2, BaseGate.class).get(0);
+				this.getMovement().setNeutral();
+				this.getMovement().add(new Vector(gate.getX() - getX(), gate.getY() - getY(), initalSpeed));
+			}
+		}
+
+	}
+
+	/**
 	 * Initializes the path for the zombie where it walks to.
 	 */
 	private void initializePath() {
 		path = getWorld().getOneRandomPath();
-		if (path.size() > 0) {
+		if(path.size() > 0) {
 			updateMovementAndRotation();
 			pathExists = true;
 		} else {
@@ -90,7 +108,8 @@ public class Zombie extends SmoothMover {
 	}
 
 	/**
-	 * Sets the direction and speed of the zombie, so it walks to the next point on its path.
+	 * Sets the direction and speed of the zombie, so it walks to the next point on
+	 * its path.
 	 */
 	private void updateMovementAndRotation() {
 		double speed = this.getSpeed();
@@ -102,7 +121,7 @@ public class Zombie extends SmoothMover {
 	/**
 	 * Sets a new target on the path for the zombie after reaching its last target.
 	 */
-	private void behaviourifTargetReached() {
+	private void behaviourIfTargetReached() {
 		this.targetedPathCellIndex += 1;
 		updateMovementAndRotation();
 	}
@@ -111,19 +130,19 @@ public class Zombie extends SmoothMover {
 	 * Slows down the zombie when walking over a slime field.
 	 */
 	private void slowDownIfOnSlimeField() {
-		if (getIntersectingObjects(SlimeField.class).size() > 0) {
-			if (!isSlowedDown()) {
+		if(getIntersectingObjects(SlimeField.class).size() > 0) {
+			if(!isSlowedDown()) {
 				slowDown(SlimeField.getDefaultSlowdown());
 			}
 		} else {
-			if (isSlowedDown()) {
+			if(isSlowedDown()) {
 				slowDown(0);
 			}
 		}
 	}
 
-	private boolean targetNodeIsNotPathEnd() {
-		return targetedPathCellIndex < path.size() - 1;
+	private boolean targetNodeIsPathEnd() {
+		return !(targetedPathCellIndex < path.size() - 1);
 	}
 
 	private int calcDestinationX() {
@@ -138,7 +157,7 @@ public class Zombie extends SmoothMover {
 	 * Drops coins for the player when the zombie has got no more health.
 	 */
 	private void dropCurrencyIfDead() {
-		if (health <= 0) {
+		if(health <= 0) {
 			getWorld().getGameState().getCoinsCounter().add(new Random().nextInt(3) + 4);
 			Greenfoot.playSound(DEATH_SOUND);
 			getWorld().removeObject(this);
@@ -149,12 +168,9 @@ public class Zombie extends SmoothMover {
 	 * Stops the movement and deals damage to the base gate when reaching it.
 	 */
 	public void attackGate() {
-		if (getOneIntersectingObject(BaseGate.class) != null) {
-			BaseGate gate = (BaseGate) getOneIntersectingObject(BaseGate.class);
-			this.slowDown(1);
-			double d = gate.getDurability();
-			d -= DEFAULT_DAMAGE * strength;
-			gate.setDurability(d);
+		BaseGate gate = (BaseGate) getOneIntersectingObject(BaseGate.class);
+		if(gate != null) {
+			gate.absorbDamage(DEFAULT_DAMAGE * strength);
 		}
 	}
 
@@ -182,7 +198,7 @@ public class Zombie extends SmoothMover {
 
 	public void slowDown(double slowdownFactor) {
 		this.setSpeed(getSpeed() * (1 - slowdownFactor));
-		if (this.getSpeed() == getInitalSpeed()) {
+		if(this.getSpeed() == getInitalSpeed()) {
 			slowedDown = false;
 		} else {
 			slowedDown = true;
