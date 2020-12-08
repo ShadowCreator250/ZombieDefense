@@ -12,12 +12,15 @@ import greenfoot.GreenfootImage;
  */
 public abstract class Cell extends Actor {
 
+	private static final String BACKGROUND_IMAGE_NAME = "cell-bg.png";
+
 	private int gridX;
 	private int gridY;
 
 	public Cell(int gridX, int gridY) {
 		this.gridX = gridX;
 		this.gridY = gridY;
+		setImage(getBgImageName());
 	}
 
 	/**
@@ -97,6 +100,10 @@ public abstract class Cell extends Actor {
 	@Override
 	public GameWorld getWorld() {
 		return (GameWorld) super.getWorld();
+	}
+
+	public String getBgImageName() {
+		return BACKGROUND_IMAGE_NAME;
 	}
 
 }

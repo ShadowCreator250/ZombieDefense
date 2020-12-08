@@ -24,7 +24,7 @@ public class GameWorld extends World {
 	private static final char START_CELL_PARSE_CHAR = 'S';
 	private static final char END_CELL_PARSE_CHAR = 'E';
 	private static final char TOWER_CELL_PARSE_CHAR = 'T';
-	private static final int TIME_TILL_SPAWN_WAVE = 300;
+	private static final int TIME_TILL_SPAWN_WAVE = 500;
 	private static final int MAX_WAVE_COUNT = 10;
 	private static final int ZOMBIES_ADDED_PER_WAVE = 2;
 	private static final int TIME_BETWEEN_SPAWNING_INTERVALLS = 40;
@@ -37,7 +37,7 @@ public class GameWorld extends World {
 	private int currentWaveIndex = -1;
 	private int timeTillWaveCountdown = TIME_TILL_SPAWN_WAVE;
 	private boolean isInSpawningProcess = false;
-	private int zombiesSpawned = 0;
+	private int numberOfZombiesSpawned = 0;
 	private int spawningIntervallCountdown = 0;
 
 	private PauseResumeButton pauseResumeButton = new PauseResumeButton();
@@ -79,14 +79,14 @@ public class GameWorld extends World {
 	private void spawningIntervalls() {
 		if(spawningIntervallCountdown > 0) {
 			spawningIntervallCountdown--;
-		} else if(spawningIntervallCountdown == 0 && zombiesSpawned < numberOfZombiesInWave(currentWaveIndex + 1)) {
+		} else if(spawningIntervallCountdown == 0 && numberOfZombiesSpawned < numberOfZombiesInWave(currentWaveIndex + 1)) {
 			spawningIntervallCountdown = TIME_BETWEEN_SPAWNING_INTERVALLS;
 			for (StartPathCell startCell : findAllCellsWithCellType(StartPathCell.class)) {
-				startCell.spawnZombie(waves.get(currentWaveIndex).get(zombiesSpawned));
-				zombiesSpawned++;
+				startCell.spawnZombie(waves.get(currentWaveIndex).get(numberOfZombiesSpawned));
+				numberOfZombiesSpawned++;
 			}
 		} else {
-			zombiesSpawned = 0;
+			numberOfZombiesSpawned = 0;
 			spawningIntervallCountdown = 0;
 			isInSpawningProcess = false;
 		}

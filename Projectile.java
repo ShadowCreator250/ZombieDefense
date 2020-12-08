@@ -46,6 +46,9 @@ public abstract class Projectile extends SmoothMover {
 			if(getWorld() != null) { // prevents IllegalStateException: Actor not in world
 				behaviorWhileMoving();
 			}
+			if(atWorldEdge()) {
+				getWorld().removeObject(this);
+			}
 		}
 	}
 

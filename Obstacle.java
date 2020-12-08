@@ -25,7 +25,7 @@ public abstract class Obstacle extends Actor {
 	 * Deletes the obstacle when clicking on it while using the delete tool. The player gets his coins back.
 	 */
 	private void checkRemoveObstacleClick() {
-		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1) {
+		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1 && Greenfoot.getMouseInfo() != null) {
 			GameState.MouseState mouseState = getWorld().getGameState().getMouseState();
 			if(mouseState == GameState.MouseState.DELETE_TOOL) {
 				getWorld().getGameState().getCoinsCounter().add(this.getPrice());

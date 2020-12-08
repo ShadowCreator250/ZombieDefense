@@ -22,6 +22,7 @@ Coin: https://www.pngkit.com/png/full/347-3474131_coin-smiley-emoji-pixel-art.pn
 Path: https://sutor-coaching.de/wp-content/uploads/sites/8/2018/04/tree-3092026_640_pixabay_neue-Pfade.jpg
 Dirt: https://diybook.de/sites/default/files/styles/amp_3_2/public/gartenboden_und_blumenerde_-_blumenerde.jpg?itok=-Amql0oL
 Gate: https://thumbs.dreamstime.com/b/closed-metal-fence-isolated-white-background-d-rendering-i-illustration-top-view-89691058.jpg
+Path: https://opengameart.org/sites/default/files/32x32GrassAndDirtPath.png
 
 Sounds:
 SniperTower_Shoot.wav: http://soundbible.com/1788-Sniper-Rifle.html

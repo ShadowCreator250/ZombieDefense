@@ -60,6 +60,7 @@ public class Zombie extends SmoothMover {
 			slowDownIfOnSlimeField();
 		}
 	}
+
 	private void initializePath() {
 		path = getWorld().getOneRandomPath();
 		if(path.size() > 0) {
