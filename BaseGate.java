@@ -5,7 +5,7 @@ public class BaseGate extends Actor {
 	
 	private static final String GATE_IMAGE_NAME = "Gate.png";
 	
-	public static double durability = 300;
+	private double durability = 300;
 	
 	public BaseGate() {
 		setImage(GATE_IMAGE_NAME);
@@ -21,5 +21,13 @@ public class BaseGate extends Actor {
 			Greenfoot.delay(50);
 			zombie.attackGate();
 		}
+	}
+	
+	public double getDurability() {
+		return durability;
+	}
+	
+	public void setDurability(double durability) {
+		this.durability = durability;
 	}
 }
