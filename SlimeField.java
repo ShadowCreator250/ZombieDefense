@@ -13,7 +13,7 @@ public class SlimeField extends Obstacle {
 	private static final int POINTS = 1500;
 
 	/**
-	 * Creates an object and its image.
+	 * Creates an slime field object and its image.
 	 */
 	public SlimeField() {
 		createImage(COLOR, POINTS);
