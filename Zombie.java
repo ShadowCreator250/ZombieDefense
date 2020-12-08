@@ -27,7 +27,7 @@ public class Zombie extends SmoothMover {
 	private int targetedPathCellIndex = 0;
 
 	public Zombie() {
-		this(1.0, 0.0, 1.0, 100);
+		this(1.0, 0.0, 0.5, 100);
 	}
 
 	/**
@@ -38,12 +38,10 @@ public class Zombie extends SmoothMover {
 	 */
 	public Zombie(double strength, double resistance, double speed, double health) {
 		super();
-		GreenfootImage img = new GreenfootImage(INIT_IMAGE_NAME);
-		img.scale((int) (img.getWidth() / 3), (int) (img.getHeight() / 3));
-		setImage(img);
+		setImage(makeScaledImage(OUTSIDE_IMAGE_NAME));
 		this.strength = strength;
 		this.resistance = resistance;
-		this.initalSpeed = speed * 0.5;
+		this.initalSpeed = speed;
 		this.setSpeed(initalSpeed);
 		this.health = health;
 		this.pathOffsetX = calcPathOffet();
@@ -68,6 +66,12 @@ public class Zombie extends SmoothMover {
 			}
 			dropCurrencyIfDead();
 		}
+	}
+
+	private GreenfootImage makeScaledImage(String imageName) {
+		GreenfootImage img = new GreenfootImage(imageName);
+		img.scale((int) (img.getWidth() / 3), (int) (img.getHeight() / 3));
+		return img;
 	}
 
 	private void initializePath() {
@@ -156,5 +160,13 @@ public class Zombie extends SmoothMover {
 
 	public void setAttacked(boolean attacked) {
 		this.attacked = attacked;
+	}
+
+	public int getPathOffsetX() {
+		return pathOffsetX;
+	}
+
+	public int getPathOffsetY() {
+		return pathOffsetY;
 	}
 }

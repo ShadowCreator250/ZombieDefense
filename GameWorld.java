@@ -24,19 +24,24 @@ public class GameWorld extends World {
 	private static final char START_CELL_PARSE_CHAR = 'S';
 	private static final char END_CELL_PARSE_CHAR = 'E';
 	private static final char TOWER_CELL_PARSE_CHAR = 'T';
+	private static final int TIME_TILL_SPAWN_WAVE = 300;
+	private static final int MAX_WAVE_COUNT = 10;
+	private static final int ZOMBIES_ADDED_PER_WAVE = 2;
+	private static final int TIME_BETWEEN_SPAWNING_INTERVALLS = 40;
 
 	private Cell[][] grid;
 	private boolean isPaused = true;
 	private int executionSpeed = DEFAULT_SPEED;
 	private List<List<PathCell>> pathsList;
+	private List<List<Zombie>> waves;
+	private int currentWaveIndex = -1;
+	private int timeTillWaveCountdown = TIME_TILL_SPAWN_WAVE;
+	private boolean isInSpawningProcess = false;
+	private int zombiesSpawned = 0;
+	private int spawningIntervallCountdown = 0;
 
 	private PauseResumeButton pauseResumeButton = new PauseResumeButton();
 	private GameState gameState = new GameState(100);
-
-	private int amountOfZombies = 2;
-	private int wave = 1;
-	private int maxWave = 10;
-	private int waveSpawnTime = 300;
 
 	public GameWorld() {
 		super(GRID_SIZE_X * CELL_SIZE, GRID_SIZE_Y * CELL_SIZE, 1);
@@ -46,21 +51,44 @@ public class GameWorld extends World {
 		definePaintOrder();
 		loadWorldFromTextFile("testworld2");
 		this.pathsList = computeAllPossiblePaths();
-		prepare();
+		this.waves = prepareWaves();
 	}
 
 	@Override
 	public void act() {
 		if(!isPaused()) {
 			if(getObjects(Zombie.class).size() == 0) {
-				if(waveSpawnTime > 0) {
-					waveSpawnTime--;
-				} else if(waveSpawnTime == 0 && wave < maxWave) {
-					startNextWave();
-					wave++;
-					waveSpawnTime = 300;
-				}
+				countdownTillNextWave();
 			}
+			if(isInSpawningProcess) {
+				spawningIntervalls();
+			}
+		}
+	}
+
+	private void countdownTillNextWave() {
+		if(timeTillWaveCountdown > 0) {
+			timeTillWaveCountdown--;
+		} else if(timeTillWaveCountdown == 0 && currentWaveIndex < MAX_WAVE_COUNT) {
+			isInSpawningProcess = true;
+			currentWaveIndex++;
+			timeTillWaveCountdown = TIME_TILL_SPAWN_WAVE;
+		}
+	}
+
+	private void spawningIntervalls() {
+		if(spawningIntervallCountdown > 0) {
+			spawningIntervallCountdown--;
+		} else if(spawningIntervallCountdown == 0 && zombiesSpawned < numberOfZombiesInWave(currentWaveIndex + 1)) {
+			spawningIntervallCountdown = TIME_BETWEEN_SPAWNING_INTERVALLS;
+			for (StartPathCell startCell : findAllCellsWithCellType(StartPathCell.class)) {
+				startCell.spawnZombie(waves.get(currentWaveIndex).get(zombiesSpawned));
+				zombiesSpawned++;
+			}
+		} else {
+			zombiesSpawned = 0;
+			spawningIntervallCountdown = 0;
+			isInSpawningProcess = false;
 		}
 	}
 
@@ -68,6 +96,7 @@ public class GameWorld extends World {
 		removeAllObjects();
 		placeCells();
 		placeGUI();
+		addObject(new BaseGate(), 480, 520);
 	}
 
 	private void placeGUI() {
@@ -93,14 +122,14 @@ public class GameWorld extends World {
 	public void started() {
 		super.started();
 		resume();
-		getPauseResumeButton().updatePauseResumeButten();
+		pauseResumeButton.updatePauseResumeButten();
 	}
 
 	@Override
 	public void stopped() {
 		super.stopped();
 		pause();
-		getPauseResumeButton().updatePauseResumeButten();
+		pauseResumeButton.updatePauseResumeButten();
 	}
 
 	private void fillGridArrayWithEmptyCells() {
@@ -215,6 +244,52 @@ public class GameWorld extends World {
 		for (Cell cell : cells) {
 			((PathCell) cell).evaluatePathSectionType();
 		}
+	}
+
+	/**
+	 * Prepares the waves for this game
+	 */
+	private List<List<Zombie>> prepareWaves() {
+		List<List<Zombie>> result = new ArrayList<>();
+		for (int i = 1; i <= MAX_WAVE_COUNT; i++) {
+			result.add(createWave(i));
+		}
+		return result;
+	}
+
+	private int numberOfZombiesInWave(int waveNumber) {
+		return waveNumber * ZOMBIES_ADDED_PER_WAVE;
+	}
+
+	/**
+	 * Creates a List of Zombies with randomized attributes
+	 * 
+	 * @param amountOfZombies how many Zombies should there be in the wave
+	 * @return a List of Zombies
+	 */
+	private List<Zombie> createWave(int waveNumber) {
+		List<Zombie> wave = new ArrayList<Zombie>();
+		int numberOfZombies = numberOfZombiesInWave(waveNumber);
+		for (int i = 0; i < numberOfZombies; i++) {
+			double strength = 0 + rint(new Random().nextDouble() * 0.6, 1);
+			double resistance = 0 + rint(new Random().nextDouble() * 0.6, 1);
+			double speed = 0.5 + rint(new Random().nextDouble() * 0.5 - 0.25, 1);
+			double health = 100 + (new Random().nextInt(76) - 25);
+			Zombie z = new Zombie(strength, resistance, speed, health);
+			wave.add(z);
+		}
+		return wave;
+	}
+
+	/**
+	 * Rounds the given value to the given decimal places
+	 *
+	 * @param value         the value to be rounded
+	 * @param decimalPoints the amount of decimal places
+	 */
+	private static double rint(double value, int decimalPoints) {
+		double d = Math.pow(10, decimalPoints);
+		return Math.rint(value * d) / d;
 	}
 
 	private BufferedWriter getBufferedWriter(String filePath) throws IOException {
@@ -366,52 +441,6 @@ public class GameWorld extends World {
 
 	public GameState getGameState() {
 		return gameState;
-	}
-
-	/**
-	 * Bereite die Welt f�r den Programmstart vor. Das hei�t: Erzeuge die
-	 * Anfangs-Objekte und f�ge sie der Welt hinzu.
-	 */
-	private void prepare() {
-		for (Zombie zombie : createWaveOne()) {
-			addObject(zombie, 0, 0);
-		}
-		addObject(new BaseGate(), 480, 520);
-		createWaveOne().clear();
-	}
-
-	private List<Zombie> createWaveOne() {
-		List<Zombie> waveOne = new ArrayList<Zombie>();
-		for (int i = 0; i < amountOfZombies; i++) {
-			double strength = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
-			double resistance = 0 + ((Math.rint(new Random().nextDouble() * 10)) / 10);
-			double speed = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
-			double health = 100 + ((Math.rint(new Random().nextDouble() * 500)) / 10);
-			Zombie z = new Zombie(strength, resistance, speed, health);
-			waveOne.add(z);
-		}
-		return waveOne;
-	}
-
-	private List<Zombie> createNextWave() {
-		List<Zombie> nextWave = new ArrayList<Zombie>();
-		for (int i = 0; i < amountOfZombies; i++) {
-			double strength = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
-			double resistance = 0 + ((Math.rint(new Random().nextDouble() * 10)) / 10);
-			double speed = 1 - ((Math.rint(new Random().nextDouble() * 10)) / 10);
-			double health = 50 + ((Math.rint(new Random().nextDouble() * 500)) / 10);
-			Zombie z = new Zombie(strength, resistance, speed, health);
-			nextWave.add(z);
-		}
-		return nextWave;
-	}
-
-	private void startNextWave() {
-		amountOfZombies += 2;
-		for (Zombie zombie : createNextWave()) {
-			addObject(zombie, 0, 0);
-		}
-		createNextWave().clear();
 	}
 
 }
