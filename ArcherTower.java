@@ -3,7 +3,7 @@ import greenfoot.Greenfoot;
 public class ArcherTower extends Tower {
 
 	public static final int PRICE = 5;
-	private static final int DEFAULT_DAMAGE = 10;
+	private static final int DEFAULT_DAMAGE = 15;
 	private static final int DEFAULT_RANGE = 160;
 	private static final int DEFAULT_RELOAD_TIME = 40;
 	private static final int ZOMBIE_MOVEMENT_FORWARD_PREDICTION = 5;
@@ -17,7 +17,7 @@ public class ArcherTower extends Tower {
 	public int getPrice() {
 		return PRICE;
 	}
-	
+
 	protected void shootProjectile(int destinationX, int destinationY, int damage) {
 		Arrow arrow = new Arrow(destinationX, destinationY, damage);
 		getWorld().addObject(arrow, getX(), getY());

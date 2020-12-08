@@ -99,13 +99,20 @@ public abstract class PathCell extends Cell {
 	}
 
 	/**
+	 * evaluate the existence of walls that could neighbour the cell<br>
+	 * <br>
 	 * [0] - to the right<br>
 	 * [1] - below<br>
 	 * [2] - to the left<br>
 	 * [3] - above<br>
-	 * clockwise rotation
+	 * (clockwise rotation)<br>
+	 * <br>
+	 * if left & above = only left is true<br>
+	 * if left & bottom = only left is true<br>
+	 * if right & above = only right is true<br>
+	 * if right & below = only right is true<br>
 	 * 
-	 * @return the array
+	 * @return the array that indicates where a wall is.
 	 */
 	public boolean[] evaluateExistenceOfWorldEdgesAsNeighbours() {
 		boolean[] result = { false, false, false, false };
