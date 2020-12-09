@@ -71,8 +71,8 @@ public class Zombie extends SmoothMover {
 					behaviourIfReachedEndCell();
 				}
 			}
-			dropCurrencyIfDead();
 			slowDownIfOnSlimeField();
+			dropCurrencyIfDead();
 		}
 	}
 

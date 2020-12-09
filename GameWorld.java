@@ -56,7 +56,8 @@ public class GameWorld extends World {
 		this.grid = new Cell[GRID_SIZE_X][GRID_SIZE_Y];
 		fillGridArrayWithEmptyCells();
 		definePaintOrder();
-		loadWorldFromTextFile("testworld2");
+		loadWorldFromTextFile("world1");
+		// fillWorld(); // for an empty world
 		this.pathsList = computeAllPossiblePaths();
 		this.waves = prepareWaves();
 		initCounter();
@@ -112,8 +113,9 @@ public class GameWorld extends World {
 			for (BaseGate baseGate : gates) {
 				result += Math.rint(baseGate.getDurability());
 			}
+			result /= gates.size();
 		}
-		return result / gates.size();
+		return result;
 	}
 
 	private void fillWorld() {
@@ -213,25 +215,9 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * Finds the first {@link Cell} with a given Cell type in the grid.
-	 * 
-	 * @param type
-	 * @return The first {@link Cell} with the given type.<br>
-	 *         Returns <code>null<code> if no {@link Cell} is found.
-	 */
-	private <T extends Cell> T findFirstCellWithCellType(Class<T> cls) {
-		for (int x = 0; x < grid.length; x++) {
-			for (int y = 0; y < grid[0].length; y++) {
-				if(cls.isInstance(grid[x][y])) {
-					return (T) grid[x][y];
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Finds all {@link Cell}s with a given Cell type in the grid.
+	 * Finds all {@link Cell}s with a given Cell type in the grid. <br>
+	 * <br>
+	 * source: stackoverflow
 	 * 
 	 * @param type
 	 * @return A List of {@link Cell}s with the given type.<br>
@@ -333,7 +319,8 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * Rounds the given value to the given decimal places
+	 * Rounds the given value to the given decimal places<br>
+	 * source: wiki.byte-welt.net
 	 *
 	 * @param value         the value to be rounded
 	 * @param decimalPoints the amount of decimal places
@@ -358,7 +345,8 @@ public class GameWorld extends World {
 
 	/**
 	 * Saves the current worlds grid in a text file from where it can be loaded
-	 * again.
+	 * again.<br>
+	 * source:codejava.com
 	 * 
 	 * Saves the file in the "worlds" folder
 	 * 
@@ -406,9 +394,10 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * Loads a grid from a text file into the current world.
+	 * Loads a grid from a text file into the current world.<br>
 	 * 
-	 * Loads the file from the "worlds" folder
+	 * Loads the file from the "worlds" folder<br>
+	 * source:codejava.com
 	 * 
 	 * @param fileName name of the file without file type (no ".txt")
 	 */

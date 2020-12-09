@@ -9,7 +9,8 @@ import javax.imageio.ImageIO;
 import greenfoot.GreenfootImage;
 
 /**
- * combines two images from storage to one
+ * combines two images from storage to one <br>
+ * source: stackoverflow
  */
 public class ImageCombiner {
 
@@ -81,7 +82,8 @@ public class ImageCombiner {
 	 * {@link BufferedImage}
 	 * 
 	 * (could be done with only GreenfootImage but I was too lazy and was curious
-	 * how to do it with only Java)
+	 * how to do it with only Java)<br>
+	 * source: Greenfoot Forum
 	 * 
 	 * @return
 	 */

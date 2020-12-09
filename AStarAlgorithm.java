@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * A very efficient algorithm to find the shortest path between two points
+ * A very efficient algorithm to find the shortest path between two points <br>
+ * source: Youtube Tutorial Sebastian Lague
  */
 public class AStarAlgorithm {
 

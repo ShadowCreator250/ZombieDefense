@@ -54,6 +54,7 @@ public abstract class Cell extends Actor {
 		world.replaceCellInGrid(otherCell);
 		world.addObject(otherCell, this.getX(), this.getY());
 		world.removeObject(this);
+		world.computePathSectionTypes();
 	}
 
 	/**
