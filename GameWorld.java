@@ -124,6 +124,7 @@ public class GameWorld extends World {
 		addObject(pauseResumeButton, getWidth() / 2, pauseResumeButton.getImage().getHeight() + 4);
 		addObject(cursorImage, 0, 0);
 		addObject(coinsCounter, getWidth() / 4, coinsCounter.getImage().getHeight() / 2 + 4);
+		addObject(lifePointsCounter, getWidth() / 4 * 3, lifePointsCounter.getImage().getHeight() / 2 + 4);
 		GameSpeedControlButton speed20Button = new GameSpeedControlButton(20, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[0],
 				GameSpeedControlButton.ACTIVE_BUTTON_IMAGE_NAMES[0]);
 		GameSpeedControlButton speed80Button = new GameSpeedControlButton(80, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[1],
