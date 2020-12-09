@@ -24,7 +24,7 @@ public class MenuElement extends Button {
 		this.yOffset = yOffset;
 		this.mouseState = mouseState;
 		this.price = price;
-		parentMenu.addToList(this);
+		parentMenu.addToMenuElementsList(this);
 	}
 
 	public void tryAddPriceTagToWorld() {

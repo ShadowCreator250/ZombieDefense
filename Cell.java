@@ -56,12 +56,18 @@ public abstract class Cell extends Actor {
 		world.removeObject(this);
 	}
 
+	/**
+	 * get a list of the direct or all neighbours
+	 * 
+	 * @param withCorners all neighbours? Or only the direct ones
+	 * @return the list of neighbours
+	 */
 	public List<Cell> getNeighbourCells(boolean withCorners) {
 		List<Cell> neighbours = new ArrayList<>();
 		Cell[][] grid = getWorld().getGrid();
 		for (int x = -1; x <= 1; x++) {
 			for (int y = -1; y <= 1; y++) {
-				if((x == 0 && y == 0) || (withCorners || isCornerBlockCheck(x, y))) {
+				if((x == 0 && y == 0) || (withCorners || isInCornerCheck(x, y))) {
 					continue;
 				}
 				int checkX = this.getGridX() + x;
@@ -74,7 +80,7 @@ public abstract class Cell extends Actor {
 		return neighbours;
 	}
 
-	private boolean isCornerBlockCheck(int x, int z) {
+	private boolean isInCornerCheck(int x, int z) {
 		if(Math.abs(x) == 1 && Math.abs(z) == 1) {
 			return true;
 		}

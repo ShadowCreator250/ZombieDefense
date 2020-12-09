@@ -5,7 +5,8 @@ import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 
 /**
- * Defines the plan for the buttons, but needs to be specialized as one of the subclasses.
+ * Defines the plan for the buttons, but needs to be specialized as one of the
+ * subclasses.
  */
 public abstract class Button extends Actor {
 
@@ -41,8 +42,14 @@ public abstract class Button extends Actor {
 		}
 	}
 
+	/**
+	 * what happens when the button is clicked
+	 */
 	protected abstract void clickAction();
 
+	/**
+	 * updates the image accordingly to the current state
+	 */
 	public void updateImage() {
 		if(active) {
 			setImage(getActiveImage());

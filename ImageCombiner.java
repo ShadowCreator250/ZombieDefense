@@ -8,6 +8,9 @@ import javax.imageio.ImageIO;
 
 import greenfoot.GreenfootImage;
 
+/**
+ * combines two images from storage to one
+ */
 public class ImageCombiner {
 
 	private File basePath;
@@ -29,6 +32,11 @@ public class ImageCombiner {
 		this.fgImgName = fgImgName;
 	}
 
+	/**
+	 * combines two images into a {@link BufferedImage}
+	 * 
+	 * @return the BufferedImage
+	 */
 	public BufferedImage combine() {
 		BufferedImage image = null;
 		try {
@@ -68,6 +76,15 @@ public class ImageCombiner {
 
 	}
 
+	/**
+	 * combines two images into one GreenfootImage image using Javas
+	 * {@link BufferedImage}
+	 * 
+	 * (could be done with only GreenfootImage but I was too lazy and was curious
+	 * how to do it with only Java)
+	 * 
+	 * @return
+	 */
 	public GreenfootImage combineToGFImg() {
 		BufferedImage bufImage = this.combine();
 

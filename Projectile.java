@@ -48,15 +48,21 @@ public abstract class Projectile extends SmoothMover {
 			}
 			if(getWorld() != null) { // prevents IllegalStateException: Actor not in world
 				behaviorWhileMoving();
-				if(atWorldEdge()) {
-					getWorld().removeObject(this);
-				}
+			}
+			if(getWorld() != null && atWorldEdge()) {
+				getWorld().removeObject(this);
 			}
 		}
 	}
 
+	/**
+	 * this is executed while the projectile flies
+	 */
 	protected abstract void behaviorWhileMoving();
 
+	/**
+	 * this is executed when the projectile reaches its destination
+	 */
 	protected abstract void behaviourIfReachedDestination();
 
 	/**

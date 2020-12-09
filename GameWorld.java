@@ -13,6 +13,9 @@ import java.util.Random;
 import greenfoot.Greenfoot;
 import greenfoot.World;
 
+/**
+ * the world where everything is located in and is happening in
+ */
 public class GameWorld extends World {
 
 	public static final int GRID_SIZE_X = 15;

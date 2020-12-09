@@ -111,8 +111,21 @@ public abstract class Tower extends Actor {
 
 	public abstract int getPrice();
 
+	/**
+	 * 
+	 * @return how many steps forward the tower thinks the {@link Zombie} will walk
+	 *         in the time while the {@link Projectile} flies towards it
+	 */
 	public abstract int getZombieMovementForwardPrediction();
 
+	/**
+	 * get the {@link Projectile} respective for that Tower
+	 * 
+	 * @param destinationX x-coordinate where the projectile should fly towards
+	 * @param destinationY y-coordinate where the projectile should fly towards
+	 * @param damage       how much damage the projectile will deal if it hits
+	 * @return the projectile
+	 */
 	public abstract Projectile getProjetile(int destinationX, int destinationY, int damage);
 
 	@Override

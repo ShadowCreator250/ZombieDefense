@@ -1,7 +1,8 @@
 import greenfoot.Greenfoot;
 
 /**
- * A special tower with low range, medium damage and medium reload time. It attacks zombies with bombs and is more expensive than the archer tower.
+ * A special tower with low range, medium damage and medium reload time. It
+ * attacks zombies with bombs and is more expensive than the archer tower.
  */
 public class BombTower extends Tower {
 
@@ -23,13 +24,13 @@ public class BombTower extends Tower {
 	public int getPrice() {
 		return PRICE;
 	}
-	
+
 	/**
 	 * Shoots an bomb which attacks all zombies in a small range around its impact.
 	 * 
 	 * @param destinationX - the x-coordinate of the target
 	 * @param destinationY - the y-coordinate of the target
-	 * @param damage - the damage an bomb deals
+	 * @param damage       - the damage an bomb deals
 	 */
 	protected void shootProjectile(int destinationX, int destinationY, int damage) {
 		Bomb bomb = new Bomb(destinationX, destinationY, damage);

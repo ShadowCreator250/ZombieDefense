@@ -4,20 +4,22 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
 /**
- * A special projectile that is shot by an bomb tower. It can attack several zombies in a small range.
+ * A special projectile that is shot by an bomb tower. It can attack several
+ * zombies in a small range.
  */
 public class Bomb extends Projectile {
 
-	public static final String BOMB_IMAGE_NAME = "bomb-projectile.png";
+	private static final String BOMB_IMAGE_NAME = "bomb-projectile.png";
 	private static final int DEFAULT_RANGE = PathCell.PATH_WIDTH - 5;
 	private static final String EXPLOSION_SOUND = "Bomb_Explosion.wav";
 	private static final double DEFAULT_SPEED = 1.5;
-	
+
 	/**
 	 * Creates an bomb object based on a projectile. Scales and sets its image.
+	 * 
 	 * @param destinationX - the x-coordinate of the target
 	 * @param destinationY - the x-coordinate of the target
-	 * @param damage - the damage dealt by the bomb
+	 * @param damage       - the damage dealt by the bomb
 	 */
 	public Bomb(int destinationX, int destinationY, int damage) {
 		super(destinationX, destinationY, DEFAULT_SPEED, BOMB_IMAGE_NAME, damage);
@@ -27,7 +29,8 @@ public class Bomb extends Projectile {
 	}
 
 	/**
-	 * Attacks other targets in a small range around the original target when reaching it, then gets removed.
+	 * Attacks other targets in a small range around the original target when
+	 * reaching it, then gets removed.
 	 */
 	@Override
 	protected void behaviourIfReachedDestination() {

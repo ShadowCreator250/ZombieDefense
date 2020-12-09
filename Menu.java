@@ -3,6 +3,9 @@ import java.util.List;
 
 import greenfoot.Actor;
 
+/**
+ * the menu is for selecting the mouse mode
+ */
 public class Menu extends Actor {
 
 	public static final String BACKGROUND_IMAGE_NAME = "menu-bg.png";
@@ -37,7 +40,7 @@ public class Menu extends Actor {
 		}
 	}
 
-	public void addToList(MenuElement element) {
+	public void addToMenuElementsList(MenuElement element) {
 		menuElements.add(element);
 	}
 
