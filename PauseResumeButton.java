@@ -1,3 +1,6 @@
+/**
+ * A special button that is used either to pause or to resume the game.
+ */
 public class PauseResumeButton extends Button {
 
 	public static final String RESUME_BUTTON_IMAGE_NAME = "resume-button.png";
@@ -12,7 +15,10 @@ public class PauseResumeButton extends Button {
 		pauseResumeToggle();
 	}
 
-	public void updatePauseResumeButten() {
+	/**
+	 * Sets the correct image for pausing or resuming.
+	 */
+	public void updatePauseResumeButton() {
 		if(getWorld().isPaused()) {
 			setImage(getIdleImage());
 			setActive(false);
@@ -22,6 +28,9 @@ public class PauseResumeButton extends Button {
 		}
 	}
 
+	/**
+	 * Pauses or resumes the game when pressing the button
+	 */
 	public void pauseResumeToggle() {
 		GameWorld world = getWorld();
 		if(isActive()) { // pause game
