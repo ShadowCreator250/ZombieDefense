@@ -1,3 +1,6 @@
+/**
+ * A special button that is used to open or close the menu.
+ */
 public class MenuExpendButton extends Button {
 
 	public static final String IDLE_IMAGE_NAME = "menu-expand-button.png";
@@ -12,6 +15,9 @@ public class MenuExpendButton extends Button {
 		toggleMenu();
 	}
 
+	/**
+	 * Either opens or closes the menu when pressing the button.
+	 */
 	private void toggleMenu() {
 		setActive(!isActive());
 		Menu menu = new Menu();

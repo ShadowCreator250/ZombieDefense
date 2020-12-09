@@ -122,14 +122,14 @@ public class GameWorld extends World {
 	public void started() {
 		super.started();
 		resume();
-		pauseResumeButton.updatePauseResumeButten();
+		pauseResumeButton.updatePauseResumeButton();
 	}
 
 	@Override
 	public void stopped() {
 		super.stopped();
 		pause();
-		pauseResumeButton.updatePauseResumeButten();
+		pauseResumeButton.updatePauseResumeButton();
 	}
 
 	private void fillGridArrayWithEmptyCells() {

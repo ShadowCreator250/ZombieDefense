@@ -4,6 +4,9 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 import greenfoot.MouseInfo;
 
+/**
+ * Defines the plan for the buttons, but needs to be specialized as one of the subclasses.
+ */
 public abstract class Button extends Actor {
 
 	public static final GreenfootImage TEMP_IDLE_IMG = generateTempIdleImage(32);
@@ -27,6 +30,9 @@ public abstract class Button extends Actor {
 		setImage(idleImage);
 	}
 
+	/**
+	 * Presses the button when clicking with the mouse on it.
+	 */
 	@Override
 	public void act() {
 		MouseInfo mouse = Greenfoot.getMouseInfo();
@@ -45,6 +51,12 @@ public abstract class Button extends Actor {
 		}
 	}
 
+	/**
+	 * Generates the image for an idle button.
+	 * 
+	 * @param size - the size of the button
+	 * @return the image for the button
+	 */
 	public static GreenfootImage generateTempIdleImage(int size) {
 		GreenfootImage img = new GreenfootImage(size, size);
 		img.setColor(Color.BLACK);
@@ -54,6 +66,12 @@ public abstract class Button extends Actor {
 		return img;
 	}
 
+	/**
+	 * Generates the image for an active button.
+	 * 
+	 * @param size - the size of the button
+	 * @return the image for the button
+	 */
 	public static GreenfootImage generateTempActiveImage(int size) {
 		GreenfootImage img = new GreenfootImage(size, size);
 		img.setColor(Color.WHITE);
