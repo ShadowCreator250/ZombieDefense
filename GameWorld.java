@@ -34,6 +34,7 @@ public class GameWorld extends World {
 	private int executionSpeed = DEFAULT_SPEED;
 	private List<List<PathCell>> pathsList;
 	private List<List<Zombie>> waves;
+	private List<BaseGate> gates;
 	private int currentWaveIndex = -1;
 	private int timeTillWaveCountdown = TIME_TILL_SPAWN_WAVE;
 	private boolean isInSpawningProcess = false;
@@ -96,7 +97,7 @@ public class GameWorld extends World {
 		removeAllObjects();
 		placeCells();
 		placeGUI();
-		addObject(new BaseGate(), 480, 520);
+		placeAllGates();
 	}
 
 	private void placeGUI() {
@@ -116,6 +117,13 @@ public class GameWorld extends World {
 	private void definePaintOrder() {
 		setPaintOrder(GameState.class, Counter.class, Button.class, PriceTag.class, Menu.class, Projectile.class, Zombie.class, Tower.class,
 				Obstacle.class, BaseGate.class, PathCell.class, TowerCell.class, NormalCell.class);
+	}
+
+	private void placeAllGates() {
+		for (EndPathCell endCell : findAllCellsWithCellType(EndPathCell.class)) {
+			endCell.spawnBaseGate();
+			gates.add(endCell.getGate());
+		}
 	}
 
 	@Override
