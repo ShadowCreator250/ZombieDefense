@@ -4,6 +4,10 @@ import java.util.List;
 import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
+/**
+ * Defines the plan for all path cells, that result in the whole path. 
+ * Needs to be specialized to one of its subclasses.
+ */
 public abstract class PathCell extends Cell {
 
 	private static final String DEAD_END_PATH_IMAGE_NAME = "dead_end-path.png";
@@ -38,11 +42,17 @@ public abstract class PathCell extends Cell {
 		super(gridX, gridY);
 	}
 
+	/**
+	 * @see checkAddObstacleClick()
+	 */
 	@Override
 	public void act() {
 		checkAddObstacleClick();
 	}
 
+	/**
+	 * Checks if an special obstacle is going to be placed on the cell and adds this onto it.
+	 */
 	private void checkAddObstacleClick() {
 		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1 && Greenfoot.getMouseInfo() != null) {
 			if(!(getWorld().getObjectsAt(getX(), getY(), Obstacle.class).size() > 0)) {

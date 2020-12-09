@@ -2,7 +2,7 @@ import greenfoot.Actor;
 
 /**
  * An object which blocks the way for the zombies to get into the survivors
- * base. The player has to avoid that zombies attacking it.
+ * base. The player has to avoid that zombies attack it.
  */
 
 public class BaseGate extends Actor {
