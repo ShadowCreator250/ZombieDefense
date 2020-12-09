@@ -3,6 +3,9 @@ import java.util.List;
 
 import greenfoot.GreenfootImage;
 
+/**
+ * A special button that is used to change the game speed.
+ */
 public class GameSpeedControlButton extends Button {
 
 	public static final String[] IDLE_BUTTON_IMAGE_NAMES = { "fastforward-1-button.png", "fastforward-2-button.png" };
@@ -22,6 +25,9 @@ public class GameSpeedControlButton extends Button {
 		speedToggle();
 	}
 
+	/**
+	 * Changes the game speed in different ways when needed.
+	 */
 	private void speedToggle() {
 		GameWorld world = getWorld();
 		if(world.isPaused()) { // resume game with custom speed
