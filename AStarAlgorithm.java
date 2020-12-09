@@ -4,20 +4,33 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A very efficient algorithm to find the shortest path between two points
+ */
 public class AStarAlgorithm {
 
 	private List<PathCell> path;
 	private PathCell startNode;
 	private PathCell targetNode;
 
+	/**
+	 * A very efficient algorithm to find the shortest path between two points
+	 * 
+	 * @param startNode  the starting point
+	 * @param targetNode the destination point
+	 */
 	public AStarAlgorithm(PathCell startNode, PathCell targetNode) {
 		this.startNode = startNode;
 		this.targetNode = targetNode;
 		this.path = findPath();
 	}
 
+	/**
+	 * computes the path
+	 * 
+	 * @return the shortest possible path
+	 */
 	private List<PathCell> findPath() {
-
 		List<PathCell> openList = new ArrayList<>();
 		Set<PathCell> closedSet = new HashSet<>();
 		openList.add(startNode);
@@ -57,6 +70,15 @@ public class AStarAlgorithm {
 		return null;
 	}
 
+	/**
+	 * because the path is essentially stored through the parent Cells of
+	 * {@link PathCell}s,<br>
+	 * the path has to b retraced to be packed in a list
+	 * 
+	 * @param startNode
+	 * @param endNode
+	 * @return the path as a list
+	 */
 	private List<PathCell> retracePath(PathCell startNode, PathCell endNode) {
 		List<PathCell> path = new ArrayList<>();
 		PathCell currentNode = endNode;
@@ -68,6 +90,14 @@ public class AStarAlgorithm {
 		return path;
 	}
 
+	/**
+	 * calculates the cost of traveling in a somewhat straight line from point A to
+	 * point B
+	 * 
+	 * @param nodeA point A
+	 * @param nodeB point B
+	 * @return
+	 */
 	private int getDistanceBetweenTwoNodes(Cell nodeA, Cell nodeB) {
 		int result = 0;
 		int diagonalCost = 14;

@@ -5,8 +5,8 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
 /**
- * Defines the plan for all path cells, that result in the whole path. 
- * Needs to be specialized to one of its subclasses.
+ * Defines the plan for all path cells, that result in the whole path. Needs to
+ * be specialized to one of its subclasses.
  */
 public abstract class PathCell extends Cell {
 
@@ -51,7 +51,8 @@ public abstract class PathCell extends Cell {
 	}
 
 	/**
-	 * Checks if an special obstacle is going to be placed on the cell and adds this onto it.
+	 * checks if this PathCell is clicked with a tool to place an {@link Obstacle}
+	 * and places it
 	 */
 	private void checkAddObstacleClick() {
 		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1 && Greenfoot.getMouseInfo() != null) {
@@ -68,6 +69,12 @@ public abstract class PathCell extends Cell {
 		}
 	}
 
+	/**
+	 * sets the image rotation to a multiple of 90 degrees<br>
+	 * 0-left, 1-down, 2-left, 3-up
+	 * 
+	 * @param rotation the factor for 90
+	 */
 	public void setImageRotation(int rotation) {
 		GreenfootImage img = getImage();
 		img.rotate(rotation * 90);
@@ -75,6 +82,10 @@ public abstract class PathCell extends Cell {
 
 	}
 
+	/**
+	 * 
+	 * @return a List containing the {@link PathCell}s that neighbour this cell
+	 */
 	public List<PathCell> getNeighbouringPathCells() {
 		List<Cell> neighbourCells = getNeighbourCells(false);
 		List<PathCell> neighbourPathCells = new ArrayList<>(neighbourCells.size());
@@ -87,13 +98,15 @@ public abstract class PathCell extends Cell {
 	}
 
 	/**
+	 * evaluate to which sides there exists a {@link PathCell} as neighbour
+	 * 
 	 * [0] - to the right<br>
 	 * [1] - below<br>
 	 * [2] - to the left<br>
 	 * [3] - above<br>
 	 * clockwise rotation
 	 * 
-	 * @return the array
+	 * @return the array representing the four sides
 	 */
 	public boolean[] evaluateExistenceOfNeighbouringPathCells() {
 		boolean[] result = { false, false, false, false };
@@ -150,6 +163,16 @@ public abstract class PathCell extends Cell {
 		return result;
 	}
 
+	/**
+	 * evaluates to which side of the cell is a neighbour or a world edge<br>
+	 * * <br>
+	 * [0] - to the right<br>
+	 * [1] - below<br>
+	 * [2] - to the left<br>
+	 * [3] - above<br>
+	 * 
+	 * @return an array representing that
+	 */
 	public boolean[] logicalOrNeighbouringPathCellsWithWorldEdges() {
 		boolean[] result = evaluateExistenceOfNeighbouringPathCells();
 		boolean[] we = evaluateExistenceOfWorldEdgesAsNeighbours();
@@ -159,8 +182,15 @@ public abstract class PathCell extends Cell {
 		return result;
 	}
 
+	/**
+	 * evaluate the type of path section that influences the visualization
+	 */
 	public abstract void evaluatePathSectionType();
 
+	/**
+	 * evaluate the type of path section that influences the visualization based on
+	 * the count of neighbours and in which direction they are located
+	 */
 	public void evaluatePathSectionType(int neighboursCount, boolean[] neighboursExisting) {
 		switch (neighboursCount) {
 			case 1:
@@ -222,32 +252,69 @@ public abstract class PathCell extends Cell {
 		this.pathSectionType = pathSectionType;
 	}
 
+	/**
+	 * a method for the {@link AStarAlgorithm}
+	 * 
+	 * @return the fCost of this Cell
+	 */
 	public int fCost() {
 		return gCost + hCost;
 	}
 
+	/**
+	 * a method for the {@link AStarAlgorithm}
+	 * 
+	 * @return the hCost of this Cell
+	 */
 	public int gethCost() {
 		return hCost;
 	}
 
+	/**
+	 * a method for the {@link AStarAlgorithm}
+	 * 
+	 * @return the gCost of this Cell
+	 */
 	public int getgCost() {
 		return gCost;
 	}
 
+	/**
+	 * a method for the {@link AStarAlgorithm}
+	 * 
+	 * @param hCost the hCost for this Cell
+	 */
 	public void sethCost(int hCost) {
 		this.hCost = hCost;
 	}
 
+	/**
+	 * a method for the {@link AStarAlgorithm}
+	 * 
+	 * @param hCost the gCost for this Cell
+	 */
 	public void setgCost(int gCost) {
 		this.gCost = gCost;
 	}
 
+	/**
+	 * a method for the {@link AStarAlgorithm}
+	 * 
+	 * @return the Parent of this Cell - is the cell that comes before this in the
+	 *         Path
+	 */
 	public PathCell getParent() {
 		return parent;
 	}
 
-	public void setParent(PathCell currentNode) {
-		this.parent = currentNode;
+	/**
+	 * sets the parent of this Cell<br>
+	 * a method for the {@link AStarAlgorithm}
+	 * 
+	 * @param parentNode the parent node
+	 */
+	public void setParent(PathCell parentNode) {
+		this.parent = parentNode;
 	}
 
 }
