@@ -1,5 +1,6 @@
 /**
- * An abstract class that determines the plan for a projectile, but needs to be specialized as a special projectile (one of the subclasses).
+ * An abstract class that determines the plan for a projectile, but needs to be
+ * specialized as a special projectile (one of the subclasses).
  */
 public abstract class Projectile extends SmoothMover {
 
@@ -10,15 +11,16 @@ public abstract class Projectile extends SmoothMover {
 	private int destinationY;
 	private double speed;
 	private int damage;
-	
+
 	/**
-	 * Creates an projectile object with the given characteristics, used at its subclasses.
+	 * Creates an projectile object with the given characteristics, used at its
+	 * subclasses.
 	 * 
 	 * @param destinationX - the x-coordinate of the target
-	 * @param destinationY - the y-coordinate of the target 
-	 * @param speed - how fast the projectile ist
-	 * @param imageName - name of the image file to set
-	 * @param damage - the damage the projectile deals
+	 * @param destinationY - the y-coordinate of the target
+	 * @param speed        - how fast the projectile ist
+	 * @param imageName    - name of the image file to set
+	 * @param damage       - the damage the projectile deals
 	 */
 	public Projectile(int destinationX, int destinationY, double speed, String imageName, int damage) {
 		super(new Vector());
@@ -29,9 +31,10 @@ public abstract class Projectile extends SmoothMover {
 		this.initialized = false;
 
 	}
-	
+
 	/**
-	 * Sets the direction and the movement of the projectile. Also checks if its destination is reached.
+	 * Sets the direction and the movement of the projectile. Also checks if its
+	 * destination is reached.
 	 */
 	@Override
 	public void act() {
@@ -45,9 +48,9 @@ public abstract class Projectile extends SmoothMover {
 			}
 			if(getWorld() != null) { // prevents IllegalStateException: Actor not in world
 				behaviorWhileMoving();
-			}
-			if(atWorldEdge()) {
-				getWorld().removeObject(this);
+				if(atWorldEdge()) {
+					getWorld().removeObject(this);
+				}
 			}
 		}
 	}
@@ -55,7 +58,7 @@ public abstract class Projectile extends SmoothMover {
 	protected abstract void behaviorWhileMoving();
 
 	protected abstract void behaviourIfReachedDestination();
-	
+
 	/**
 	 * Sets the direction and the movement of the projectile.
 	 */
