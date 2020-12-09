@@ -49,6 +49,7 @@ public class GameWorld extends World {
 	private CursorImage cursorImage = new CursorImage();
 	private Counter coinsCounter = new Counter("Coins: ");
 	private Counter lifePointsCounter = new Counter("HP: ");
+	private Counter waveCounter = new Counter("Wave: ");
 
 	public GameWorld() {
 		super(GRID_SIZE_X * CELL_SIZE, GRID_SIZE_Y * CELL_SIZE, 1);
@@ -66,6 +67,7 @@ public class GameWorld extends World {
 	private void initCounter() {
 		coinsCounter.setValue(INITIAL_AMOUNT_OF_COINS);
 		lifePointsCounter.setValue(calculateLifePoints());
+		waveCounter.setValue(0);
 	}
 
 	@Override
@@ -78,6 +80,9 @@ public class GameWorld extends World {
 				spawningIntervalls();
 			}
 			lifePointsCounter.setValue(calculateLifePoints());
+			if(lifePointsCounter.getValue() <= 0) {
+				Greenfoot.stop();
+			}
 		}
 	}
 
@@ -87,6 +92,7 @@ public class GameWorld extends World {
 		} else if(timeTillWaveCountdown == 0 && currentWaveIndex < MAX_WAVE_COUNT) {
 			isInSpawningProcess = true;
 			currentWaveIndex++;
+			waveCounter.setValue(currentWaveIndex + 1);
 			timeTillWaveCountdown = TIME_TILL_SPAWN_WAVE;
 		}
 	}
@@ -129,6 +135,7 @@ public class GameWorld extends World {
 		addObject(pauseResumeButton, getWidth() / 2, pauseResumeButton.getImage().getHeight() + 4);
 		addObject(cursorImage, 0, 0);
 		addObject(coinsCounter, getWidth() / 4, coinsCounter.getImage().getHeight() / 2 + 4);
+		addObject(waveCounter, getWidth() / 4, getHeight() - waveCounter.getImage().getHeight() / 2 - 4);
 		addObject(lifePointsCounter, getWidth() / 4 * 3, lifePointsCounter.getImage().getHeight() / 2 + 4);
 		GameSpeedControlButton speed20Button = new GameSpeedControlButton(20, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[0],
 				GameSpeedControlButton.ACTIVE_BUTTON_IMAGE_NAMES[0]);

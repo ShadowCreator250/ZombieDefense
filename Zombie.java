@@ -11,11 +11,12 @@ import greenfoot.GreenfootImage;
  */
 public class Zombie extends SmoothMover {
 	public static final String OUTSIDE_IMAGE_NAME = "Zombie_Outside.png";
-	public static final String INIT_IMAGE_NAME = "Zombie1.png";
+	public static final String INSIDE_IMAGE_NAME = "Zombie1.png";
 	private static final String HURT_SOUND = "Zombie_Hurt.wav";
 	private static final String DEATH_SOUND = "Zombie_Death.wav";
 	private static final double TOLERANCE_RANGE = 2.0;
 	private static final double DEFAULT_DAMAGE = 10.0;
+	private static final int ATTACK_COOLDOWN_TIME = GameWorld.DEFAULT_SPEED * 2;
 	private double strength;
 	private double resistance; // should be from 0.0-1.0, example: 0.7 stands for 70% less damage to get
 	private double health;
@@ -27,6 +28,7 @@ public class Zombie extends SmoothMover {
 	private int pathOffsetX;
 	private int pathOffsetY;
 	private int targetedPathCellIndex = 0;
+	private int attackCooldown = ATTACK_COOLDOWN_TIME;
 
 	/**
 	 * Creates an zombie object with default values for strength, resistance, speed
@@ -60,15 +62,21 @@ public class Zombie extends SmoothMover {
 	 */
 	@Override
 	public void act() {
+		GreenfootImage outsideImage = makeScaledImage(OUTSIDE_IMAGE_NAME);
+		if(getImage().getWidth() == outsideImage.getWidth()) {
+			if(getX() >= outsideImage.getWidth() && getY() >= outsideImage.getWidth()) {
+				setImage(makeScaledImage(INSIDE_IMAGE_NAME));
+			}
+		}
 		if(path == null) {
 			initializePath();
 		}
 		if(!getWorld().isPaused()) {
 			if(pathExists) {
+				behaviourIfReachedEndCell();
 				move();
 				if(hasReachedDestination(calcDestinationX(), calcDestinationY(), TOLERANCE_RANGE)) {
 					behaviourIfTargetReached();
-					behaviourIfReachedEndCell();
 				}
 			}
 			slowDownIfOnSlimeField();
@@ -122,8 +130,10 @@ public class Zombie extends SmoothMover {
 	 * Sets a new target on the path for the zombie after reaching its last target.
 	 */
 	private void behaviourIfTargetReached() {
-		this.targetedPathCellIndex += 1;
-		updateMovementAndRotation();
+		if(!targetNodeIsPathEnd()) {
+			this.targetedPathCellIndex += 1;
+			updateMovementAndRotation();
+		}
 	}
 
 	/**
@@ -169,8 +179,13 @@ public class Zombie extends SmoothMover {
 	 */
 	public void attackGate() {
 		BaseGate gate = (BaseGate) getOneIntersectingObject(BaseGate.class);
-		if(gate != null) {
-			gate.absorbDamage(DEFAULT_DAMAGE * strength);
+		if(attackCooldown > 0) {
+			attackCooldown--;
+		} else {
+			if(gate != null) {
+				gate.absorbDamage(DEFAULT_DAMAGE * strength);
+			}
+			attackCooldown = ATTACK_COOLDOWN_TIME;
 		}
 	}
 
