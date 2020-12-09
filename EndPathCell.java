@@ -40,7 +40,7 @@ public class EndPathCell extends PathCell {
 		int yOffset = 0;
 		if(wallsExistence[2]) {
 			gate.setRotation(-90);
-			xOffset = -32;
+			xOffset = 32;
 		} else if(wallsExistence[0]) {
 			gate.setRotation(90);
 			xOffset = -32;
