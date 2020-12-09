@@ -35,7 +35,7 @@ public class GameWorld extends World {
 	private int executionSpeed = DEFAULT_SPEED;
 	private List<List<PathCell>> pathsList;
 	private List<List<Zombie>> waves;
-	private List<BaseGate> gates;
+	private List<BaseGate> gates = new ArrayList<>();
 	private int currentWaveIndex = -1;
 	private int timeTillWaveCountdown = TIME_TILL_SPAWN_WAVE;
 	private boolean isInSpawningProcess = false;
@@ -140,6 +140,9 @@ public class GameWorld extends World {
 	}
 
 	private void placeAllGates() {
+		if(findAllCellsWithCellType(EndPathCell.class).size() == 0) {
+			System.out.println("no endpathcells found");
+		}
 		for (EndPathCell endCell : findAllCellsWithCellType(EndPathCell.class)) {
 			endCell.spawnBaseGate();
 			gates.add(endCell.getGate());
