@@ -5,7 +5,8 @@ import greenfoot.Actor;
 import greenfoot.Greenfoot;
 
 /**
- * An abstract class that determines the plan for a tower, but needs to be specialized as a special tower (one of the subclasses).
+ * An abstract class that determines the plan for a tower, but needs to be
+ * specialized as a special tower (one of the subclasses).
  */
 public abstract class Tower extends Actor {
 
@@ -19,9 +20,9 @@ public abstract class Tower extends Actor {
 	/**
 	 * Creates an tower object with given characteristics, used at its subclasses.
 	 * 
-	 * @param range - how far it can attack
+	 * @param range      - how far it can attack
 	 * @param reloadTime - how long it needs to reload and shoot again
-	 * @param damage - how much damage it deals
+	 * @param damage     - how much damage it deals
 	 */
 	public Tower(int range, int reloadTime, int damage) {
 		setImage(INIT_IMAGE_NAME);
@@ -30,9 +31,10 @@ public abstract class Tower extends Actor {
 		this.damage = damage;
 		this.shootCountDown = 0;
 	}
-	
+
 	/**
-	 * Shoots on zombies when the world is not paused and has to reload. Can be deleted after placed by the player.
+	 * Shoots on zombies when the world is not paused and has to reload. Can be
+	 * deleted after placed by the player.
 	 */
 	@Override
 	public void act() {
@@ -43,22 +45,23 @@ public abstract class Tower extends Actor {
 		}
 		checkRemoveTowerClick();
 	}
-	
+
 	/**
-	 * Deletes the tower when clicking on it while using the delete tool. The player gets his coins back.
+	 * Deletes the tower when clicking on it while using the delete tool. The player
+	 * gets his coins back.
 	 */
 	private void checkRemoveTowerClick() {
 		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1) {
-			GameState.MouseState mouseState = getWorld().getGameState().getMouseState();
-			if(mouseState == GameState.MouseState.DELETE_TOOL) {
-				getWorld().getGameState().getCoinsCounter().add(this.getPrice());
+			CursorImage.MouseState mouseState = getWorld().getCursorImage().getMouseState();
+			if(mouseState == CursorImage.MouseState.DELETE_TOOL) {
+				getWorld().getCoinsCounter().add(this.getPrice());
 				getWorld().removeObject(this);
 			}
 		}
 	}
-	
+
 	/**
-	 * Shoots at a zombie in range that got set as target. 
+	 * Shoots at a zombie in range that got set as target.
 	 */
 	private void shoot() {
 		if(areZombiesInRange()) {
@@ -68,10 +71,10 @@ public abstract class Tower extends Actor {
 			shootCountDown = reloadTime;
 		}
 	}
-	
+
 	/**
 	 * Predicts the movement of the targeted zombie and shoots a projectile to it.
-	 *  
+	 * 
 	 * @param target - the zombie that was set as target.
 	 * @param damage - sets the damage the projectile will deal
 	 */
@@ -80,11 +83,14 @@ public abstract class Tower extends Actor {
 		int destinationY = (int) Math.round(target.getY() + target.getMovement().getY() * getZombieMovementForwardPrediction());
 		getWorld().addObject(getProjetile(destinationX, destinationY, damage), getX(), getY());
 	}
-	
+
 	/**
 	 * Reloads a new projectile for the tower which needs some time (the countdown).
 	 * 
-	 * @return <code>true</code> - if the countdown is zero (the projectile reloaded) <p> <code>false</code> - if the countdown is not zero (not reloaded)
+	 * @return <code>true</code> - if the countdown is zero (the projectile
+	 *         reloaded)
+	 *         <p>
+	 *         <code>false</code> - if the countdown is not zero (not reloaded)
 	 */
 	private boolean reload() {
 		if(shootCountDown > 0) {

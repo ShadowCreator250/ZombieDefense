@@ -2,7 +2,7 @@ import greenfoot.Greenfoot;
 import greenfoot.GreenfootImage;
 
 /**
- * A special cell where towers can only be placed on. 
+ * A special cell where towers can only be placed on.
  */
 public class TowerCell extends Cell {
 
@@ -18,7 +18,7 @@ public class TowerCell extends Cell {
 		super(gridX, gridY);
 		constructImage();
 	}
-	
+
 	/**
 	 * Adds an overlay to the image of the tower cell.
 	 */
@@ -35,23 +35,24 @@ public class TowerCell extends Cell {
 	public void act() {
 		checkAddTowerClick();
 	}
-	
+
 	/**
-	 * Checks which type of tower is going to be placed on the tower cell and adds the tower onto itself.
+	 * Checks which type of tower is going to be placed on the tower cell and adds
+	 * the tower onto itself.
 	 */
 	private void checkAddTowerClick() {
 		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1) {
 			if(!(getWorld().getObjectsAt(getX(), getY(), Tower.class).size() > 0)) {
-				GameState.MouseState mouseState = getWorld().getGameState().getMouseState();
-				if(mouseState == GameState.MouseState.PLACE_ARCHER_TOWER && getWorld().getGameState().haveEnoughCoins(ArcherTower.PRICE)) {
+				CursorImage.MouseState mouseState = getWorld().getCursorImage().getMouseState();
+				if(mouseState == CursorImage.MouseState.PLACE_ARCHER_TOWER && getWorld().haveEnoughCoins(ArcherTower.PRICE)) {
 					getWorld().addObject(new ArcherTower(), getX(), getY());
-					getWorld().getGameState().getCoinsCounter().add(-ArcherTower.PRICE);
-				} else if(mouseState == GameState.MouseState.PLACE_BOMB_TOWER && getWorld().getGameState().haveEnoughCoins(BombTower.PRICE)) {
+					getWorld().getCoinsCounter().add(-ArcherTower.PRICE);
+				} else if(mouseState == CursorImage.MouseState.PLACE_BOMB_TOWER && getWorld().haveEnoughCoins(BombTower.PRICE)) {
 					getWorld().addObject(new BombTower(), getX(), getY());
-					getWorld().getGameState().getCoinsCounter().add(-BombTower.PRICE);
-				} else if(mouseState == GameState.MouseState.PLACE_SNIPER_TOWER && getWorld().getGameState().haveEnoughCoins(SniperTower.PRICE)) {
+					getWorld().getCoinsCounter().add(-BombTower.PRICE);
+				} else if(mouseState == CursorImage.MouseState.PLACE_SNIPER_TOWER && getWorld().haveEnoughCoins(SniperTower.PRICE)) {
 					getWorld().addObject(new SniperTower(), getX(), getY());
-					getWorld().getGameState().getCoinsCounter().add(-SniperTower.PRICE);
+					getWorld().getCoinsCounter().add(-SniperTower.PRICE);
 				}
 			}
 		}

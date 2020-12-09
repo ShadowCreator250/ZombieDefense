@@ -57,13 +57,13 @@ public abstract class PathCell extends Cell {
 	private void checkAddObstacleClick() {
 		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1 && Greenfoot.getMouseInfo() != null) {
 			if(!(getWorld().getObjectsAt(getX(), getY(), Obstacle.class).size() > 0)) {
-				GameState.MouseState mouseState = getWorld().getGameState().getMouseState();
-				if(mouseState == GameState.MouseState.PLACE_MINE_FIELD && getWorld().getGameState().haveEnoughCoins(MineField.PRICE)) {
+				CursorImage.MouseState mouseState = getWorld().getCursorImage().getMouseState();
+				if(mouseState == CursorImage.MouseState.PLACE_MINE_FIELD && getWorld().haveEnoughCoins(MineField.PRICE)) {
 					getWorld().addObject(new MineField(), getX(), getY());
-					getWorld().getGameState().getCoinsCounter().add(-MineField.PRICE);
-				} else if(mouseState == GameState.MouseState.PLACE_SLIME_FIELD && getWorld().getGameState().haveEnoughCoins(SlimeField.PRICE)) {
+					getWorld().getCoinsCounter().add(-MineField.PRICE);
+				} else if(mouseState == CursorImage.MouseState.PLACE_SLIME_FIELD && getWorld().haveEnoughCoins(SlimeField.PRICE)) {
 					getWorld().addObject(new SlimeField(), getX(), getY());
-					getWorld().getGameState().getCoinsCounter().add(-SlimeField.PRICE);
+					getWorld().getCoinsCounter().add(-SlimeField.PRICE);
 				}
 			}
 		}

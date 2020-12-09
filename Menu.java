@@ -8,17 +8,17 @@ public class Menu extends Actor {
 	public static final String BACKGROUND_IMAGE_NAME = "menu-bg.png";
 
 	private List<MenuElement> menuElements = new ArrayList<>();
-	private final MenuElement mouseSelector = new MenuElement(this, calculateXOffset(1), 50, GameState.MouseState.NONE);
-	private final MenuElement archerTowerSelector = new MenuElement(this, calculateXOffset(2), 50, GameState.MouseState.PLACE_ARCHER_TOWER,
+	private final MenuElement mouseSelector = new MenuElement(this, calculateXOffset(1), 50, CursorImage.MouseState.NONE);
+	private final MenuElement archerTowerSelector = new MenuElement(this, calculateXOffset(2), 50, CursorImage.MouseState.PLACE_ARCHER_TOWER,
 			ArcherTower.PRICE);
-	private final MenuElement bomberTowerSelector = new MenuElement(this, calculateXOffset(3), 50, GameState.MouseState.PLACE_BOMB_TOWER,
+	private final MenuElement bomberTowerSelector = new MenuElement(this, calculateXOffset(3), 50, CursorImage.MouseState.PLACE_BOMB_TOWER,
 			BombTower.PRICE);
-	private final MenuElement sniperTowerSelector = new MenuElement(this, calculateXOffset(4), 50, GameState.MouseState.PLACE_SNIPER_TOWER,
+	private final MenuElement sniperTowerSelector = new MenuElement(this, calculateXOffset(4), 50, CursorImage.MouseState.PLACE_SNIPER_TOWER,
 			SniperTower.PRICE);
-	private final MenuElement deleteToolSelector = new MenuElement(this, calculateXOffset(1), 120, GameState.MouseState.DELETE_TOOL);
-	private final MenuElement mineFieldSelector = new MenuElement(this, calculateXOffset(2), 120, GameState.MouseState.PLACE_MINE_FIELD,
+	private final MenuElement deleteToolSelector = new MenuElement(this, calculateXOffset(1), 120, CursorImage.MouseState.DELETE_TOOL);
+	private final MenuElement mineFieldSelector = new MenuElement(this, calculateXOffset(2), 120, CursorImage.MouseState.PLACE_MINE_FIELD,
 			MineField.PRICE);
-	private final MenuElement slimeFieldSelector = new MenuElement(this, calculateXOffset(3), 120, GameState.MouseState.PLACE_SLIME_FIELD,
+	private final MenuElement slimeFieldSelector = new MenuElement(this, calculateXOffset(3), 120, CursorImage.MouseState.PLACE_SLIME_FIELD,
 			SlimeField.PRICE);
 
 	public Menu() {
@@ -27,7 +27,7 @@ public class Menu extends Actor {
 
 	public void buildMenu() {
 		for (MenuElement menuElement : menuElements) {
-			if(menuElement.getMouseState() == ((GameWorld) getWorld()).getGameState().getMouseState()) {
+			if(menuElement.getMouseState() == ((GameWorld) getWorld()).getCursorImage().getMouseState()) {
 				menuElement.setActive(true);
 			}
 			int xCoord = this.getX() - this.getImage().getWidth() / 2 + menuElement.getxOffset();

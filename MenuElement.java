@@ -9,15 +9,15 @@ public class MenuElement extends Button {
 	private Menu parentMenu;
 	private int xOffset;
 	private int yOffset;
-	private GameState.MouseState mouseState;
+	private CursorImage.MouseState mouseState;
 	private PriceTag priceTag;
 	private int price;
 
-	public MenuElement(Menu parentMenu, int xOffset, int yOffset, GameState.MouseState mouseState) {
+	public MenuElement(Menu parentMenu, int xOffset, int yOffset, CursorImage.MouseState mouseState) {
 		this(parentMenu, xOffset, yOffset, mouseState, 0);
 	}
 
-	public MenuElement(Menu parentMenu, int xOffset, int yOffset, GameState.MouseState mouseState, int price) {
+	public MenuElement(Menu parentMenu, int xOffset, int yOffset, CursorImage.MouseState mouseState, int price) {
 		super(generateIdleButtonImage(mouseState), generateActiveButtonImage(mouseState));
 		this.parentMenu = parentMenu;
 		this.xOffset = xOffset;
@@ -45,14 +45,14 @@ public class MenuElement extends Button {
 		}
 	}
 
-	private static GreenfootImage generateIdleButtonImage(GameState.MouseState mouseState) {
+	private static GreenfootImage generateIdleButtonImage(CursorImage.MouseState mouseState) {
 		GreenfootImage bg = new GreenfootImage(IDLE_BUTTON_BACKGROUND_IMAGE_NAME);
 		GreenfootImage logo = new GreenfootImage(mouseState.getImageName());
 		bg.drawImage(logo, 4, 4);
 		return bg;
 	}
 
-	private static GreenfootImage generateActiveButtonImage(GameState.MouseState mouseState) {
+	private static GreenfootImage generateActiveButtonImage(CursorImage.MouseState mouseState) {
 		GreenfootImage bg = new GreenfootImage(ACTIVE_BUTTON_BACKGROUND_IMAGE_NAME);
 		GreenfootImage logo = new GreenfootImage(mouseState.getImageName());
 		bg.drawImage(logo, 4, 4);
@@ -67,11 +67,11 @@ public class MenuElement extends Button {
 	private void toggleMouseState() {
 		if(!isActive()) { // turn on this
 			parentMenu.turnAllMenuElementsIdle();
-			getWorld().getGameState().setMouseState(mouseState);
+			getWorld().getCursorImage().setMouseState(mouseState);
 			setActive(true);
 		} else { // turn this off and the mouse one on
 			setActive(false);
-			getWorld().getGameState().setMouseState(GameState.MouseState.NONE);
+			getWorld().getCursorImage().setMouseState(CursorImage.MouseState.NONE);
 			parentMenu.getMouseSelector().setActive(true);
 		}
 	}
@@ -84,7 +84,7 @@ public class MenuElement extends Button {
 		return xOffset;
 	}
 
-	public GameState.MouseState getMouseState() {
+	public CursorImage.MouseState getMouseState() {
 		return mouseState;
 	}
 

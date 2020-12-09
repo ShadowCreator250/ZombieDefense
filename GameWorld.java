@@ -28,6 +28,7 @@ public class GameWorld extends World {
 	private static final int MAX_WAVE_COUNT = 10;
 	private static final int ZOMBIES_ADDED_PER_WAVE = 2;
 	private static final int TIME_BETWEEN_SPAWNING_INTERVALLS = 40;
+	private static final int INITIAL_AMOUNT_OF_COINS = 25;
 
 	private Cell[][] grid;
 	private boolean isPaused = true;
@@ -42,7 +43,9 @@ public class GameWorld extends World {
 	private int spawningIntervallCountdown = 0;
 
 	private PauseResumeButton pauseResumeButton = new PauseResumeButton();
-	private GameState gameState = new GameState(100);
+	private CursorImage cursorImage = new CursorImage();
+	private Counter coinsCounter = new Counter("Coins: ");
+	private Counter lifePointsCounter = new Counter("HP: ");
 
 	public GameWorld() {
 		super(GRID_SIZE_X * CELL_SIZE, GRID_SIZE_Y * CELL_SIZE, 1);
@@ -53,6 +56,12 @@ public class GameWorld extends World {
 		loadWorldFromTextFile("testworld2");
 		this.pathsList = computeAllPossiblePaths();
 		this.waves = prepareWaves();
+		initCounter();
+	}
+
+	private void initCounter() {
+		coinsCounter.setValue(INITIAL_AMOUNT_OF_COINS);
+		lifePointsCounter.setValue(calculateLifePoints());
 	}
 
 	@Override
@@ -64,6 +73,7 @@ public class GameWorld extends World {
 			if(isInSpawningProcess) {
 				spawningIntervalls();
 			}
+			lifePointsCounter.setValue(calculateLifePoints());
 		}
 	}
 
@@ -93,6 +103,16 @@ public class GameWorld extends World {
 		}
 	}
 
+	private int calculateLifePoints() {
+		int result = 0;
+		if(gates.size() > 0) {
+			for (BaseGate baseGate : gates) {
+				result += Math.rint(baseGate.getDurability());
+			}
+		}
+		return result / gates.size();
+	}
+
 	private void fillWorld() {
 		removeAllObjects();
 		placeCells();
@@ -102,8 +122,8 @@ public class GameWorld extends World {
 
 	private void placeGUI() {
 		addObject(pauseResumeButton, getWidth() / 2, pauseResumeButton.getImage().getHeight() + 4);
-		addObject(gameState, 0, 0);
-		addObject(gameState.getCoinsCounter(), getWidth() / 4, gameState.getCoinsCounter().getImage().getHeight() / 2 + 4);
+		addObject(cursorImage, 0, 0);
+		addObject(coinsCounter, getWidth() / 4, coinsCounter.getImage().getHeight() / 2 + 4);
 		GameSpeedControlButton speed20Button = new GameSpeedControlButton(20, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[0],
 				GameSpeedControlButton.ACTIVE_BUTTON_IMAGE_NAMES[0]);
 		GameSpeedControlButton speed80Button = new GameSpeedControlButton(80, GameSpeedControlButton.IDLE_BUTTON_IMAGE_NAMES[1],
@@ -115,7 +135,7 @@ public class GameWorld extends World {
 	}
 
 	private void definePaintOrder() {
-		setPaintOrder(GameState.class, Counter.class, Button.class, PriceTag.class, Menu.class, Projectile.class, Zombie.class, Tower.class,
+		setPaintOrder(CursorImage.class, Counter.class, Button.class, PriceTag.class, Menu.class, Projectile.class, Zombie.class, Tower.class,
 				Obstacle.class, BaseGate.class, PathCell.class, TowerCell.class, NormalCell.class);
 	}
 
@@ -239,6 +259,11 @@ public class GameWorld extends World {
 		return grid[x / CELL_SIZE][y / CELL_SIZE];
 	}
 
+	/**
+	 * replace a Cell in the Cell grid with another
+	 * 
+	 * @param cell
+	 */
 	public void replaceCellInGrid(Cell cell) {
 		int gridX = cell.getGridX();
 		int gridY = cell.getGridY();
@@ -247,6 +272,9 @@ public class GameWorld extends World {
 		}
 	}
 
+	/**
+	 * lets all PathCells compute their path section type to be displayed correctly
+	 */
 	public void computePathSectionTypes() {
 		List<PathCell> cells = findAllCellsWithCellType(PathCell.class);
 		for (Cell cell : cells) {
@@ -265,6 +293,14 @@ public class GameWorld extends World {
 		return result;
 	}
 
+	/**
+	 * calculate the number of zombies that should spawn in a wave<br>
+	 * for every wave a specific amount more Zombies are spawned than the last wave
+	 * 
+	 * @param waveNumber
+	 * @return the number of zombies
+	 * @see ZOMBIES_ADDED_PER_WAVE
+	 */
 	private int numberOfZombiesInWave(int waveNumber) {
 		return waveNumber * ZOMBIES_ADDED_PER_WAVE;
 	}
@@ -300,6 +336,13 @@ public class GameWorld extends World {
 		return Math.rint(value * d) / d;
 	}
 
+	/**
+	 * get a {@link BufferedWriter} for the given file
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws IOException
+	 */
 	private BufferedWriter getBufferedWriter(String filePath) throws IOException {
 		FileOutputStream outputStream = new FileOutputStream(filePath);
 		OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
@@ -342,6 +385,13 @@ public class GameWorld extends World {
 		} // BufferedWriter, FileOutputStream and OutputStreamWriter auto close themselves
 	}
 
+	/**
+	 * get a {@link BufferedReader} for a given file
+	 * 
+	 * @param filePath
+	 * @return
+	 * @throws IOException
+	 */
 	private BufferedReader getBufferedReader(String filePath) throws IOException {
 		FileInputStream inputStream = new FileInputStream(filePath);
 		InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
@@ -443,12 +493,30 @@ public class GameWorld extends World {
 		setPaused(false);
 	}
 
+	public Counter getCoinsCounter() {
+		return coinsCounter;
+	}
+
+	/**
+	 * checks if the player has enough coins to by an item for a certain price
+	 * 
+	 * @param price the price of the item
+	 * @return if the player can buy that item
+	 */
+	public boolean haveEnoughCoins(int price) {
+		if(coinsCounter.getValue() >= price) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public PauseResumeButton getPauseResumeButton() {
 		return pauseResumeButton;
 	}
 
-	public GameState getGameState() {
-		return gameState;
+	public CursorImage getCursorImage() {
+		return cursorImage;
 	}
 
 }

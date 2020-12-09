@@ -158,7 +158,7 @@ public class Zombie extends SmoothMover {
 	 */
 	private void dropCurrencyIfDead() {
 		if(health <= 0) {
-			getWorld().getGameState().getCoinsCounter().add(new Random().nextInt(3) + 4);
+			getWorld().getCoinsCounter().add(new Random().nextInt(3) + 4);
 			Greenfoot.playSound(DEATH_SOUND);
 			getWorld().removeObject(this);
 		}
