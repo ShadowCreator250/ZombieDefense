@@ -19,9 +19,8 @@ public final class Vector {
 	}
 
 	/**
-	 * Erzeugt einen Vektor einer gegebenen Richtung und Länge. Die Richtung sollte
-	 * im Bereich [0..359] liegen, wobei 0 OSTEN ist und die Grade im Uhrzeigersinn
-	 * zunehmen.
+	 * Erzeugt einen Vektor einer gegebenen Richtung und Lï¿½nge. Die Richtung sollte im Bereich [0..359]
+	 * liegen, wobei 0 OSTEN ist und die Grade im Uhrzeigersinn zunehmen.
 	 */
 	public Vector(int direction, double length) {
 		this.length = length;
@@ -30,8 +29,8 @@ public final class Vector {
 	}
 
 	/**
-	 * Erzeugt einen Vektor durch Angabe der X- und Y-Abstände zwischen Anfangs- und
-	 * Endpunkt.
+	 * Erzeugt einen Vektor durch Angabe der X- und Y-Abstï¿½nde zwischen Anfangs- und Endpunkt und
+	 * skaliert diesen Vektor auf eine bestimmte LÃ¤nge.
 	 */
 	public Vector(double dx, double dy, double customLength) {
 		this.dx = dx;
@@ -41,7 +40,7 @@ public final class Vector {
 	}
 
 	/**
-	 * Setzt die Richtung dieses Vektors, ohne die Länge zu verändern.
+	 * Setzt die Richtung dieses Vektors, ohne die Lï¿½nge zu verï¿½ndern.
 	 */
 	public void setDirection(int direction) {
 		this.direction = direction;
@@ -58,7 +57,7 @@ public final class Vector {
 	}
 
 	/**
-	 * Setzt die Länge dieses Vektors, ohne die Richtung zu verändern.
+	 * Setzt die Lï¿½nge dieses Vektors, ohne die Richtung zu verï¿½ndern.
 	 */
 	public void setLength(double length) {
 		this.length = length;
@@ -66,8 +65,8 @@ public final class Vector {
 	}
 
 	/**
-	 * Skaliert diesen Vektor hoch (Faktor > 1) oder herunter (Faktor < 1). Die
-	 * Richtung wird beibehalten.
+	 * Skaliert diesen Vektor hoch (Faktor > 1) oder herunter (Faktor < 1). Die Richtung wird
+	 * beibehalten.
 	 */
 	public void scale(double factor) {
 		length = length * factor;
@@ -75,7 +74,7 @@ public final class Vector {
 	}
 
 	/**
-	 * Setzt diesen Vektor auf den neutralen Vektor (Länge 0).
+	 * Setzt diesen Vektor auf den neutralen Vektor (Lï¿½nge 0).
 	 */
 	public void setNeutral() {
 		dx = 0.0;
@@ -101,35 +100,35 @@ public final class Vector {
 	}
 
 	/**
-	 * Liefert den X-Wert dieses Vektors zurück (Anfangs- bis Endpunkt).
+	 * Liefert den X-Wert dieses Vektors zurï¿½ck (Anfangs- bis Endpunkt).
 	 */
 	public double getX() {
 		return dx;
 	}
 
 	/**
-	 * Liefert den Y-Wert dieses Vektors zurück (Anfangs- bis Endpunkt).
+	 * Liefert den Y-Wert dieses Vektors zurï¿½ck (Anfangs- bis Endpunkt).
 	 */
 	public double getY() {
 		return dy;
 	}
 
 	/**
-	 * Liefert die Richtung dieses Vektors (in Grad) zurück. 0 ist OSTEN.
+	 * Liefert die Richtung dieses Vektors (in Grad) zurï¿½ck. 0 ist OSTEN.
 	 */
 	public int getDirection() {
 		return direction;
 	}
 
 	/**
-	 * Liefert die Länge dieses Vektors zurück.
+	 * Liefert die Lï¿½nge dieses Vektors zurï¿½ck.
 	 */
 	public double getLength() {
 		return length;
 	}
 
 	/**
-	 * Aktualisiert die Richtung und die Länge aus den aktuellen Werten von dx, dy.
+	 * Aktualisiert die Richtung und die Lï¿½nge aus den aktuellen Werten von dx, dy.
 	 */
 	private void updatePolar() {
 		this.direction = (int) Math.toDegrees(Math.atan2(dy, dx));
@@ -137,7 +136,7 @@ public final class Vector {
 	}
 
 	/**
-	 * Aktualisiert dx und dy aus der aktuellen Richtung und Länge.
+	 * Aktualisiert dx und dy aus der aktuellen Richtung und Lï¿½nge.
 	 */
 	private void updateCartesian() {
 		dx = length * Math.cos(Math.toRadians(direction));

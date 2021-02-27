@@ -1,8 +1,8 @@
 import greenfoot.Greenfoot;
 
 /**
- * A special tower with medium range, low damage and short reload time. It
- * attacks zombies with arrows and is cheap.
+ * A special tower with medium range, low damage and short reload time. It attacks zombies with
+ * arrows and is cheap.
  */
 public class ArcherTower extends Tower {
 
@@ -18,6 +18,7 @@ public class ArcherTower extends Tower {
 	 */
 	public ArcherTower() {
 		super(DEFAULT_RANGE, DEFAULT_RELOAD_TIME, DEFAULT_DAMAGE);
+		setImage("Tower1.png");
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class ArcherTower extends Tower {
 
 	@Override
 	public int getZombieMovementForwardPrediction() {
-		return ZOMBIE_MOVEMENT_FORWARD_PREDICTION;
+		return (int) (ZOMBIE_MOVEMENT_FORWARD_PREDICTION + 10 / getProjetile(0, 0, 0).getSpeed());
 	}
 
 	@Override

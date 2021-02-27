@@ -5,12 +5,10 @@ import greenfoot.Actor;
 import greenfoot.Greenfoot;
 
 /**
- * An abstract class that determines the plan for a tower, but needs to be
- * specialized as a special tower (one of the subclasses).
+ * An abstract class that determines the plan for a tower, but needs to be specialized as a special
+ * tower (one of the subclasses).
  */
 public abstract class Tower extends Actor {
-
-	public static final String INIT_IMAGE_NAME = "Tower1.png";
 
 	private int range;
 	private int reloadTime;
@@ -25,7 +23,6 @@ public abstract class Tower extends Actor {
 	 * @param damage     - how much damage it deals
 	 */
 	public Tower(int range, int reloadTime, int damage) {
-		setImage(INIT_IMAGE_NAME);
 		this.range = range;
 		this.reloadTime = reloadTime;
 		this.damage = damage;
@@ -33,8 +30,8 @@ public abstract class Tower extends Actor {
 	}
 
 	/**
-	 * Shoots on zombies when the world is not paused and has to reload. Can be
-	 * deleted after placed by the player.
+	 * Shoots on zombies when the world is not paused and has to reload. Can be deleted after placed by
+	 * the player.
 	 */
 	@Override
 	public void act() {
@@ -47,8 +44,8 @@ public abstract class Tower extends Actor {
 	}
 
 	/**
-	 * Deletes the tower when clicking on it while using the delete tool. The player
-	 * gets his coins back.
+	 * Deletes the tower when clicking on it while using the delete tool. The player gets his coins
+	 * back.
 	 */
 	private void checkRemoveTowerClick() {
 		if(Greenfoot.mouseClicked(this) && Greenfoot.getMouseInfo().getButton() == 1) {
@@ -79,16 +76,20 @@ public abstract class Tower extends Actor {
 	 * @param damage - sets the damage the projectile will deal
 	 */
 	public void shootProjectileAt(Zombie target, int damage) {
-		int destinationX = (int) Math.round(target.getX() + target.getMovement().getX() * getZombieMovementForwardPrediction());
-		int destinationY = (int) Math.round(target.getY() + target.getMovement().getY() * getZombieMovementForwardPrediction());
+		double distanceX = target.getExactX() - this.getX();
+		double distanceY = target.getExactY() - this.getY();
+		double travelTime = Math.sqrt(distanceX * distanceX + distanceY * distanceY) / getProjetile(0, 0, 0).getSpeed();
+		int destinationX = (int) Math.round(target.getExactX() + (target.getMovement().getX() * travelTime));
+		int destinationY = (int) Math.round(target.getExactY() + (target.getMovement().getY() * travelTime));
+		System.out.println("(" + this.getX() + "+" + distanceX + "=" + target.getExactX() + ";" + this.getY() + "+" + distanceY + "="
+				+ target.getExactY() + ")" + " " + travelTime + " (" + destinationX + ";" + destinationY + ")");
 		getWorld().addObject(getProjetile(destinationX, destinationY, damage), getX(), getY());
 	}
 
 	/**
 	 * Reloads a new projectile for the tower which needs some time (the countdown).
 	 * 
-	 * @return <code>true</code> - if the countdown is zero (the projectile
-	 *         reloaded)
+	 * @return <code>true</code> - if the countdown is zero (the projectile reloaded)
 	 *         <p>
 	 *         <code>false</code> - if the countdown is not zero (not reloaded)
 	 */
@@ -113,8 +114,8 @@ public abstract class Tower extends Actor {
 
 	/**
 	 * 
-	 * @return how many steps forward the tower thinks the {@link Zombie} will walk
-	 *         in the time while the {@link Projectile} flies towards it
+	 * @return how many steps forward the tower thinks the {@link Zombie} will walk in the time while
+	 *         the {@link Projectile} flies towards it
 	 */
 	public abstract int getZombieMovementForwardPrediction();
 

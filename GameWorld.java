@@ -80,7 +80,7 @@ public class GameWorld extends World {
 				spawningIntervalls();
 			}
 			lifePointsCounter.setValue(calculateLifePoints());
-			if(lifePointsCounter.getValue() <= 0) {
+			if(currentWaveIndex >= MAX_WAVE_COUNT || lifePointsCounter.getValue() <= 0) {
 				Greenfoot.stop();
 			}
 		}
@@ -235,7 +235,7 @@ public class GameWorld extends World {
 		for (int x = 0; x < grid.length; x++) {
 			for (int y = 0; y < grid[0].length; y++) {
 				if(cls.isInstance(grid[x][y])) {
-					result.add((T) grid[x][y]);
+					result.add(cls.cast(grid[x][y]));
 				}
 			}
 		}
@@ -243,14 +243,12 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * Gets the cell on a specific world position (if its grid position is not
-	 * known).
+	 * Gets the cell on a specific world position (if its grid position is not known).
 	 * 
 	 * @param x the positions x value
 	 * @param y the positions y value
 	 * @return the {@link Cell} found on this position <br>
-	 *         returns <code>null</code> if no {@link Cell} is found on this
-	 *         position
+	 *         returns <code>null</code> if no {@link Cell} is found on this position
 	 */
 	public Cell cellFromWorldPos(int x, int y) {
 		if(x < 0 || x > getWidth() || y < 0 || y > getHeight()) {
@@ -351,8 +349,7 @@ public class GameWorld extends World {
 	}
 
 	/**
-	 * Saves the current worlds grid in a text file from where it can be loaded
-	 * again.<br>
+	 * Saves the current worlds grid in a text file from where it can be loaded again.<br>
 	 * source:codejava.com
 	 * 
 	 * Saves the file in the "worlds" folder

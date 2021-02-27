@@ -1,8 +1,8 @@
 import greenfoot.Greenfoot;
 
 /**
- * A special tower with low range, medium damage and medium reload time. It
- * attacks zombies with bombs and is more expensive than the archer tower.
+ * A special tower with low range, medium damage and medium reload time. It attacks zombies with
+ * bombs and is more expensive than the archer tower.
  */
 public class BombTower extends Tower {
 
@@ -10,7 +10,7 @@ public class BombTower extends Tower {
 	private static final int DEFAULT_DAMAGE = 50;
 	private static final int DEFAULT_RANGE = 100;
 	private static final int DEFAULT_RELOAD_TIME = 250;
-	private static final int ZOMBIE_MOVEMENT_FORWARD_PREDICTION = 2;
+	private static final int ZOMBIE_MOVEMENT_FORWARD_PREDICTION = 5;
 	private static final String FLYING_SOUND = "Bomb_Ignite.wav";
 
 	/**
@@ -18,6 +18,7 @@ public class BombTower extends Tower {
 	 */
 	public BombTower() {
 		super(DEFAULT_RANGE, DEFAULT_RELOAD_TIME, DEFAULT_DAMAGE);
+		setImage("Tower-darker.png");
 	}
 
 	@Override
@@ -40,7 +41,7 @@ public class BombTower extends Tower {
 
 	@Override
 	public int getZombieMovementForwardPrediction() {
-		return ZOMBIE_MOVEMENT_FORWARD_PREDICTION;
+		return (int) (ZOMBIE_MOVEMENT_FORWARD_PREDICTION + 10 / getProjetile(0, 0, 0).getSpeed());
 	}
 
 	@Override

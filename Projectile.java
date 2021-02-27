@@ -1,6 +1,6 @@
 /**
- * An abstract class that determines the plan for a projectile, but needs to be
- * specialized as a special projectile (one of the subclasses).
+ * An abstract class that determines the plan for a projectile, but needs to be specialized as a
+ * special projectile (one of the subclasses).
  */
 public abstract class Projectile extends SmoothMover {
 
@@ -13,8 +13,7 @@ public abstract class Projectile extends SmoothMover {
 	private int damage;
 
 	/**
-	 * Creates an projectile object with the given characteristics, used at its
-	 * subclasses.
+	 * Creates an projectile object with the given characteristics, used at its subclasses.
 	 * 
 	 * @param destinationX - the x-coordinate of the target
 	 * @param destinationY - the y-coordinate of the target
@@ -33,8 +32,7 @@ public abstract class Projectile extends SmoothMover {
 	}
 
 	/**
-	 * Sets the direction and the movement of the projectile. Also checks if its
-	 * destination is reached.
+	 * Sets the direction and the movement of the projectile. Also checks if its destination is reached.
 	 */
 	@Override
 	public void act() {
@@ -78,4 +76,8 @@ public abstract class Projectile extends SmoothMover {
 		return damage;
 	}
 
+	@Override
+	public double getSpeed() {
+		return speed;
+	}
 }
